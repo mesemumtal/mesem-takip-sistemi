@@ -1608,9 +1608,14 @@
         business.students.push(studentData);
     }
 
+    saveData(); 
+    renderAll(); 
+    closeModal('studentModal');
+    
     setTimeout(() => {
-    showNotification('Öğrenci başarıyla kaydedildi.', 'success');
+        showNotification('Öğrenci başarıyla kaydedildi.', 'success');
     }, 100);
+    
     showNotification('Öğrenci başarıyla kaydedildi.', 'success'); }
        
     function deleteBusiness(id) {
