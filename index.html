@@ -2033,8 +2033,16 @@
         const formType = dom.formTypeSelect.value;
         let allFormsHTML = '';
         if (formType === 'attendance' || formType === 'monthly_guidance') {
-            const selectedBusinessIds = Array.from(document.querySelectorAll('.business-checkbox:checked')).map(cb => cb.value);
-            if (selectedBusinessIds.length === 0) { showNotification('Lütfen en az bir işletme seçin.', 'error'); return; }
+           // Seçili işletmeleri kontrol et
+            const checkedBoxes = document.querySelectorAll('#business-dropdown-content .business-checkbox:checked');
+            console.log('Seçili checkbox sayısı:', checkedBoxes.length);
+
+            if (checkedBoxes.length === 0) { 
+                showNotification('Lütfen en az bir işletme seçin.', 'error'); 
+                return; 
+            }
+
+            const selectedBusinessIds = Array.from(checkedBoxes).map(cb => cb.value);
             const month = parseInt(dom.genMonthSelect.value);
             const year = parseInt(dom.genYearSelect.value);
             const today = new Date();
