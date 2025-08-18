@@ -2327,8 +2327,18 @@
                     content.style.display = 'block';
                     header.classList.add('open');
                 }
-            }
-        });
+
+                if (e.target.closest('.dropdown-item')) {
+                    const item = e.target.closest('.dropdown-item');
+                    const checkbox = item.querySelector('input[type="checkbox"]');
+                    if (checkbox) {
+                        checkbox.checked = !checkbox.checked;
+                        updateDropdownText(); // Seçilen işletme sayısını güncelle
+                    }
+                }
+               }
+            });
+        
         dom.dailyBusinessDropdownHeader.addEventListener('click', () => { dom.dailyBusinessDropdownHeader.classList.toggle('open'); dom.dailyBusinessDropdownContent.classList.toggle('open'); });
         document.addEventListener('click', (e) => { if (!e.target.closest('.dropdown-container')) { document.querySelectorAll('.dropdown-header.open').forEach(h => h.classList.remove('open')); document.querySelectorAll('.dropdown-content.open').forEach(c => c.classList.remove('open')); } });
         dom.selectAllBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.business-checkbox').forEach(cb => cb.checked = true); updateDropdownText(); });
