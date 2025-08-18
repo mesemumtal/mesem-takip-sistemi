@@ -825,6 +825,18 @@
             }
         }
 
+            .accordion-header {
+                transition: background-color 0.2s ease;
+            }
+
+            .accordion-header:hover {
+                background-color: var(--accent-gold-50);
+            }
+
+            .accordion-content {
+                transition: all 0.3s ease;
+            }
+
 
      </style>
 </head>
@@ -2184,18 +2196,37 @@
     [dom.dailyMonthSelect, dom.dailyYearSelect].forEach(el => el.addEventListener('change', populateWeeksForDailyForm));
     
     dom.tabs.addEventListener('click', e => { if(e.target.matches('.tab')) { const tabId=e.target.dataset.tab; document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(tabId).classList.add('active'); e.target.classList.add('active'); }});
-    document.addEventListener('click', e => { if (e.target.matches('[data-action="cancel-modal"]')) { e.target.closest('.modal').style.display = 'none'; return; } const accordionHeader = e.target.closest('.accordion-header'); if (accordionHeader) { accordionHeader.nextElementSibling.classList.toggle('open'); return; } const action = e.target.dataset.action; if(!action) return; const id = e.target.dataset.id; const businessId = e.target.dataset.businessId; switch(action) { case 'add-student': openModal('studentModal', {businessId: id}); break; case 'edit-business': openModal('businessModal', {id: id}); break; case 'delete-business': deleteBusiness(id); break; case 'edit-student': openModal('studentModal', {id: id, businessId: businessId}); break; case 'delete-student': deleteStudent(id, businessId); break; case 'open-termination-modal': openModal('terminationModal', {studentId: id, businessId: businessId}); break; 
-    case 'cancel-termination': 
-    const studentId = e.target.dataset.studentId || e.target.dataset.id;
-    cancelTermination(studentId, businessId); 
-    break;case 'open-absence-modal': openModal('absenceModal', {studentId: id, businessId: businessId}); break; } });
-    dom.absenceModal.addEventListener('click', e => {
-        const dayEl = e.target.closest('.calendar-day.workday'); if (!dayEl) return;
-        const statusEl = dayEl.querySelector('.calendar-day-status');
-        let currentStatus = statusEl.textContent.replace(/\s/g, ''); let newStatus = '';
-        if (currentStatus === '') newStatus = 'S'; else if (currentStatus === 'S') newStatus = 'Ö'; else if (currentStatus === 'Ö') newStatus = 'SÖ'; else newStatus = '';
-        statusEl.innerHTML = newStatus.replace('SÖ', 'S<br>Ö');
-        statusEl.classList.toggle('f-gold', newStatus !== '');
+    document.addEventListener('click', e => { 
+        if (e.target.matches('[data-action="cancel-modal"]')) { 
+            e.target.closest('.modal').style.display = 'none'; 
+            return; 
+        } 
+        
+        // Accordion header kontrolü - BURASI ÖNEMLİ
+        const accordionHeader = e.target.closest('.accordion-header'); 
+        if (accordionHeader) { 
+            accordionHeader.nextElementSibling.classList.toggle('open'); 
+            return; // Bu return'ü ekle ki diğer aksiyonlar çalışmasın
+        } 
+        
+        const action = e.target.dataset.action; 
+        if(!action) return; 
+        const id = e.target.dataset.id; 
+        const businessId = e.target.dataset.businessId; 
+        
+        switch(action) { 
+            case 'add-student': openModal('studentModal', {businessId: id}); break; 
+            case 'edit-business': openModal('businessModal', {id: id}); break; 
+            case 'delete-business': deleteBusiness(id); break; 
+            case 'edit-student': openModal('studentModal', {id: id, businessId: businessId}); break; 
+            case 'delete-student': deleteStudent(id, businessId); break; 
+            case 'open-termination-modal': openModal('terminationModal', {studentId: id, businessId: businessId}); break; 
+            case 'cancel-termination': 
+                const studentId = e.target.dataset.studentId || e.target.dataset.id;
+                cancelTermination(studentId, businessId); 
+                break;
+            case 'open-absence-modal': openModal('absenceModal', {studentId: id, businessId: businessId}); break; 
+        } 
     });
     dom.absenceModal.querySelector('#saveAbsenceBtn').addEventListener('click', saveAbsences);
     dom.absenceModal.querySelector('#absenceMonthSelect').addEventListener('change', renderAbsenceCalendar);
@@ -2289,16 +2320,7 @@
         dom.printListBtn.addEventListener('click', () => { const listHTML = generateListPrint(); dom.printContainer.innerHTML = listHTML; window.print(); });
         document.addEventListener('input', (e) => { if (e.target.hasAttribute('inputmode') && e.target.getAttribute('inputmode') === 'numeric') { e.target.value = e.target.value.replace(/[^0-9]/g, ''); } });
         document.addEventListener('focusin', function(e) { if (e.target.matches('input, textarea, select')) { setTimeout(() => { e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300); } });
-        dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));
-
-        // AKORDİYON MENÜSÜ İÇİN ÖZEL TIKLAMA DİNLEYİCİSİ
-        dom.businessesAccordion.addEventListener('click', (e) => {
-            const accordionHeader = e.target.closest('.accordion-header');
-            if (accordionHeader) {
-                // Tıklanan başlığın içeriğini aç/kapat
-                accordionHeader.nextElementSibling.classList.toggle('open');
-            }
-        });
+        dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));        
         
         setVhProperty();
         window.addEventListener('resize', setVhProperty);
