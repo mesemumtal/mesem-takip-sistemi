@@ -2085,7 +2085,7 @@
                 }
             }
         } else if (formType === 'daily_guidance') {
-            const selectedBusinessIds = Array.from(document.querySelectorAll('.daily-business-checkbox:checked')).map(cb => cb.value);
+            const selectedBusinessIds = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
             const selectedWeek = parseInt(dom.genWeekSelect1.value);
             
             if (selectedBusinessIds.length === 0) { 
