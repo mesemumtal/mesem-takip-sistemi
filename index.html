@@ -1047,18 +1047,6 @@
             selectAllDailyBusinesses: document.getElementById('select-all-daily-businesses'),
             deselectAllDailyBusinesses: document.getElementById('deselect-all-daily-businesses'),
             
-            setTimeout(() => {
-            const businessHeader = document.getElementById('business-dropdown-header');
-            const businessContent = document.getElementById('business-dropdown-content');
-            const dailyHeader = document.getElementById('daily-business-dropdown-header');
-            const dailyContent = document.getElementById('daily-business-dropdown-content');
-            
-            if (businessHeader && businessContent) {
-                businessHeader.onclick = () => {
-                    businessHeader.classList.toggle('open');
-                    businessContent.classList.toggle('open');
-                };
-            }
         };
 
         // --- Firebase Fonksiyonları ---
@@ -2314,8 +2302,6 @@
         
         dom.generateSheetBtn.addEventListener('click', () => { /* ... Mevcut kodunuzdaki gibi ... */ });
         dom.formTypeSelect.addEventListener('change', (e) => { /* ... Mevcut kodunuzdaki gibi ... */ });
-        dom.businessDropdownHeader.addEventListener('click', () => { dom.businessDropdownHeader.classList.toggle('open'); dom.businessDropdownContent.classList.toggle('open'); });
-        dom.dailyBusinessDropdownHeader.addEventListener('click', () => { dom.dailyBusinessDropdownHeader.classList.toggle('open'); dom.dailyBusinessDropdownContent.classList.toggle('open'); });
         document.addEventListener('click', (e) => { if (!e.target.closest('.dropdown-container')) { document.querySelectorAll('.dropdown-header.open').forEach(h => h.classList.remove('open')); document.querySelectorAll('.dropdown-content.open').forEach(c => c.classList.remove('open')); } });
         dom.selectAllBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.business-checkbox').forEach(cb => cb.checked = true); updateDropdownText(); });
         dom.deselectAllBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.business-checkbox').forEach(cb => cb.checked = false); updateDropdownText(); });
