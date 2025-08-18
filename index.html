@@ -2327,16 +2327,14 @@
                     content.style.display = 'block';
                     header.classList.add('open');
                 }
-            }
+            
 
-                if (e.target.closest('.dropdown-item')) {
-                    const item = e.target.closest('.dropdown-item');
-                    const checkbox = item.querySelector('input[type="checkbox"]');
-                    if (checkbox) {
-                        checkbox.checked = !checkbox.checked;
-                        updateDropdownText(); // Seçilen işletme sayısını güncelle
-                    }
+               
+                if (checkbox) {
+                    checkbox.checked = !checkbox.checked;
+                    updateDropdownText(); // Seçilen işletme sayısını güncelle
                 }
+              }
                
             });
         
