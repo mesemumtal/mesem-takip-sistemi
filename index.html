@@ -1594,7 +1594,12 @@
         return true;
     }
 
-    function saveBusiness(e) { e.preventDefault(); if (!validateForm(dom.businessForm)) return; const form = dom.businessForm; const id = form.querySelector('#businessId').value; const businessData = { id: id || Date.now().toString(), name: form.querySelector('#businessName').value, address: form.querySelector('#businessAddress').value, phone: form.querySelector('#businessPhone').value, official: form.querySelector('#businessOfficial').value, visitDay: form.querySelector('#businessVisitDay').value, students: id ? appData.businesses.find(b => b.id === id).students : [] }; if (id) appData.businesses = appData.businesses.map(b => b.id === id ? businessData : b); else { if(!appData.businesses) appData.businesses = []; appData.businesses.push(businessData); } saveData(); renderAll(); closeModal('businessModal'); showNotification('İşletme başarıyla kaydedildi.', 'success'); }
+    function saveBusiness(e) { e.preventDefault(); if (!validateForm(dom.businessForm)) return; const form = dom.businessForm; const id = form.querySelector('#businessId').value; const businessData = { id: id || Date.now().toString(), name: form.querySelector('#businessName').value, address: form.querySelector('#businessAddress').value, phone: form.querySelector('#businessPhone').value, official: form.querySelector('#businessOfficial').value, visitDay: form.querySelector('#businessVisitDay').value, students: id ? appData.businesses.find(b => b.id === id).students : [] }; if (id) appData.businesses = appData.businesses.map(b => b.id === id ? businessData : b); else { if(!appData.businesses) appData.businesses = []; appData.businesses.push(businessData); } saveData(); renderAll(); closeModal('businessModal'); 
+    setTimeout(() => {
+        showNotification('İşletme başarıyla kaydedildi.', 'success');
+    }, 100);
+
+    showNotification('İşletme başarıyla kaydedildi.', 'success'); }
     function saveStudent(e) { e.preventDefault(); if (!validateStudentForm()) return; const form = dom.studentForm; const businessId = form.querySelector('#studentBusinessId').value; const id = form.querySelector('#studentId').value; const business = appData.businesses.find(b => b.id === businessId); const existingStudent = id ? business.students.find(s => s.id === id) : {}; const studentData = { id: id || Date.now().toString(), no: form.querySelector('#studentNo').value, name: form.querySelector('#studentName').value, class: form.querySelector('#studentClass').value, field: form.querySelector('#studentField').value, schoolDay: form.querySelector('#studentSchoolDay').value, phone: form.querySelector('#studentPhone').value, startDate: form.querySelector('#studentStartDate').value, endDate: form.querySelector('#studentEndDate').value, terminationReason: existingStudent.terminationReason || '', absences: existingStudent.absences || {} }; 
     if (id) {
         business.students = business.students.map(s => s.id === id ? studentData : s);
@@ -1602,6 +1607,10 @@
         if(!business.students) business.students = []; // BU SATIRI EKLEYİN
         business.students.push(studentData);
     }
+
+    setTimeout(() => {
+    showNotification('Öğrenci başarıyla kaydedildi.', 'success');
+    }, 100);
     showNotification('Öğrenci başarıyla kaydedildi.', 'success'); }
        
     function deleteBusiness(id) {
