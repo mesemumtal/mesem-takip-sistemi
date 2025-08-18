@@ -2391,6 +2391,7 @@
         document.addEventListener('input', (e) => { if (e.target.hasAttribute('inputmode') && e.target.getAttribute('inputmode') === 'numeric') { e.target.value = e.target.value.replace(/[^0-9]/g, ''); } });
         document.addEventListener('focusin', function(e) { if (e.target.matches('input, textarea, select')) { setTimeout(() => { e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300); } });
         dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));        
+     
         
         setVhProperty();
         window.addEventListener('resize', setVhProperty);
