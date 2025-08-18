@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f4c542">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>MESEM Günlük ve Aylık Rehberlik- Devamsızlık- Fesih Formları</title>
+    <style>
+        :root { 
+            --dark-bg: #0f172a; 
+            --light-bg: #0f172a; 
+            --card-bg: #0f172a; 
+            --accent-gold: #f4c542;
+            --accent-gold-50: rgba(244, 197, 66, 0.5);
+            --btn-red: #b22234;
+            --btn-red-hover: #9b1d2d;
+            --text-light: #e0e6ed; 
+            --text-lighter: #f0f4f8; 
+            --text-white: #ffffff; 
+            --danger-red: #ff6b7a; 
+            --success-green: #4ecdc4; 
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
+            background-color: #0f172a;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            position: relative;
+            min-height: 100vh;
+            color: var(--text-light);
+        }
+        .container { max-width: 1600px; margin: 0 auto; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .tabs { display: flex; background: var(--light-bg); border-radius: 10px 10px 0 0; border: 2px solid var(--accent-gold); border-bottom: none; }
+        .tab { flex: 1; padding: 18px; text-align: center; cursor: pointer; color: var(--text-light); font-weight: 600; font-size: 1rem; transition: all 0.2s ease; border: none; background: transparent; }
+        .tab.active { color: var(--accent-gold); background-color: var(--card-bg); }
+        .content { background: var(--light-bg); border-radius: 0 0 10px 10px; border: 2px solid var(--accent-gold); min-height: 70vh; }
+        .tab-content { display: none; padding: 30px; }
+        .tab-content.active { display: block; }
+        .panel { background-color: var(--card-bg); padding: 25px; margin-bottom: 25px; border: 2px solid var(--accent-gold); border-radius: 8px; }
+        .panel h2, .content h2 { color: var(--text-white); font-size: 1.5rem; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--accent-gold); }
+        .form-group { position: relative; display: flex; flex-direction: column; margin-bottom: 15px; }
+        label { font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-lighter); }
+        label .required-star { color: var(--danger-red); font-size: 1.1rem; margin-left: 4px; }
+        label .field-hint { color: var(--accent-gold); font-size: 0.8rem; font-weight: normal; margin-left: 8px; }
+        .form-input, .form-select { width: 100%; background-color: var(--dark-bg); color: var(--text-lighter); border: 2px solid var(--accent-gold); border-radius: 5px; padding: 12px; font-size: 1rem; }
+        .form-input:focus, .form-select:focus { outline: none; border-color: var(--accent-gold); box-shadow: 0 0 0 3px var(--accent-gold-50); }
+        .error-message { color: var(--danger-red); font-size: 0.8rem; margin-top: 4px; display: none; }
+        input.invalid, select.invalid { border-color: var(--danger-red) !important; }
+        .btn { 
+            background-color: var(--btn-red); 
+            color: var(--text-white); 
+            border: none; 
+            padding: 10px 18px; 
+            border-radius: 5px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: background-color 0.2s ease; 
+        }
+        
+        .btn:hover { background-color: var(--btn-red-hover); }
+        .btn-primary { background-color: var(--btn-red); color: var(--text-white); }
+        .btn-primary:hover { background-color: var(--btn-red-hover); }
+        .btn-danger { background-color: #dc3545; color: var(--text-white); }
+        .btn-danger:hover { background-color: #c82333; }
+        .accordion-header { background-color: var(--card-bg); color: var(--text-white); padding: 15px 20px; border-radius: 5px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-top: 15px; border: 2px solid var(--accent-gold); }
+        .accordion-content { padding: 20px; border: 2px solid var(--accent-gold); border-top: none; border-radius: 0 0 5px 5px; display: none; background: var(--card-bg); }
+        .accordion-content.open { display: block; }
+        .student-item { display: flex; justify-content: space-between; align-items: center; background-color: var(--dark-bg); padding: 10px 15px; border-radius: 5px; margin-bottom: 8px; flex-wrap: wrap; gap: 10px; border: 2px solid var(--accent-gold); }
+        .student-info strong { font-size: 1rem; color: var(--text-lighter); }
+        .student-info small { font-size: 0.8rem; color: var(--text-light); }
+        .student-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(11, 29, 58, 0.9); backdrop-filter: blur(5px); }
+        .modal-content { background-color: var(--light-bg); margin: 5% auto; padding: 30px; border: 2px solid var(--accent-gold); border-radius: 10px; width: 90%; max-width: 800px; }
+        .form-controls-container { display: none; }
+        .form-controls-container.active { display: block; }
+        .checkbox-list .item { 
+            display: flex; 
+            align-items: center; 
+            margin-bottom: 8px; 
+            padding: 12px; 
+            background: var(--dark-bg); 
+            border: 1px solid var(--accent-gold); 
+            border-radius: 8px; 
+            transition: all 0.2s ease;
+        }
+        .checkbox-list .item:hover { 
+            background: var(--accent-gold-50); 
+            transform: translateY(-1px);
+        }
+        .checkbox-list label { 
+            font-size: 1rem; 
+            margin-left: 12px; 
+            color: var(--text-lighter); 
+            cursor: pointer; 
+            user-select: none;
+            font-weight: 500;
+        }
+        .checkbox-list input { 
+            width: 20px; 
+            height: 20px; 
+            accent-color: var(--accent-gold);
+            cursor: pointer;
+        }
+        .dropdown-container { position: relative; width: 100%; }
+        .dropdown-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 12px 15px; 
+            background: var(--dark-bg); 
+            border: 2px solid var(--accent-gold); 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .dropdown-header:hover { 
+            border-color: var(--accent-gold); 
+            background: var(--accent-gold-50); 
+        }
+        .dropdown-arrow { 
+            transition: transform 0.3s ease; 
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+        .dropdown-header.open .dropdown-arrow { transform: rotate(180deg); }
+        .dropdown-content { 
+            position: absolute; 
+            top: 100%; 
+            left: 0; 
+            right: 0; 
+            background: var(--dark-bg); 
+            border: 2px solid var(--accent-gold); 
+            border-top: none; 
+            border-radius: 0 0 8px 8px; 
+            max-height: 300px; 
+            overflow-y: auto; 
+            z-index: 1000; 
+            display: none;
+        }
+        .dropdown-content.open { display: block; }
+        .dropdown-controls { 
+            display: flex; 
+            gap: 8px; 
+            padding: 10px; 
+            border-bottom: 1px solid var(--accent-gold-50);
+        }
+        .dropdown-btn { 
+            padding: 6px 12px; 
+            background: var(--btn-red); 
+            color: var(--text-white); 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 0.9rem;
+            transition: background 0.2s ease;
+        }
+        .dropdown-btn:hover { background: var(--btn-red-hover); }
+        .dropdown-item { 
+            display: flex; 
+            align-items: center; 
+            padding: 10px 15px; 
+            cursor: pointer; 
+            transition: background 0.2s ease;
+            border-bottom: 1px solid var(--accent-gold-50);
+        }
+        .dropdown-item:hover { background: var(--accent-gold-50); }
+        .dropdown-item:last-child { border-bottom: none; }
+        .dropdown-item input { 
+            margin-right: 10px; 
+            width: 18px; 
+            height: 18px; 
+            accent-color: var(--accent-gold);
+        }
+        .dropdown-item label { 
+            color: var(--text-lighter); 
+            cursor: pointer; 
+            user-select: none;
+        }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 15px; }
+        .calendar-header { text-align: center; font-weight: bold; padding-bottom: 10px; color: var(--text-light); font-size: 0.8rem; }
+        .calendar-day { height: 50px; display: flex; flex-direction:column; align-items: center; justify-content: center; border-radius: 5px; background-color: var(--card-bg); font-weight: bold; cursor: default; line-height: 1.1; border: 2px solid var(--accent-gold); }
+        .calendar-day.workday:hover { background-color: var(--accent-gold-50); }
+        .calendar-day .f-gold { color: var(--accent-gold); } .calendar-day .f-blue { color: #64b5f6; } .calendar-day .f-red { color: var(--danger-red); } .calendar-day .f-green { color: var(--success-green); }
+        .summary-panel { margin-top: 40px; padding-top: 25px; border-top: 2px solid var(--accent-gold); display: flex; justify-content: space-around; text-align: center; }
+        .summary-item { color: var(--text-white); }
+        .summary-item .count { font-size: 2rem; font-weight: bold; color: var(--accent-gold); }
+        .summary-item .label { font-size: 1rem; color: var(--text-light); }
+        .print-list-btn { margin-top: 20px; }
+
+        /* ---- SAYFA TANIMLARI (üst seviye) - Global kenar boşlukları artırıldı ---- */
+        @page attendance  { size: A4 portrait;  margin: 15mm; }   /* Devamsızlık: Dikey */
+        @page termination { size: A4 portrait;  margin: 15mm; }   /* Fesih: Dikey */
+        @page guidance    { size: A4 landscape; margin: 10mm;  }   /* Günlük & Aylık Rehberlik: Yatay */
+        @page list        { size: A4 landscape; margin: 12mm; }   /* Liste: Yatay (varsa) */
+
+        @media print {
+            .no-print { display: none !important; }
+            body, * { background: transparent !important; color: #000 !important; box-shadow: none !important; text-shadow: none !important; }
+            body { font-family: Arial, sans-serif !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #print-container { display: block !important; }
+            .print-page-container { page-break-after: always; }
+            .dynamic-text { font-weight: bold !important; font-style: italic !important; }
+            .editable-textarea { border: 1px dotted #999 !important; padding: 1px !important; resize: none; height: auto; white-space: pre-wrap; overflow: hidden; font-family: inherit; font-size: inherit; width: 100%; background-color: transparent !important; }
+
+            .print-page-attendance, .print-page-termination {
+                @page { size: A4 portrait; margin: 15mm; }
+                height: 267mm; width: 180mm; /* Kenar boşluğu artırıldığı için boyutlar küçültüldü */
+            }
+            .print-page-monthly-guidance, .print-page-daily-guidance {
+                @page { size: A4 landscape; margin: 10mm; }
+                height: 190mm; width: 277mm; /* Kenar boşluğu artırıldığı için boyutlar küçültüldü */
+            }
+            .print-page-list {
+                @page { size: A4 landscape; margin: 12mm; }
+                height: 186mm; width: 273mm; /* Kenar boşluğu artırıldığı için boyutlar küçültüldü */
+            }
+            
+            /* AYLIK REHBERLİK - Kenar boşlukları artırıldı, tablo satırları küçültüldü */
+            .print-page-monthly-guidance .print-page { 
+                display: flex !important; 
+                justify-content: space-between; 
+                width: 100%; 
+                height: 100%; 
+                gap: 10mm !important; /* Kenar boşluğu artırıldı */
+                padding: 0 8mm !important; /* Global kenar boşluğu */
+            }
+            .print-page-monthly-guidance .print-form-half { 
+                width: 125mm !important; /* Biraz daha daraltıldı */
+                border: 2px solid #000 !important; 
+                padding: 2mm !important; /* Kenar boşluğu artırıldı */
+                display: flex; 
+                flex-direction: column; 
+                height: 100%; 
+            }
+            .print-page-monthly-guidance .editable-textarea { 
+                min-height: 18px !important; /* Daha az alan */
+                font-size: 5.5pt !important; /* Daha küçük font */
+                font-weight: bold;
+                line-height: 1.0 !important;
+                padding: 1px !important;
+            }
+            .print-page-monthly-guidance .editable-textarea.expandable-area { 
+                min-height: 30px !important; 
+            }
+            .print-page-monthly-guidance .form-content-wrapper { 
+                flex-grow: 1; 
+            }
+            .print-page-monthly-guidance tr[style*="background:#f0f0f0;"] { 
+                background-color: #f000 !important; 
+            }
+            .print-page-monthly-guidance table td {
+                padding: 0.3px !important; /* Çok az padding */
+                font-size: 4.5pt !important;
+                line-height: 1.0 !important;
+                height: 18px !important; /* Sabit düşük satır yüksekliği */
+                vertical-align: top !important;
+            }
+        
+          
+         /* GÜNLÜK REHBERLİK FORMU - NİHAİ DIŞ ÇERÇEVE YAZILI DÜZEN ▼ */
+
+            .print-page-daily-guidance {
+                page: guidance;
+            }
+            .print-page-daily-guidance .daily-guidance-container {
+                display: flex;
+                justify-content: space-between;
+                gap: 8mm;
+                height: 100%;
+            }
+            /* YENİ: Her bir form sütununu konumlandırma için temel alır */
+            .print-page-daily-guidance .daily-guidance-column {
+                width: 48%;
+                position: relative; /* Köşe yazılarını buna göre hizalar */
+                padding-top: 3mm;   /* Üst yazı için boşluk */
+                padding-bottom: 3mm;/* Alt yazı için boşluk */
+                box-sizing: border-box;
+                display: flex;
+            }
+            /* Çerçeveli form kutusu artık sütunun tamamını kaplar */
+            .print-page-daily-guidance .daily-guidance-form {
+                border: 2px solid #000;
+                padding: 3mm;
+                box-sizing: border-box;
+                width: 100%;
+                height: 100%;
+            }
+            /* YENİ: Köşe yazılarının stilleri. Artık çerçevenin dışında konumlanacaklar. */
+            .print-page-daily-guidance .top-right-text,
+            .print-page-daily-guidance .bottom-left-text {
+                position: absolute; /* Ana sütuna göre konumlanır */
+                font-size: 6pt;
+                font-weight: bold;
+            }
+            .print-page-daily-guidance .top-right-text {
+                top: 0;
+                right: 0;
+            }
+            .print-page-daily-guidance .bottom-left-text {
+                bottom: 0;
+                left: 0;
+            }
+            .print-page-daily-guidance .dynamic-text {
+                font-weight: bold;
+                font-style: italic;
+            }
+            .print-page-daily-guidance h3 {
+                font-size: 10pt;
+                text-align: center;
+                margin: 0 0 5px 0;
+            }
+            .print-page-daily-guidance .main-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .print-page-daily-guidance .main-table td {
+                border: 1px solid #000;
+                padding: 2px 4px;
+                font-size: 8pt;
+                vertical-align: top;
+            }
+            .print-page-daily-guidance .label-cell {
+                font-weight: bold;
+                width: 40%;
+            }
+            .print-page-daily-guidance .section-cell {
+                padding: 3px 2px;
+            }
+            .print-page-daily-guidance .section-cell p {
+                font-size: 8pt;
+                margin: 5px 0 2px 0;
+            }
+            .print-page-daily-guidance .section-cell .editable-textarea {
+                width: 100%;
+                height: 120px;
+                font-size: 8pt;
+                padding: 2px;
+                border: 1px dotted #999;
+                box-sizing: border-box;
+                resize: none;
+            }
+            .print-page-daily-guidance .signature-cell {
+                padding: 20px 2px;
+                border-bottom: none;
+            }
+            .print-page-daily-guidance .footer {
+                display: flex;
+                justify-content: space-between;
+                text-align: center;
+                font-size: 8pt;
+                padding: 0 15px;
+            }
+            .print-page-daily-guidance .notes-cell {
+                font-size: 6pt;
+                line-height: 1.1;
+                border-top: none;
+            }
+
+            /* DEVAMSIZLIK FORMLARI - Footer 5 bölümlü yapı */
+            .print-page-attendance .print-sheet-wrapper { 
+                width: 100%; 
+                height: 100%; 
+                display: flex; 
+                flex-direction: column; 
+            }
+            .print-page-attendance .print-sheet.first-half,
+            .print-page-attendance .print-sheet.second-half {
+                min-height: 49%; /* Sabit yükseklik yerine minimum yükseklik veriyoruz */
+                flex-shrink: 0;  /* Kutuların küçülmesini engelliyoruz */
+            }
+            .print-page-attendance .print-sheet.second-half {
+                margin-top: 2%; /* Aradaki boşluk kalsın */
+            }
+            .print-page-attendance .sheet-content {
+                break-inside: avoid; /* Sayfa ortasında bölünmeyi engeller */
+            }
+            .print-page-attendance .sheet-content { 
+                display: flex; 
+                flex-direction: column; 
+                height: 100%; 
+                border: 2px solid #000; 
+                padding: 3mm; 
+            }
+            .print-page-attendance .print-main-title { 
+                text-align: center; 
+                font-weight: bold; 
+                font-size: 8pt; 
+                text-transform: uppercase; 
+                border-bottom: 2px solid #f4c542; 
+                padding-bottom: 2px; 
+            }
+            .print-page-attendance .print-header-table { 
+                width: 100%; 
+                border-collapse: collapse; 
+                margin: 4px 0; 
+                font-size: 8pt; 
+            }
+            .print-page-attendance .print-header-table td { 
+                border: 1px solid #000; 
+                padding: 2px 4px; 
+                vertical-align: top; 
+            }
+            .print-page-attendance .print-main-table-wrapper { 
+                flex-grow: 1; 
+            }
+            .print-page-attendance .print-main-table { 
+                width: 100%; 
+                border-collapse: collapse; 
+                table-layout: auto; 
+            }
+            .print-page-attendance .print-main-table th, 
+            .print-page-attendance .print-main-table td { 
+                border: 1px solid #000;
+                text-align: center; 
+                padding: 1px; 
+                line-height: 1.2; 
+                vertical-align: middle; 
+                font-size: 6pt; 
+                height: 12px; 
+                overflow: hidden; 
+            }
+            .print-page-attendance .print-main-table .student-info-cell { 
+                text-align: left; 
+                padding: 1px 2px; 
+                white-space: normal; /* Metnin alt satıra geçmesini sağlar */
+                word-break: break-word; /* Satıra sığmayan çok uzun kelimeleri böler */
+                vertical-align: middle;
+            }
+            .print-page-attendance .print-main-table .header-cell-name { 
+                width: 220px; 
+                min-width: 80px; 
+            }
+            .print-page-attendance .print-main-table .header-cell-no { 
+                width: 100px;
+                min-width: 30px;  
+            }
+            .print-page-attendance .print-main-table .header-cell-field { 
+                width: 150px;
+                min-width: 60px; 
+            }
+            .print-page-attendance .print-main-table .header-cell-days { 
+                width: auto; 
+                min-width: 15px; 
+                font-size: 4pt; 
+                writing-mode: vertical-rl; 
+                text-orientation: mixed; 
+                transform: rotate(180deg); 
+            }
+            .print-page-attendance .print-main-table .day-cell { 
+                width: calc((100% - 200px) / 31); 
+                min-width: 8px; 
+                max-width: 12px; 
+            }
+            .print-page-attendance .print-main-table .header-cell-total { 
+                width: auto; 
+                min-width: 25px; 
+            }
+
+            .print-page-attendance .print-main-table .day-cell {
+                width: 2.5%;
+                min-width: 12px; /* Çok daralmasını önlemek için */
+                box-sizing: border-box; /* Genişlik hesaplamasını düzeltmek için */
+            }
+
+            /* YENİ 5 BÖLÜMLÜ FOOTER DÜZENİ (SON HALİ) */
+            .print-page-attendance .print-footer {
+                width: 100%;
+                margin-top: auto;
+                padding-top: 5px;
+                display: flex;
+                justify-content: space-between;
+                align-items: stretch; /* Kutuların yüksekliklerini eşitler */
+                font-size: 6pt !important;
+                gap: 2px;
+                /* Sabit yükseklik kaldırıldı, artık otomatik ayarlanacak */
+            }
+
+            .print-page-attendance .signature-section {
+                text-align: center;
+                width: 19% !important; /* DÜZELTİLDİ */
+                line-height: 1.2;
+                border: 1px solid #000;
+                padding: 2px !important;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .print-page-attendance .explanation-section {
+                width: 21% !important; /* DÜZELTİLDİ */
+                text-align: center;
+                font-size: 6.0pt !important;
+                line-height: 1.2;
+                border: 1px solid #000;
+                padding: 2px !important;
+                display: flex;
+                align-items: flex-start;
+                justify-content: center;
+            }
+
+            .print-page-attendance .legend-section {
+                width: 22% !important; /* Bu doğru, değiştirilmedi */
+                text-align: left;
+                display: flex;
+                align-items: center;
+            }
+
+            .print-page-attendance .legend-box {
+                font-size: 5.5pt !important;
+                border: 1px solid #000; 
+                padding: 2px !important;
+                line-height: 1.2;
+                width: 100%;
+                height: 100%;                 /* YENİ: Kapsayıcısını dikeyde doldurur */
+                display: flex;                 /* YENİ: İçindeki yazıyı ortalamak için */
+                flex-direction: column;        /* YENİ: İçindeki yazıyı ortalamak için */
+                justify-content: center;       /* YENİ: İçindeki yazıyı dikeyde ortalar */
+            }
+
+            /* Renk ve font kuralları aynı kalabilir */
+            .print-page-attendance .f-bold {
+                font-weight: bold;
+            }
+            .print-page-attendance .f-blue {
+                color: blue !important;
+            }
+            .print-page-attendance .f-green {
+                color: green !important;
+            }
+            .print-page-attendance .f-red {
+                color: red !important;
+                font-weight: bold !important;
+            }
+            .print-page-attendance .f-teal {
+                color: teal !important;
+            }
+
+
+                        
+            /* FESİH FORMLARI */
+            .print-page-termination .termination-container { 
+                padding: 5mm; 
+                border: 2px solid #000; 
+                height: 100%; 
+                display: flex; 
+                flex-direction: column; 
+                font-family: 'Times New Roman', serif; 
+            }
+            .print-page-termination h1 { 
+                font-size: 14pt; 
+                font-weight: bold; 
+                text-align: center; 
+            } 
+            .print-page-termination h2 { 
+                font-size: 16pt; 
+                font-weight: bold; 
+                margin: 20px 0; 
+                text-align: center; 
+                line-height: 1.4; 
+            }
+            .print-page-termination table { 
+                width: 100%; 
+                margin-top: 30px; 
+                font-size: 12pt; 
+                border-collapse: collapse; 
+            }
+            .print-page-termination td { 
+                padding: 10px 5px; 
+                vertical-align: bottom; 
+            }
+            .print-page-termination .label-col { 
+                width: 30%; 
+                font-weight: bold; 
+            } 
+            .print-page-termination .separator-col { 
+                width: 2%; 
+            } 
+            .print-page-termination .value-col { 
+                border-bottom: 1px dotted #000; 
+            }
+            .print-page-termination .reasons { 
+                margin-top: 40px; 
+                flex-grow: 1; 
+                display: flex; 
+                flex-direction: column; 
+            }
+            .print-page-termination .reasons .label-col { 
+                font-weight: bold; 
+                font-size: 12pt; 
+            }
+            .print-page-termination .reasons .value-box { 
+                flex-grow: 1; 
+                border: 1px solid #000; 
+                margin-top: 5px; 
+                padding: 5px; 
+                font-weight: normal; 
+            }
+            .print-page-termination .signatures { 
+                display: flex; 
+                justify-content: space-between; 
+                margin-top: auto; 
+                padding-top: 60px; 
+                text-align: center; 
+                font-size: 12pt; 
+            }
+
+            /* LİSTE FORMLARI */
+            .print-page-list .list-container { 
+                padding: 10mm; 
+            }
+            .print-page-list h2 { 
+                text-align: center; 
+                font-size: 14pt; 
+                margin-bottom: 20px; 
+            }
+            .print-page-list .business-section { 
+                margin-bottom: 12px; 
+                page-break-inside: avoid; 
+            }
+            .print-page-list .business-header { 
+                background-color: #f0f0f0; 
+                padding: 5px; 
+                font-weight: bold; 
+                border: 1px solid #f000; 
+            }
+            .print-page-list .student-list-table { 
+                width: 100%; 
+                border-collapse: collapse; 
+                font-size: 8pt; 
+            }
+            .print-page-list .student-list-table th, 
+            .print-page-list .student-list-table td { 
+                border: 1px solid #000; 
+                padding: 3px; 
+                text-align: left; 
+            }
+            .print-page-list .student-list-table th { 
+                background-color: #f0f0f0; 
+                font-weight: bold; 
+            }
+
+            .print-page-monthly-guidance table td:first-child {
+                font-size: 5pt !important;
+                font-weight: bold !important;
+                line-height: 1.0 !important; /* EKLENDİ: Satır aralığını artırır */
+            }
+
+            .print-page-monthly-guidance table:first-of-type .dynamic-text {
+                font-size: 5.5pt !important;
+                font-weight: bold !important;
+                font-style: italic !important; /* İsteğiniz olan italik stilini ekler */
+                line-height: 1.2 !important;   /* Okunurluk için satır aralığını biraz artırdım */
+            }           
+        }
+        
+        
+        #print-container { display: none; }
+        .print-page-container { page-break-after: always; break-after: page; }
+
+        /* ---- KONTEYNER -> SAYFA ATAMALARI ---- */
+        .print-page-attendance  { page: attendance;  height: 267mm; width: 180mm; }
+        .print-page-termination { page: termination; height: 267mm; width: 180mm; }
+        .print-page-monthly-guidance,
+        .print-page-daily-guidance { page: guidance; height: 190mm; width: 277mm; }
+        .print-page-list { page: list; height: 186mm; width: 273mm; }
+        
+
+
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(11, 29, 58, 0.9); 
+        }
+
+
+
+        /* =================================== */
+        /* MOBİL UYUMLULUK İYİLEŞTİRMELERİ     */
+        /* =================================== */
+
+        /* Temel mobil ayarlar */
+        * {
+            -webkit-tap-highlight-color: rgba(244, 197, 66, 0.3);
+            -webkit-touch-callout: none;
+        }
+
+        /* Tablet için - 768px ve altı */
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            
+            .grid { 
+                grid-template-columns: 1fr; 
+                gap: 15px; 
+            }
+            
+            .tabs { 
+                flex-direction: column; 
+            }
+            
+            .tab { 
+                padding: 15px; 
+                font-size: 0.9rem; 
+            }
+            
+            .modal-content { 
+                width: 95%; 
+                padding: 20px; 
+                margin: 5% auto; 
+            }
+            
+            .dropdown-header { 
+                padding: 15px; 
+            }
+            
+            .dropdown-item { 
+                padding: 15px; 
+            }
+        }
+
+        /* Telefon için - 480px ve altı */
+        @media (max-width: 480px) {
+            .container { 
+                padding: 5px; 
+            }
+            
+            .panel { 
+                padding: 15px; 
+            }
+            
+            .form-group { 
+                margin-bottom: 12px; 
+            }
+            
+            .btn { 
+                padding: 8px 12px; 
+                font-size: 0.85rem;
+                min-height: 40px;
+                width: auto;
+                max-width: 100%;
+                word-wrap: break-word;
+            }
+            
+            .student-actions {
+                gap: 5px !important;
+            }
+            
+            .student-actions .btn {
+                flex: 1;
+                min-width: 60px;
+                font-size: 0.8rem;
+                padding: 6px 8px;
+            }
+                    
+            .student-item { 
+                flex-direction: column; 
+                gap: 10px; 
+            }
+                        
+            
+            .summary-panel { 
+                flex-direction: column; 
+                gap: 15px; 
+            }
+            
+            /* Grid düzeni tek sütun */
+            .grid[style*="grid-template-columns: 1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .grid[style*="grid-template-columns: 1fr 1fr 1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Dropdown daha büyük */
+            .dropdown-content {
+                max-height: 250px;
+            }
+            
+            /* Form inputları daha büyük */
+            .form-input, .form-select {
+                padding: 15px;
+                font-size: 16px; /* iOS zoom önleme */
+            }
+            
+            /* Modal tam ekran benzeri */
+            .modal-content {
+                width: 98%;
+                height: 90vh;
+                overflow-y: auto;
+            }
+        }
+
+        /* Çok küçük ekranlar - 320px */
+        @media (max-width: 320px) {
+            .tab {
+                padding: 10px 5px;
+                font-size: 0.8rem;
+            }
+            
+            .btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .modal-content {
+                width: 99%;
+                padding: 10px;
+            }
+        }
+
+        /* Touch optimizasyonu */
+        @media (hover: none) and (pointer: coarse) {
+            .btn:hover,
+            .dropdown-header:hover,
+            .dropdown-item:hover {
+                transform: none;
+                background-color: var(--accent-gold-50);
+            }
+            
+            /* Touch feedback */
+            .btn:active,
+            .dropdown-item:active {
+                transform: scale(0.98);
+            }
+        }
+
+
+     </style>
+</head>
+<body>
+
+    <div id="auth-container" class="no-print" style="background: var(--dark-bg); padding: 15px; border-bottom: 2px solid var(--accent-gold);">
+        <div id="login-section" style="text-align: center;">
+            <h2 style="color: var(--accent-gold); margin-bottom: 10px;">🎓 MESEM Takip Sistemi</h2>
+            <button id="google-login-btn" class="btn btn-primary">🔐 Google Hesabımla Giriş</button>
+        </div>
+        <div id="user-info" style="display: none; text-align: right;">
+            <span id="user-name" style="color: var(--text-light); margin-right: 15px;"></span>
+            <button id="logout-btn" class="btn btn-danger">Çıkış</button>
+        </div>
+    </div>
+
+    <div class="container no-print" style="display: none;">
+        <div class="tabs">
+            <button class="tab active" data-tab="management-panel">🏢 Yönetim Paneli</button>
+            <button class="tab" data-tab="generator-panel">📋 Form Oluştur</button>
+        </div>
+        <div class="content">
+            <div id="management-panel" class="tab-content active">
+                <div class="panel">
+                    <h2>Genel Ayarlar</h2>
+                    <div class="grid" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+                         <div class="form-group"><label for="schoolName">Okul/Kurumun Adı</label><input type="text" id="schoolName" class="form-input"></div>
+                         <div class="form-group"><label for="coordinatorName">Koordinatör Öğretmen</label><input type="text" id="coordinatorName" class="form-input"></div>
+                         <div class="form-group"><label for="asstPrincipalName">Koordinatör Müdür Yardımcısı</label><input type="text" id="asstPrincipalName" class="form-input"></div>
+                         <div class="form-group"><label for="principalName">Okul Müdürü</label><input type="text" id="principalName" class="form-input"></div>
+                    </div>
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--accent-gold);">
+                        <h3 style="color: var(--white); font-size: 1.2rem; margin-bottom: 15px;">Veri Yönetimi</h3>
+                        <div style="display: flex; gap: 15px;">
+                            <button class="btn btn-primary" id="download-data-btn">Verileri İndir</button>
+                            <button class="btn" id="upload-data-btn">Verileri Yükle</button>
+                            <button class="btn" id="print-list-btn">Liste Yazdır</button>
+                            <input type="file" id="upload-input" accept=".json" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex; justify-content: space-between; align-items: center;">
+                    <h2>İşletmeler</h2>
+                    <button class="btn btn-primary" id="add-business-btn">Yeni İşletme Ekle</button>
+                </div>
+                <div id="businessesAccordion" style="margin-top: 20px;"></div>
+                <div class="summary-panel" id="summary-panel">
+                    <div class="summary-item">
+                        <div id="totalBusinesses" class="count">0</div>
+                        <div class="label">Toplam İşletme</div>
+                    </div>
+                    <div class="summary-item">
+                        <div id="totalStudents" class="count">0</div>
+                        <div class="label">Toplam Öğrenci</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="generator-panel" class="tab-content">
+                 <h2>Form Oluştur</h2>
+                 <div class="form-group">
+                     <label>1. Form Türünü Seçin</label>
+                     <select id="formTypeSelect" class="form-select">
+                        <option value="attendance">Devamsızlık Çizelgesi</option>
+                        <option value="monthly_guidance">Aylık Rehberlik Formu</option>
+                        <option value="daily_guidance">Günlük Rehberlik Formu</option>
+                     </select>
+                 </div>
+
+                <div id="controls-monthly" class="form-controls-container active">
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label for="business-select-dropdown">2. İşletme(ler)i Seçin</label>
+                        <div class="dropdown-container">
+                            <div class="dropdown-header" id="business-dropdown-header">
+                                <span id="business-selected-text">İşletme seçin...</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </div>
+                            <div class="dropdown-content" id="business-dropdown-content">
+                                <div class="dropdown-controls">
+                                    <button type="button" class="dropdown-btn" id="select-all-businesses">Tümünü Seç</button>
+                                    <button type="button" class="dropdown-btn" id="deselect-all-businesses">Temizle</button>
+                                </div>
+                                <div id="business-dropdown-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group"><label for="genMonthSelect">3. Ay</label><select id="genMonthSelect" class="form-select"></select></div>
+                    <div class="form-group"><label for="genYearSelect">4. Yıl</label><input type="number" id="genYearSelect" class="form-input"></div>
+                </div>
+
+                <div id="controls-daily" class="form-controls-container">
+                     <div class="form-group" style="grid-column: 1 / -1;"><label>2. Ay ve Yıl Seçin</label></div>
+                     <div class="form-group"><label for="dailyMonthSelect">Ay</label><select id="dailyMonthSelect" class="form-select"></select></div>
+                     <div class="form-group"><label for="dailyYearSelect">Yıl</label><input type="number" id="dailyYearSelect" class="form-input"></div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label for="daily-business-select-dropdown">3. İşletme(ler)i Seçin</label>
+                        <div class="dropdown-container">
+                            <div class="dropdown-header" id="daily-business-dropdown-header">
+                                <span id="daily-business-selected-text">İşletme seçin...</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </div>
+                            <div class="dropdown-content" id="daily-business-dropdown-content">
+                                <div class="dropdown-controls">
+                                    <button type="button" class="dropdown-btn" id="select-all-daily-businesses">Tümünü Seç</button>
+                                    <button type="button" class="dropdown-btn" id="deselect-all-daily-businesses">Temizle</button>
+                                </div>
+                                <div id="daily-business-dropdown-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group"><label for="genWeekSelect1">4. Hafta Seçin</label><select id="genWeekSelect1" class="form-select"></select></div>
+                </div>
+                 <button class="btn btn-primary" id="generate-sheet-btn" style="margin-top:20px; width: 100%; padding: 15px;">Formları Oluştur ve Yazdır</button>
+            </div>
+        </div>
+    </div>
+    <div id="print-container"></div>
+    <div class="modal" id="businessModal"><div class="modal-content"><h2 id="businessModalTitle"></h2><form id="businessForm" novalidate><input type="hidden" id="businessId"><div class="grid" style="grid-template-columns: 1fr 1fr;"><div class="form-group"><label for="businessName">İşletme Adı<span class="required-star">*</span></label><input required class="form-input" id="businessName" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessAddress">İşletme Adresi</label><input class="form-input" id="businessAddress" type="text"></div><div class="form-group"><label for="businessPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="businessPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessOfficial">İşletme Yetkilisi<span class="required-star">*</span></label><input required class="form-input" id="businessOfficial" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessVisitDay">Koordinatör Ziyaret Günü<span class="required-star">*</span></label><select required class="form-select" id="businessVisitDay"><option disabled selected value="">Günü Seçin</option><option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option></select><span class="error-message"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
+   <div class="modal" id="studentModal"><div class="modal-content"><h2 id="studentModalTitle"></h2><form id="studentForm" novalidate><input id="studentBusinessId" type="hidden"><input id="studentId" type="hidden"><div class="grid" style="grid-template-columns: 1fr 1fr;"><div class="form-group"><label for="studentClass">Sınıfı</label><select class="form-select" id="studentClass"><option value="9">9. Sınıf</option><option value="10">10. Sınıf</option><option value="11">11. Sınıf</option><option value="12">12. Sınıf</option></select></div><div class="form-group"><label for="studentNo">Okul No <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentNo" inputmode="numeric" pattern="[0-9]*" placeholder="1234" type="text"></div><div class="form-group"><label for="studentName">Adı Soyadı<span class="required-star">*</span></label><input required class="form-input" id="studentName" type="text"><span class="error-message"></span></div><div class="form-group"><label for="studentField">Alan/Dalı</label><input class="form-input" id="studentField" type="text" placeholder="Örn: Bilişim Teknolojileri"></div><div class="form-group"><label for="studentSchoolDay">Okul Günü</label><select class="form-select" id="studentSchoolDay"><option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option></select></div><div class="form-group"><label for="studentPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"></div><div class="form-group"><label for="studentStartDate">İşe Başlama Tarihi (Sözleşme)<span class="required-star">*</span></label><input required class="form-input" id="studentStartDate" type="date"><span class="error-message"></span></div><div class="form-group"><label for="studentEndDate">İşten Ayrılma Tarihi (Fesih)</label><input class="form-input" id="studentEndDate" type="date"><span class="error-message" id="studentEndDateError"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
+    <div class="modal" id="terminationModal"><div class="modal-content"><h2>Sözleşme Fesih Bilgileri</h2><form id="terminationForm"><input id="terminationStudentId" type="hidden"><input id="terminationBusinessId" type="hidden"><div class="form-group"><label for="terminationDate">Fesih Tarihi<span class="required-star">*</span></label><input required class="form-input" id="terminationDate" type="date"></div><div class="form-group" style="margin-top:15px;"><label for="terminationReason">Fesih Nedenleri<span class="required-star">*</span></label><textarea required class="form-input" id="terminationReason" rows="5"></textarea></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Fesih Tutanağını Oluştur ve Yazdır</button></div></form></div></div>
+    <div id="absenceModal" class="modal"><div class="modal-content"><h2></h2><div class="grid" style="grid-template-columns: 1fr 1fr; align-items:end;"><div class="form-group"><label for="absenceMonthSelect">Ay</label><select id="absenceMonthSelect" class="form-select"></select></div><div class="form-group"><label for="absenceYearSelect">Yıl</label><input type="number" id="absenceYearSelect" class="form-input"></div></div><div class="grid calendar-grid-header" style="grid-template-columns: repeat(7, 1fr); margin-top: 15px;"><div class="calendar-header">Pzt</div><div class="calendar-header">Sal</div><div class="calendar-header">Çar</div><div class="calendar-header">Per</div><div class="calendar-header">Cum</div><div class="calendar-header">Cmt</div><div class="calendar-header">Paz</div></div><div id="absenceCalendarGrid" class="calendar-grid"></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button type="button" class="btn btn-danger" data-action="cancel-modal">Kapat</button><button type="button" class="btn btn-primary" id="saveAbsenceBtn">Devamsızlığı Kaydet</button></div></div>
+    
+    <div class="modal" id="qrPrePrintModal" style="cursor: pointer;">
+    <div class="modal-content" style="max-width: 500px; text-align: center; background: var(--card-bg); border: 2px solid var(--accent-gold); border-radius: 10px; padding: 30px; margin: 10% auto; cursor: default;">
+        <h2 style="color: var(--accent-gold); margin-bottom: 20px;">Formlar Hazırlanıyor</h2>
+        <p style="color: var(--text-light); font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px;">
+            Belgeleriniz oluşturuluyor. Lütfen bekleyin. Bu pencereyi kapatmak için dışarıdaki herhangi bir alana tıklayabilirsiniz.
+        </p>
+        <div id="processingSpinner" style="display: flex; justify-content: center; align-items: center; height: 100px; color: var(--accent-gold);">
+            <svg width="60" height="60" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_ajPY{transform-origin:center;animation:spinner_AtaB .75s infinite linear}@keyframes spinner_AtaB{100%{transform:rotate(360deg)}}</style><path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" fill="currentColor"/><path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" class="spinner_ajPY" fill="currentColor"/></svg>
+        </div>
+    </div>
+</div>
+    
+<script type="module">
+  // Senin Firebase config'i
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB8H41-2uK39kWSRhLJOBmnzdlaxzVyGC0",
+    authDomain: "mesem-takip-sistemi-408d8.firebaseapp.com",
+    projectId: "mesem-takip-sistemi-408d8",
+    storageBucket: "mesem-takip-sistemi-408d8.firebasestorage.app",
+    messagingSenderId: "66667379009",
+    appId: "1:66667379009:web:7303e9bb7cc49b751a89c0"
+  };
+
+  // Firebase'i başlat
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  
+  // Global değişkenler
+  window.auth = auth;
+  window.db = db;
+  window.currentUser = null;
+
+  // Firebase Auth işlemleri
+async function signInWithGoogle() {
+    try {
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+        console.log('Giriş başarılı:', result.user.displayName);
+    } catch (error) {
+        console.error('Giriş hatası:', error);
+        showNotification('Giriş yapılamadı: ' + error.message, 'error');
+    }
+}
+
+onAuthStateChanged(auth, async (user) => {
+        const container = document.querySelector('.container');
+        if (user) {
+            currentUser = user;
+            dom.loginSection.style.display = 'none';
+            dom.userInfo.style.display = 'block';
+            dom.userName.textContent = user.displayName;
+            container.style.display = 'block'; // Ana içeriği göster
+            await loadUserData(); // Veriyi Firebase'den yükle
+        } else {
+            currentUser = null;
+            dom.loginSection.style.display = 'block';
+            dom.userInfo.style.display = 'none';
+            container.style.display = 'none'; // Ana içeriği gizle
+        }
+    });
+
+// Veri yükleme
+async function loadUserData() {
+    try {
+        const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+        if (userDoc.exists()) {
+            appData = userDoc.data();
+            renderAll();
+        }
+    } catch (error) {
+        console.error('Veri yükleme hatası:', error);
+    }
+}
+
+// Veri kaydetme (mevcut saveData fonksiyonunu güncelle)
+async function saveDataToCloud() {
+    if (!currentUser) return;
+    try {
+        await setDoc(doc(db, 'users', currentUser.uid), appData);
+        console.log('Veri kaydedildi');
+    } catch (error) {
+        console.error('Kaydetme hatası:', error);
+    }
+}
+
+// Event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('google-login-btn').onclick = signInWithGoogle;
+    document.getElementById('logout-btn').onclick = () => signOut(auth);
+});
+
+
+  
+    const DB_KEY = 'mesem_unified_system_v15_enhanced';
+    let appData = {};
+    let currentAbsence = { studentId: null, businessId: null };
+    const dom = {
+        tabs: document.querySelector('.tabs'), settingsInputs: document.querySelectorAll('#management-panel .panel .form-input'), businessesAccordion: document.getElementById('businessesAccordion'), addBusinessBtn: document.getElementById('add-business-btn'), businessModal: document.getElementById('businessModal'), businessForm: document.getElementById('businessForm'), studentModal: document.getElementById('studentModal'), studentForm: document.getElementById('studentForm'), terminationModal: document.getElementById('terminationModal'), terminationForm: document.getElementById('terminationForm'), absenceModal: document.getElementById('absenceModal'), genMonthSelect: document.getElementById('genMonthSelect'), genYearSelect: document.getElementById('genYearSelect'), dailyMonthSelect: document.getElementById('dailyMonthSelect'), dailyYearSelect: document.getElementById('dailyYearSelect'), genWeekSelect1: document.getElementById('genWeekSelect1'), generateSheetBtn: document.getElementById('generate-sheet-btn'), printContainer: document.getElementById('print-container'), downloadBtn: document.getElementById('download-data-btn'), uploadBtn: document.getElementById('upload-data-btn'), uploadInput: document.getElementById('upload-input'), printListBtn: document.getElementById('print-list-btn'), formTypeSelect: document.getElementById('formTypeSelect'), controlsMonthly: document.getElementById('controls-monthly'), controlsDaily: document.getElementById('controls-daily'), totalBusinesses: document.getElementById('totalBusinesses'), totalStudents: document.getElementById('totalStudents'), businessDropdownHeader: document.getElementById('business-dropdown-header'), businessDropdownContent: document.getElementById('business-dropdown-content'), businessDropdownList: document.getElementById('business-dropdown-list'), businessSelectedText: document.getElementById('business-selected-text'), dailyBusinessDropdownHeader: document.getElementById('daily-business-dropdown-header'), dailyBusinessDropdownContent: document.getElementById('daily-business-dropdown-content'), dailyBusinessDropdownList: document.getElementById('daily-business-dropdown-list'), dailyBusinessSelectedText: document.getElementById('daily-business-selected-text'), selectAllBusinesses: document.getElementById('select-all-businesses'), deselectAllBusinesses: document.getElementById('deselect-all-businesses'), selectAllDailyBusinesses: document.getElementById('select-all-daily-businesses'), deselectAllDailyBusinesses: document.getElementById('deselect-all-daily-businesses'),
+    };
+    const monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+
+       // 2024-2025-2026 Yılı Resmi Tatil Günleri (Ay 0'dan başlar: Ocak=0, Şubat=1...)
+    const publicHolidays = {
+        '2024': [
+            { month: 9, day: 29, halfDay: false }, // Cumhuriyet Bayramı
+        ],
+        '2025': [
+            { month: 0, day: 1, halfDay: false },  // Yılbaşı
+            { month: 2, day: 29, halfDay: true }, // Ramazan Bayramı Arifesi
+            { month: 2, day: 30, halfDay: false },// Ramazan Bayramı 1. Gün
+            { month: 2, day: 31, halfDay: false },// Ramazan Bayramı 2. Gün
+            { month: 3, day: 1, halfDay: false }, // Ramazan Bayramı 3. Gün
+            { month: 3, day: 23, halfDay: false },// Ulusal Egemenlik ve Çocuk Bayramı
+            { month: 4, day: 1, halfDay: false }, // Emek ve Dayanışma Günü
+            { month: 4, day: 19, halfDay: false },// Atatürk'ü Anma, Gençlik ve Spor Bayramı
+            { month: 5, day: 5, halfDay: true }, // Kurban Bayramı Arifesi
+            { month: 5, day: 6, halfDay: false }, // Kurban Bayramı 1. Gün
+            { month: 5, day: 7, halfDay: false }, // Kurban Bayramı 2. Gün
+            { month: 5, day: 8, halfDay: false }, // Kurban Bayramı 3. Gün
+            { month: 5, day: 9, halfDay: false }, // Kurban Bayramı 4. Gün
+            { month: 6, day: 15, halfDay: false },// Demokrasi ve Milli Birlik Günü
+            { month: 7, day: 30, halfDay: false },// Zafer Bayramı
+            { month: 9, day: 28, halfDay: true }, // Cumhuriyet Bayramı Arifesi
+            { month: 9, day: 29, halfDay: false } // Cumhuriyet Bayramı
+        ],
+        '2026': [
+            { month: 0, day: 1, halfDay: false },   // Yılbaşı
+            { month: 2, day: 19, halfDay: true },  // Ramazan Bayramı Arifesi
+            { month: 2, day: 20, halfDay: false }, // Ramazan Bayramı 1. Gün
+            { month: 2, day: 21, halfDay: false }, // Ramazan Bayramı 2. Gün
+            { month: 2, day: 22, halfDay: false }, // Ramazan Bayramı 3. Gün
+            { month: 3, day: 23, halfDay: false }, // Ulusal Egemenlik ve Çocuk Bayramı
+            { month: 4, day: 1, halfDay: false },  // Emek ve Dayanışma Günü
+            { month: 4, day: 19, halfDay: false }, // Atatürk'ü Anma, Gençlik ve Spor Bayramı
+            { month: 5, day: 26, halfDay: true },  // Kurban Bayramı Arifesi
+            { month: 5, day: 27, halfDay: false }, // Kurban Bayramı 1. Gün
+            { month: 5, day: 28, halfDay: false }, // Kurban Bayramı 2. Gün
+            { month: 5, day: 29, halfDay: false }, // Kurban Bayramı 3. Gün
+            { month: 5, day: 30, halfDay: false }, // Kurban Bayramı 4. Gün
+            { month: 6, day: 15, halfDay: false }, // Demokrasi ve Milli Birlik Günü
+            { month: 7, day: 30, halfDay: false }, // Zafer Bayramı
+            { month: 9, day: 28, halfDay: true },  // Cumhuriyet Bayramı Arifesi
+            { month: 9, day: 29, halfDay: false }  // Cumhuriyet Bayramı
+        ]
+    };
+
+    // MEB Çalışma Takvimine Göre Okul Tatil Dönemleri
+    const schoolHolidays = [
+        // 2024-2025
+        { start: new Date(2024, 10, 11), end: new Date(2024, 10, 15) }, // 1. Ara Tatil
+        { start: new Date(2025, 0, 20), end: new Date(2025, 1, 2) },   // Yarıyıl Tatili
+        { start: new Date(2025, 3, 7), end: new Date(2025, 3, 11) },  // 2. Ara Tatil
+        { start: new Date(2025, 5, 14), end: new Date(2025, 8, 7) },   // Yaz Tatili başlangıcı
+
+        // 2025-2026
+        { start: new Date(2025, 10, 10), end: new Date(2025, 10, 14) }, // 1. Ara Tatil
+        { start: new Date(2026, 0, 19), end: new Date(2026, 0, 30) },   // Yarıyıl Tatili
+        { start: new Date(2026, 2, 16), end: new Date(2026, 2, 20) },   // 2. Ara Tatil
+        { start: new Date(2026, 5, 27), end: new Date(2026, 8, 6) }    // Yaz Tatili başlangıcı
+    ];
+
+    // YENİ EKLENECEK YARDIMCI FONKSİYONLAR ▼
+    function isPublicHoliday(date) {
+        const year = date.getFullYear().toString();
+        const month = date.getMonth();
+        const day = date.getDate();
+        if (!publicHolidays[year]) return false;
+        return publicHolidays[year].some(holiday => holiday.month === month && holiday.day === day);
+    }
+
+    function isSchoolHoliday(date) {
+        // Saat, dakika vs. sıfırlayarak sadece tarih bazlı karşılaştırma yap
+        const checkDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        return schoolHolidays.some(period => checkDate >= period.start && checkDate <= period.end);
+    }
+
+
+    function getFormHeightInPixels(businessId, month, year) {
+        // Gizli bir ölçüm alanı oluştur
+        const measuringDiv = document.createElement('div');
+        measuringDiv.style.position = 'absolute';
+        measuringDiv.style.visibility = 'hidden';
+        measuringDiv.style.left = '-9999px';
+        measuringDiv.style.width = '190mm'; // A4 portre sayfa genişliği (kenar boşlukları hariç)
+
+        // Formun HTML'ini oluştur ve ölçüm alanına ekle
+        const formHTML = generateAttendanceSheet(businessId, month, year);
+        measuringDiv.innerHTML = `<div class="print-page-attendance"><div class="sheet-content">${formHTML}</div></div>`;
+
+        document.body.appendChild(measuringDiv);
+
+        // Yüksekliği ölç
+        const height = measuringDiv.offsetHeight;
+
+        // Ölçüm alanını temizle
+        document.body.removeChild(measuringDiv);
+
+        return height;
+    }
+
+    function parseDateString(dateStr) { if (!dateStr) return null; const parts = dateStr.split('-'); return new Date(parts[0], parts[1] - 1, parts[2]); }
+    function getVisitDatesForMonth(year, month, dayOfWeek) { const dates = []; const targetDay = parseInt(dayOfWeek); if (isNaN(targetDay)) return []; const date = new Date(year, month, 1); while (date.getMonth() === month) { if (date.getDay() === targetDay) { dates.push(new Date(date.getTime())); } date.setDate(date.getDate() + 1); } return dates; }
+    function getWeeksInMonth(year, month, dayOfWeek) { const visitDates = getVisitDatesForMonth(year, month, dayOfWeek); return visitDates.map((date, index) => ({ week: index + 1, date: date, label: `${index + 1}. Hafta (${date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })})` })); }
+    
+    // Bir tarihin, yılın kaçıncı haftasında olduğunu (ISO 8601 standardına göre) hesaplar
+    function getWeekOfYear(d) {
+        // Tarihin bir kopyasını oluşturarak orijinalini bozmuyoruz
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        // Haftanın Perşembe gününü bul (ISO standardı Perşembe gününü baz alır)
+        // Pazar gününü 7. gün olarak ayarla
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+        // Yılın ilk gününü bul
+        var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+        // Yılın başından bu Perşembe'ye kadar geçen hafta sayısını hesapla
+        var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        return weekNo;
+    }
+    
+    function loadData() {
+        const defaultData = { settings: { schoolName: 'UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ', coordinatorName: '', asstPrincipalName: 'Salih SEVİM', principalName: 'Seçkin ŞENTÜRK' }, businesses: [] };
+        appData = JSON.parse(localStorage.getItem(DB_KEY)) || defaultData;
+        Object.keys(appData.settings).forEach(key => { if(document.getElementById(key)) document.getElementById(key).value = appData.settings[key]; });
+        checkAndUpgradeClasses();
+    }
+
+    function checkAndUpgradeClasses() {
+        const currentYear = new Date().getFullYear();
+        const currentMonth = new Date().getMonth();
+        
+        if (currentMonth >= 8) { // Eylül'den itibaren yeni eğitim yılı
+            const academicYear = currentYear;
+            
+            if (!appData.lastClassUpgrade || appData.lastClassUpgrade < academicYear) {
+                appData.businesses.forEach(business => {
+                    if (business.students) {
+                        business.students.forEach(student => {
+                            if (student.class && !student.endDate) {
+                                const currentClass = parseInt(student.class);
+                                if (currentClass < 12) {
+                                    student.class = (currentClass + 1).toString();
+                                }
+                            }
+                        });
+                    }
+                });
+                
+                appData.lastClassUpgrade = academicYear;
+                saveData();
+            }
+        }
+    }
+
+    // Bu yeni versiyon verileri localStorage yerine Firebase'e kaydeder.
+    async function saveData() {
+        // Önce Genel Ayarlar'daki verileri appData objesine işle
+        dom.settingsInputs.forEach(input => { 
+            if(input.id) {
+                if (!appData.settings) appData.settings = {};
+                appData.settings[input.id] = input.value; 
+            }
+        });
+
+        // Eğer kullanıcı giriş yapmışsa, güncel appData'yı buluta kaydet
+        if (currentUser) {
+            try {
+                await setDoc(doc(db, 'users', currentUser.uid), appData);
+                console.log('Veri başarıyla buluta kaydedildi.');
+            } catch (error) {
+                console.error('Buluta kaydetme hatası:', error);
+                showNotification('Veri kaydedilirken bir hata oluştu.', 'error');
+            }
+        }
+    }
+
+    
+    function showNotification(message, type = 'info', callback = null) {
+        const alertModal = document.getElementById('alertModal');
+        if (!alertModal) {
+            const alertModal = document.createElement('div');
+            alertModal.id = 'alertModal';
+            alertModal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;display:none;';
+            document.body.appendChild(alertModal);
+        }
+        
+        const modal = document.getElementById('alertModal');
+        
+        if (type === 'confirm') {
+            modal.innerHTML = `
+                <div style="background:var(--card-bg);padding:30px;width:400px;text-align:center;border:2px solid var(--accent-gold);border-radius:10px;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);">
+                    <h2 style="color:var(--accent-gold);">⚠️ Onay</h2>
+                    <p style="color:var(--text-light);">${message}</p>
+                    <div style="display:flex;gap:15px;justify-content:center;margin-top:20px;">
+                        <button id="confirmYes" class="btn btn-danger">Evet</button>
+                        <button id="confirmNo" class="btn">Hayır</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+            
+            document.getElementById('confirmYes').onclick = function() {
+                modal.style.display = 'none';
+                if (callback) callback(true);
+            };
+            
+            document.getElementById('confirmNo').onclick = function() {
+                modal.style.display = 'none';
+                if (callback) callback(false);
+            };
+        } else {
+            modal.innerHTML = '<div style="background:var(--card-bg);padding:30px;width:400px;text-align:center;border:2px solid var(--accent-gold);border-radius:10px;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);"><h2 style="color:var(--accent-gold);">⚠️ Uyarı</h2><p style="color:var(--text-light);">' + message + '</p></div>';
+            modal.style.display = 'block';
+            
+            modal.onclick = function(e) {
+                if (e.target === modal) modal.style.display = 'none';
+            };
+        }
+        
+        console.log(type.toUpperCase() + ': ' + message);
+    }
+
+    // Modal kapatma - boş alana tıklayınca kapanır
+    document.addEventListener('click', (event) => {
+        const alertModal = document.getElementById('alertModal');
+        if (event.target === alertModal) {
+            alertModal.style.display = 'none';
+        }
+    });
+
+
+    function renderAll() { renderBusinessesAccordion(); renderGeneratorUI(); updateSummaryPanel(); }
+
+    function renderBusinessesAccordion() {
+        dom.businessesAccordion.innerHTML = appData.businesses.map(b => `<div><div class="accordion-header" data-id="${b.id}"><h3>${b.name}</h3><span>${b.students?.length||0} Öğrenci</span></div><div class="accordion-content" id="content-${b.id}">${renderBusinessContent(b)}</div></div>`).join('') || '<p style="text-align:center; margin-top:20px;">Kayıtlı işletme bulunmuyor.</p>';
+    }
+
+    function renderBusinessContent(business) {
+        const studentList = (business.students && business.students.length > 0) ? business.students.map(s => {
+            const isTerminated = s.endDate;
+            let actionButtons = '';
+            if (isTerminated) {
+                actionButtons = `<button class="btn" style="padding:5px 10px;" data-action="edit-student" data-business-id="${business.id}" data-id="${s.id}">Düzenle</button> <button class="btn" style="padding:5px 10px; border-color: #8ab4f8; color: #8ab4f8;" data-action="cancel-termination" data-business-id="${business.id}" data-student-id="${s.id}">Feshi İptal Et</button> <button class="btn btn-danger" style="padding:5px 10px;" data-action="delete-student" data-business-id="${business.id}" data-id="${s.id}">Sil</button>`;
+            } else {
+                actionButtons = `<button class="btn" style="padding:5px 10px;" data-action="open-absence-modal" data-business-id="${business.id}" data-id="${s.id}">Devamsızlık</button> <button class="btn" style="padding:5px 10px;" data-action="edit-student" data-business-id="${business.id}" data-id="${s.id}">Düzenle</button> <button class="btn btn-danger" style="padding:5px 10px;" data-action="open-termination-modal" data-business-id="${business.id}" data-id="${s.id}">Feshet</button> <button class="btn btn-danger" style="padding:5px 10px;" data-action="delete-student" data-business-id="${business.id}" data-id="${s.id}">Sil</button>`;
+            }
+            return `<div class="student-item"> <div class="student-info"> <strong style="${isTerminated ? 'text-decoration: line-through; color: var(--slate);' : ''}">${s.name}</strong> <small>${s.field || 'Alan belirtilmedi'} ${s.phone ? `- Tel: ${s.phone}` : ''} ${isTerminated ? `(Fesih: ${parseDateString(s.endDate).toLocaleDateString('tr-TR')})` : ''}</small> </div> <div class="student-actions">${actionButtons}</div> </div>`;
+        }).join('') : '<p>Bu işletmeye kayıtlı öğrenci bulunmamaktadır.</p>';
+
+        return `<div style="display:flex; gap:10px; margin-bottom:20px;"> <button class="btn btn-primary" data-action="add-student" data-id="${business.id}">Öğrenci Ekle</button> <button class="btn" data-action="edit-business" data-id="${business.id}">İşletmeyi Düzenle</button> <button class="btn btn-danger" data-action="delete-business" data-id="${business.id}">İşletmeyi Sil</button> </div>${studentList}`;
+    }
+    
+    function renderGeneratorUI() {
+        renderBusinessDropdowns();
+        const monthOptions = monthNames.map((n,i) => `<option value="${i}">${n}</option>`).join('');
+        dom.genMonthSelect.innerHTML = monthOptions;
+        dom.dailyMonthSelect.innerHTML = monthOptions;
+        
+        const today = new Date();
+        dom.genYearSelect.value = today.getFullYear(); 
+        dom.genMonthSelect.value = today.getMonth();
+        dom.dailyYearSelect.value = today.getFullYear();
+        dom.dailyMonthSelect.value = today.getMonth();
+        populateWeeksForDailyForm();
+    }
+
+    function renderBusinessDropdowns() {
+        const businessItems = appData.businesses.map(b => 
+            `<div class="dropdown-item">
+                <input type="checkbox" value="${b.id}" class="business-checkbox" id="monthly-business-${b.id}">
+                <label for="monthly-business-${b.id}">${b.name}</label>
+            </div>`
+        ).join('');
+        
+        const dailyBusinessItems = appData.businesses.map(b => 
+            `<div class="dropdown-item">
+                <input type="checkbox" value="${b.id}" class="daily-business-checkbox" id="daily-business-${b.id}">
+                <label for="daily-business-${b.id}">${b.name}</label>
+            </div>`
+        ).join('');
+        
+        dom.businessDropdownList.innerHTML = businessItems || '<div style="padding: 15px; text-align: center; color: var(--text-light);">İşletme bulunamadı</div>';
+        dom.dailyBusinessDropdownList.innerHTML = dailyBusinessItems || '<div style="padding: 15px; text-align: center; color: var(--text-light);">İşletme bulunamadı</div>';
+        
+        updateDropdownText();
+    }
+
+    function updateDropdownText() {
+        const selectedBusinesses = Array.from(document.querySelectorAll('.business-checkbox:checked'));
+        const selectedDaily = Array.from(document.querySelectorAll('.daily-business-checkbox:checked'));
+        
+        if (selectedBusinesses.length === 0) {
+            dom.businessSelectedText.textContent = 'İşletme seçin...';
+        } else if (selectedBusinesses.length === 1) {
+            const businessName = selectedBusinesses[0].nextElementSibling.textContent;
+            dom.businessSelectedText.textContent = businessName;
+        } else {
+            dom.businessSelectedText.textContent = `${selectedBusinesses.length} işletme seçildi`;
+        }
+        
+        if (selectedDaily.length === 0) {
+            dom.dailyBusinessSelectedText.textContent = 'İşletme seçin...';
+        } else if (selectedDaily.length === 1) {
+            const businessName = selectedDaily[0].nextElementSibling.textContent;
+            dom.dailyBusinessSelectedText.textContent = businessName;
+        } else {
+            dom.dailyBusinessSelectedText.textContent = `${selectedDaily.length} işletme seçildi`;
+        }
+    }
+
+    // YENİ HAFTA HESAPLAMA FONKSİYONU - Pazartesi başlangıçlı
+    function populateWeeksForDailyForm() {
+        const month = parseInt(dom.dailyMonthSelect.value);
+        const year = parseInt(dom.dailyYearSelect.value);
+
+        const weeks = [];
+        const firstDayOfMonth = new Date(year, month, 1);
+        const lastDayOfMonth = new Date(year, month + 1, 0);
+
+        let firstMonday = new Date(firstDayOfMonth);
+        const firstDayWeekday = firstDayOfMonth.getDay();
+        const daysToSubtract = firstDayWeekday === 0 ? 6 : firstDayWeekday - 1;
+        firstMonday.setDate(firstDayOfMonth.getDate() - daysToSubtract);
+
+        let monthWeekNumber = 1; // Bu, formun value'su için kullanılacak (1, 2, 3, 4, 5)
+        let currentMonday = new Date(firstMonday);
+
+        while (currentMonday <= lastDayOfMonth) {
+            const weekStart = new Date(currentMonday);
+            const weekEnd = new Date(currentMonday);
+            weekEnd.setDate(weekEnd.getDate() + 6);
+
+            if (weekEnd >= firstDayOfMonth && weekStart <= lastDayOfMonth) {
+                // YENİ EKLENEN KISIM: Yılın haftasını hesapla
+                const yearWeekNumber = getWeekOfYear(weekStart);
+
+                // DEĞİŞEN KISIM: Etiketi (label) yılın haftasına göre oluştur
+                const label = `${yearWeekNumber}. Hafta (${weekStart.toLocaleDateString('tr-TR')} - ${weekEnd.toLocaleDateString('tr-TR')})`;
+
+                weeks.push({ 
+                    week: monthWeekNumber, // Değer olarak ayın haftasını (1-5) koruyoruz ki form mantığı bozulmasın
+                    label: label, 
+                    startDate: weekStart,
+                    endDate: weekEnd 
+                });
+                monthWeekNumber++;
+            }
+
+            currentMonday.setDate(currentMonday.getDate() + 7);
+        }
+
+        dom.genWeekSelect1.innerHTML = weeks.map(w => `<option value="${w.week}">${w.label}</option>`).join('');
+
+         // Eğer görüntülenen ay ve yıl, bugünün ay ve yılı ile aynıysa, mevcut haftayı seçili yap
+        const today = new Date();
+        if (year === today.getFullYear() && month === today.getMonth()) {
+            const currentWeekObject = weeks.find(w => today >= w.startDate && today <= w.endDate);
+            if (currentWeekObject) {
+                dom.genWeekSelect1.value = currentWeekObject.week;
+            }
+        }
+    }
+    
+    function updateSummaryPanel() {
+        dom.totalBusinesses.textContent = appData.businesses.length;
+        const totalStudents = appData.businesses.reduce((sum, business) => sum + (business.students ? business.students.length : 0), 0);
+        dom.totalStudents.textContent = totalStudents;
+    }
+
+    function openModal(modalId, data) {
+        const modal = document.getElementById(modalId);
+        const form = modal.querySelector('form'); if (form) form.reset();
+        if (form) { form.querySelectorAll('.error-message').forEach(el => el.style.display = 'none'); form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid')); }
+        const title = modal.querySelector('h2');
+        if (modalId === 'businessModal') {
+            if (data && data.id) { const b = appData.businesses.find(b => b.id === data.id); title.textContent = 'İşletmeyi Düzenle'; form.querySelector('#businessId').value = b.id; form.querySelector('#businessName').value = b.name; form.querySelector('#businessAddress').value = b.address; form.querySelector('#businessPhone').value = b.phone; form.querySelector('#businessOfficial').value = b.official; form.querySelector('#businessVisitDay').value = b.visitDay; } 
+            else { title.textContent = 'Yeni İşletme Ekle'; form.querySelector('#businessId').value = ''; }
+        }else if (modalId === 'studentModal') {
+        form.querySelector('#studentBusinessId').value = data.businessId;
+        if (data && data.id) { 
+            const s = appData.businesses.find(b => b.id === data.businessId).students.find(s => s.id === data.id); 
+            title.textContent = 'Öğrenciyi Düzenle'; 
+            form.querySelector('#studentId').value = s.id; 
+            form.querySelector('#studentClass').value = s.class || '9';
+            form.querySelector('#studentNo').value = s.no; 
+            form.querySelector('#studentName').value = s.name; 
+            form.querySelector('#studentField').value = s.field; 
+            form.querySelector('#studentSchoolDay').value = s.schoolDay; 
+            form.querySelector('#studentPhone').value = s.phone; 
+            form.querySelector('#studentStartDate').value = s.startDate; 
+            form.querySelector('#studentEndDate').value = s.endDate; 
+        } 
+        else { 
+            title.textContent = 'Yeni Öğrenci Ekle'; 
+            form.querySelector('#studentId').value = ''; 
+        }
+        
+        // Modal'ı ekran ortasına hizala
+        setTimeout(() => {
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.style.position = 'fixed';
+            modalContent.style.top = '50%';
+            modalContent.style.left = '50%';
+            modalContent.style.transform = 'translate(-50%, -50%)';
+            modalContent.style.margin = '0';
+        }, 10);
+
+    
+        }else if (modalId === 'terminationModal') {
+            form.querySelector('#terminationStudentId').value = data.studentId; 
+            form.querySelector('#terminationBusinessId').value = data.businessId; 
+            form.querySelector('#terminationDate').value = new Date().toISOString().slice(0, 10);
+            
+            // Modal'ı ekran ortasına getir
+            setTimeout(() => {
+                const modalContent = modal.querySelector('.modal-content');
+                modalContent.style.position = 'fixed';
+                modalContent.style.top = '50%';
+                modalContent.style.left = '50%';
+                modalContent.style.transform = 'translate(-50%, -50%)';
+                modalContent.style.margin = '0';
+            }, 10);
+        
+        } else if (modalId === 'absenceModal') {
+            currentAbsence = { studentId: data.studentId, businessId: data.businessId };
+            const student = appData.businesses.find(b=>b.id===data.businessId).students.find(s=>s.id===data.studentId);
+            modal.querySelector('h2').textContent = `${student.name} - Devamsızlık Girişi`;
+            const monthSelect = modal.querySelector('#absenceMonthSelect');
+            const yearSelect = modal.querySelector('#absenceYearSelect');
+            if (monthSelect.innerHTML === '') { monthSelect.innerHTML = monthNames.map((n,i) => `<option value="${i}">${n}</option>`).join(''); }
+            monthSelect.value = new Date().getMonth(); yearSelect.value = new Date().getFullYear();
+            renderAbsenceCalendar();
+        }
+        modal.style.display = 'block';
+    }
+
+    function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+    
+    function validateForm(form) {
+        let isValid = true;
+        form.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+        form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+        form.querySelectorAll('[required]').forEach(input => {
+            const errorSpan = input.parentElement.querySelector('.error-message');
+            if (!input.value.trim()) {
+                input.classList.add('invalid');
+                if (errorSpan) { errorSpan.textContent = "Bu alan zorunludur."; errorSpan.style.display = 'block'; }
+                isValid = false;
+            }
+        });
+        // Telefon numarası validasyonu
+        const phoneFields = form.querySelectorAll('input[inputmode="numeric"]');
+        phoneFields.forEach(input => {
+            const errorSpan = input.parentElement.querySelector('.error-message');
+            if (input.value && !/^[0-9]+$/.test(input.value)) {
+                input.classList.add('invalid');
+                if (errorSpan) { errorSpan.textContent = "Sadece rakam giriniz."; errorSpan.style.display = 'block'; }
+                isValid = false;
+            }
+        });
+        return isValid;
+    }
+
+    function validateStudentForm() {
+        if (!validateForm(dom.studentForm)) return false;
+        const startDate = dom.studentForm.querySelector('#studentStartDate').value;
+        const endDate = dom.studentForm.querySelector('#studentEndDate').value;
+        const errorSpan = dom.studentForm.querySelector('#studentEndDateError');
+        const endDateInput = dom.studentForm.querySelector('#studentEndDate');
+
+        if (startDate && endDate && parseDateString(endDate) < parseDateString(startDate)) {
+            errorSpan.textContent = 'Fesih tarihi, başlama tarihinden önce olamaz.';
+            errorSpan.style.display = 'block';
+            endDateInput.classList.add('invalid');
+            return false;
+        } else {
+            errorSpan.style.display = 'none';
+            endDateInput.classList.remove('invalid');
+        }
+        return true;
+    }
+
+    function saveBusiness(e) { e.preventDefault(); if (!validateForm(dom.businessForm)) return; const form = dom.businessForm; const id = form.querySelector('#businessId').value; const businessData = { id: id || Date.now().toString(), name: form.querySelector('#businessName').value, address: form.querySelector('#businessAddress').value, phone: form.querySelector('#businessPhone').value, official: form.querySelector('#businessOfficial').value, visitDay: form.querySelector('#businessVisitDay').value, students: id ? appData.businesses.find(b => b.id === id).students : [] }; if (id) appData.businesses = appData.businesses.map(b => b.id === id ? businessData : b); else appData.businesses.push(businessData); saveData(); renderAll(); closeModal('businessModal'); showNotification('İşletme başarıyla kaydedildi.', 'success'); }
+    function saveStudent(e) { e.preventDefault(); if (!validateStudentForm()) return; const form = dom.studentForm; const businessId = form.querySelector('#studentBusinessId').value; const id = form.querySelector('#studentId').value; const business = appData.businesses.find(b => b.id === businessId); const existingStudent = id ? business.students.find(s => s.id === id) : {}; const studentData = { id: id || Date.now().toString(), no: form.querySelector('#studentNo').value, name: form.querySelector('#studentName').value, class: form.querySelector('#studentClass').value, field: form.querySelector('#studentField').value, schoolDay: form.querySelector('#studentSchoolDay').value, phone: form.querySelector('#studentPhone').value, startDate: form.querySelector('#studentStartDate').value, endDate: form.querySelector('#studentEndDate').value, terminationReason: existingStudent.terminationReason || '', absences: existingStudent.absences || {} }; if (id) business.students = business.students.map(s => s.id === id ? studentData : s); else { if(!business.students) business.students = []; business.students.push(studentData); } saveData(); renderAll(); closeModal('studentModal'); showNotification('Öğrenci başarıyla kaydedildi.', 'success'); }
+    
+    function deleteBusiness(id) {
+        showNotification('İşletmeyi ve içindeki tüm öğrencileri silmek istediğinizden emin misiniz?', 'confirm', (result) => {
+            if (result) {
+                appData.businesses = appData.businesses.filter(b => b.id !== id);
+                saveData();
+                renderAll();
+                showNotification('İşletme başarıyla silindi.', 'success');
+            }
+        });
+    }
+    function deleteStudent(id, businessId) {
+        showNotification('Öğrenciyi kalıcı olarak silmek istediğinizden emin misiniz?', 'confirm', (result) => {
+            if (result) {
+                const business = appData.businesses.find(b => b.id === businessId);
+                business.students = business.students.filter(s => s.id !== id);
+                saveData();
+                renderAll();
+                showNotification('Öğrenci başarıyla silindi.', 'success');
+            }
+        });
+    }
+    function cancelTermination(id, businessId) {
+        showNotification('Öğrencinin sözleşme feshini iptal etmek istediğinizden emin misiniz?', 'confirm', (result) => {
+            if (result) {
+                const business = appData.businesses.find(b => b.id === businessId);
+                const student = business.students.find(s => s.id === id);
+                student.endDate = '';
+                student.terminationReason = '';
+                saveData();
+                renderAll();
+                showNotification('Sözleşme feshi iptal edildi.', 'success');
+            }
+        });
+    }    
+
+    function renderAbsenceCalendar() {
+        const { studentId, businessId } = currentAbsence;
+        const modal = dom.absenceModal;
+        const month = parseInt(modal.querySelector('#absenceMonthSelect').value);
+        const year = parseInt(modal.querySelector('#absenceYearSelect').value);
+        const grid = modal.querySelector('#absenceCalendarGrid');
+        const student = appData.businesses.find(b => b.id === businessId).students.find(s => s.id === studentId);
+        grid.innerHTML = '';
+        const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        for(let i=0; i<firstDay; i++) { grid.insertAdjacentHTML('beforeend', '<div class="calendar-day empty"></div>'); }
+        for(let day = 1; day <= daysInMonth; day++) {
+            const dayEl = document.createElement('div');
+            dayEl.className = 'calendar-day';
+            dayEl.innerHTML = `<div class="calendar-day-num">${day}</div><div class="calendar-day-status"></div>`;
+            const currentDate = new Date(year, month, day); const dayOfWeek = currentDate.getDay();
+            let isOutOfRange = (student.startDate && new Date(currentDate) < parseDateString(student.startDate)) || (student.endDate && new Date(currentDate) > parseDateString(student.endDate));
+            if (!isOutOfRange) {
+                const monthYearKey = `${year}-${month}`;
+                const studentAbsences = student.absences?.[monthYearKey]?.[day] || [];
+                const statusEl = dayEl.querySelector('.calendar-day-status');
+                if(dayOfWeek == student.schoolDay) { dayEl.classList.add('school'); statusEl.textContent = 'O'; statusEl.classList.add('f-blue'); }
+                else if(dayOfWeek === 0) { dayEl.classList.add('sunday'); statusEl.textContent = 'T'; statusEl.classList.add('f-green'); }
+                else {
+                    dayEl.classList.add('workday'); dayEl.dataset.day = day;
+                    let statusText = '';
+                    if (studentAbsences.includes('S')) statusText += 'S';
+                    if (studentAbsences.includes('Ö')) statusText += 'Ö';
+                    statusEl.innerHTML = statusText.replace('SÖ', 'S<br>Ö');
+                    if(statusText !== '') statusEl.classList.add('f-gold');
+                }
+            } else { dayEl.classList.add('empty'); }
+            grid.appendChild(dayEl);
+        }
+    }
+    
+    function saveAbsences() {
+        const { studentId, businessId } = currentAbsence;
+        const modal = dom.absenceModal; const month = modal.querySelector('#absenceMonthSelect').value; const year = modal.querySelector('#absenceYearSelect').value;
+        const monthYearKey = `${year}-${month}`;
+        const student = appData.businesses.find(b => b.id === businessId).students.find(s => s.id === studentId);
+        if(!student.absences) student.absences = {}; if(!student.absences[monthYearKey]) student.absences[monthYearKey] = {};
+        modal.querySelectorAll('.calendar-day.workday').forEach(dayEl => {
+            const day = parseInt(dayEl.dataset.day); const status = dayEl.querySelector('.calendar-day-status').textContent;
+            let absenceData = [];
+            if(status.includes('S')) absenceData.push('S');
+            if(status.includes('Ö')) absenceData.push('Ö');
+            if (absenceData.length > 0) student.absences[monthYearKey][day] = absenceData;
+            else if (student.absences[monthYearKey][day]) delete student.absences[monthYearKey][day];
+        });
+        saveData(); closeModal('absenceModal'); showNotification('Devamsızlık kayıtları güncellendi.', 'success');
+    }
+
+    function generateListPrint() {
+        let listHTML = `<div class="print-page-container print-page-list"><div class="list-container"><h2 style="margin-bottom: 8px;">${appData.settings.schoolName || 'OKUL ADI'}<br>İŞLETME VE ÖĞRENCİ LİSTESİ</h2>`;
+        
+        // Yazdırma tarih-saati
+        const currentDateTime = new Date().toLocaleString('tr-TR', {
+            year: 'numeric',
+            month: '2-digit', 
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        listHTML += `<div style="text-align: right; margin: 3px 0 8px 0; font-size: 8pt; color: #666;">
+            Yazdırma: ${currentDateTime}
+        </div>`;
+
+        // Koordinatör bilgileri
+        listHTML += `<div style="display: flex; margin: 0 0 8px 0; padding: 5px 0;">
+            <div style="width: 50%; text-align: left;">
+                <strong>Koordinatör Öğretmen:</strong> ${appData.settings.coordinatorName || '................................'}
+            </div>
+            <div style="width: 50%; text-align: left;">
+                <strong>Koordinatör Müdür Yardımcısı:</strong> ${appData.settings.asstPrincipalName || '................................'}
+            </div>
+        </div>`;    
+    
+        appData.businesses.forEach(business => {
+            listHTML += `<div class="business-section">
+                <div class="business-header">${business.name} - ${business.address || 'Adres belirtilmedi'} - Tel: ${business.phone || 'Belirtilmedi'} - Yetkili: ${business.official || 'Belirtilmedi'}</div>
+                <table class="student-list-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 8%;">No</th>
+                            <th style="width: 8%;">Sınıf</th>
+                            <th style="width: 30%;">Adı Soyadı</th>
+                            <th style="width: 25%;">Alan/Dalı</th>
+                            <th style="width: 15%;">Telefon</th>
+                            <th style="width: 14%;">Okul Günü</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            
+            if (business.students && business.students.length > 0) {
+                const activeStudents = business.students.filter(student => !student.endDate);
+                
+                if (activeStudents.length > 0) {
+                    activeStudents.forEach(student => {
+                        const schoolDays = ['', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma'];
+                        const schoolDay = schoolDays[student.schoolDay] || '';
+                        const studentClass = student.class ? `${student.class}. Sınıf` : '';
+                        
+                        listHTML += `<tr>
+                            <td>${student.no || ''}</td>
+                            <td>${studentClass}</td>
+                            <td>${student.name}</td>
+                            <td>${student.field || ''}</td>
+                            <td>${student.phone || ''}</td>
+                            <td>${schoolDay}</td>
+                        </tr>`;
+                    });
+                } else {
+                    listHTML += `<tr><td colspan="6" style="text-align: center; font-style: italic;">Bu işletmeye kayıtlı aktif öğrenci bulunmamaktadır.</td></tr>`;
+                }
+            } else {
+                listHTML += `<tr><td colspan="6" style="text-align: center; font-style: italic;">Bu işletmeye kayıtlı öğrenci bulunmamaktadır.</td></tr>`;
+            }
+            
+            listHTML += `</tbody></table></div>`;
+        });
+        
+        listHTML += `</div></div>`;
+        return listHTML;
+    }
+
+    // ESKİ generateAttendanceSheet FONKSİYONUNU SİLİP BUNU YAPIŞTIRIN ▼
+    function generateAttendanceSheet(businessId, month, year) {
+        const business = appData.businesses.find(b => b.id === businessId); 
+        const lastDayOfMonth = new Date(year, month + 1, 0); 
+        let studentRowsHTML = ''; 
+        const studentList = business.students.filter(s => !s.endDate || parseDateString(s.endDate) > new Date(year, month, 1));
+        
+        studentList.forEach(student => {
+            let morningRowCells = ''; 
+            let afternoonRowCells = ''; 
+            let unexcusedTotal = 0; 
+            const daysInMonth = lastDayOfMonth.getDate();
+            
+            for(let day = 1; day <= 31; day++) {
+                if(day > daysInMonth) { 
+                    morningRowCells += `<td></td>`; 
+                    afternoonRowCells += `<td></td>`; 
+                    continue; 
+                }
+                const currentDate = new Date(year, month, day); 
+                const dayOfWeek = currentDate.getDay();
+                let fullDayContent = null;
+                let isOutOfRange = (student.startDate && new Date(currentDate) < parseDateString(student.startDate)) || (student.endDate && new Date(currentDate) > parseDateString(student.endDate));
+                
+                if(isOutOfRange) { 
+                    morningRowCells += `<td></td>`; 
+                    afternoonRowCells += `<td></td>`; 
+                }
+                // YENİ KURAL: Resmi tatil mi kontrol et
+                else if(isPublicHoliday(currentDate)) {
+                    fullDayContent = `<td rowspan="2" class="f-bold f-green">T</td>`;
+                }
+                // YENİ KURAL: Okul günü mü ve okul tatil değil mi kontrol et
+                else if(dayOfWeek == student.schoolDay && !isSchoolHoliday(currentDate)) { 
+                    fullDayContent = `<td rowspan="2" class="f-bold f-blue">O</td>`; 
+                }
+                else if(dayOfWeek === 0) { // Pazar günü
+                    fullDayContent = `<td rowspan="2" class="f-bold f-green">T</td>`; 
+                }
+                else { // İşletme günü (Okul tatilindeki okul günleri de buraya dahil olur)
+                    const monthYearKey = `${year}-${month}`; 
+                    const studentAbsences = student.absences?.[monthYearKey]?.[day] || [];
+                    const s_absent = studentAbsences.includes('S'); 
+                    const o_absent = studentAbsences.includes('Ö');
+                    if(s_absent) unexcusedTotal += 0.5; 
+                    if(o_absent) unexcusedTotal += 0.5;
+                    morningRowCells += `<td class="${s_absent ? 'f-teal f-bold': ''}">${s_absent ? 'S' : '+'}</td>`;
+                    afternoonRowCells += `<td class="${o_absent ? 'f-teal f-bold': ''}">${o_absent ? 'Ö' : '+'}</td>`;
+                }
+                if (fullDayContent) { 
+                    morningRowCells += fullDayContent; 
+                }
+            }
+            const studentInfo = `<td class="student-info-cell" rowspan="2">${student.name}</td><td class="student-info-cell" rowspan="2">${student.no||''}</td><td class="student-info-cell" rowspan="2">${student.field||''}</td>`;
+            const totals = `<td rowspan="2"></td><td rowspan="2">${unexcusedTotal > 0 ? unexcusedTotal : ''}</td>`;
+            studentRowsHTML += `<tr>${studentInfo}<td class="f-bold">S</td>${morningRowCells}${totals}</tr><tr><td class="f-bold">Ö</td>${afternoonRowCells}</tr>`;
+        });
+        
+        const legendHTML = `<div class="legend-box"><strong>Devamsızlığın gösterileceği semboller:</strong><br>(İ) İzinli<br>(H) Hasta Sevkli<br>(R) Raporlu<br>(T) Resmi Tatil<br>(O) Okul Günü<br>(S) Sabah Devamsız<br>(Ö) Öğleden Sonra Devamsız</div>`;
+        const explanationHTML = `<div class="explanation-section"><strong>Bu çizelge, işletme tarafından tutulacak, öğrencinin işletmede bulunması gereken günlere ait devamsızlık durumları ilgili sütunda, yanda gösterilen uygun sembolle belirlenecektir.</strong></div>`;
+        const mainTitle = `<div class="print-main-title">İşletmelerde Meslek Eğitimi Gören Öğrencilerin Aylık Devam - Devamsızlık Bildirim Çizelgesi</div>`;
+        const headerTable = `<table class="print-header-table"><tr><td style="width: 25%;" rowspan="2"><strong>Okul/Kurumun Adı:</strong><br><span class="dynamic-text">${appData.settings.schoolName || ''}</span></td><td style="width: 50%;"><strong>İşletmenin:</strong> Adı: <span class="dynamic-text">${business.name || ''}</span></td><td style="width: 25%;"><strong>Ait Olduğu Ay:</strong> <span class="dynamic-text">${monthNames[month]} ${year}</span></td></tr><tr><td>Telefonu ve faksı: <span class="dynamic-text">${business.phone || ''}</span></td><td><strong>Belgenin Düzenlendiği Tarih:</strong> <span class="dynamic-text">${lastDayOfMonth.toLocaleDateString('tr-TR')}</span></td></tr></table>`;
+        const mainTable = `<table class="print-main-table"><thead><tr><th colspan="3" rowspan="2">ÖĞRENCİNİN</th><th rowspan="3" class="header-cell-days">GÜNLER</th><th colspan="31"></th><th colspan="2" rowspan="2">TOPLAM<br>DEVAMSIZLIK</th></tr><tr>${Array.from({length: 31}, (_, i) => `<th class="day-cell">${i+1}</th>`).join('')}</tr><tr><th class="header-cell-name">Adı Soyadı</th><th class="header-cell-no">No</th><th class="header-cell-field">Alan/Dalı</th><th colspan="31" style="border-top: 1px solid #000;"></th><th class="header-cell-total">Özürlü</th><th class="header-cell-total">Özürsüz</th></tr></thead><tbody>${studentRowsHTML}</tbody></table>`;
+        
+        const printFooter = `<div class="print-footer">
+            <div class="signature-section"><strong>İşletme Yetkilisi</strong><br><span class="dynamic-text">${business.official || ''}</span><br><br>Kaşe - İmza</div>
+            <div class="signature-section"><strong>Koordinatör Öğretmen</strong><br><span class="dynamic-text">${appData.settings.coordinatorName || ''}</span><br><span class="dynamic-text">${lastDayOfMonth.toLocaleDateString('tr-TR')}</span><br>İmza</div>
+            <div class="signature-section"><strong>Koordinatör Müdür Yrd.</strong><br><span class="dynamic-text">${appData.settings.asstPrincipalName || ''}</span><br><span class="dynamic-text">${lastDayOfMonth.toLocaleDateString('tr-TR')}</span><br>İmza</div>
+            ${explanationHTML}
+            <div class="legend-section">${legendHTML}</div>
+        </div>`;
+        
+        return `<div class="sheet-content">${mainTitle}${headerTable}<div class="print-main-table-wrapper">${mainTable}</div>${printFooter}</div>`;
+    }
+
+    function generateMonthlyGuidanceForm(company, month, year) {
+        function calculateVisitDates(year, month, dayOfWeek) { 
+            const visitDates = getVisitDatesForMonth(year, month, dayOfWeek);
+            if(visitDates.length === 0) return 'Bu ayda belirtilen gün yok.';
+            return visitDates.map(date => `${date.toLocaleDateString('tr-TR')} - ${date.toLocaleDateString('tr-TR', { weekday: 'long' })}`).join('<br>');
+        }
+        function getFormQuestionsHTML() { const questions = [ { s: 'A', q: '1. Usta öğretici/eğitici personelin yıllık eğitim planı var mı? Uyguluyor mu? Öğrencilere sürekli aynı işlem mi, rotasyona göre mi eğitim yaptırılıyor?', a: 'Var, uyguluyor, rotasyona göre eğitim' }, { s: 'A', q: '2. Öğrencilerin günlük çalışmaları yıllık eğitim planına uygun olarak plânlanmış mı?', a: 'Evet' }, { s: 'A', q: '3. Öğrenci devam durumu günlük olarak takip ediliyor mu?', a: 'Evet' }, { s: 'A', q: '4. Meslek eğitimi çalışmaları puanla değerlendiriliyor mu?', a: 'Evet' }, { s: 'A', q: '5. Yapılan işlerle ilgili olarak her öğrenciye iş dosyası tutturuluyor mu?', a: 'Evet' }, { s: 'A', q: '6. Öğrencilere 3308 sayılı Kanunun 25 inci maddesine göre aylık ücret ödeniyor mu?', a: 'Evet' }, { s: 'A', q: '7. Meslek eğitimi, çalışma saatlerinde yapılıyor mu?', a: 'Evet' }, { s: 'A', q: '8. İş güvenliği konusunda öğrencilere yeterli bilgi veriliyor ve gerekli tedbirler alınıyor mu?', a: 'Evet' }, { s: 'A', q: '9. Öğrenciler disiplin, kılık-kıyafet ve işletmenin kurallarına uyuyor mu?', a: 'Evet' }, { s: 'A', q: '10. Öğrencilerin telafi eğitimine alınması gerekiyor mu? Gerekiyorsa hangi konularda telafi eğitimi uygulanmalı?', a: 'Hayır' }, { s: 'B', q: '1. İşletmenin meslek eğitimi ile görevli personelinin usta öğreticilik belgesi var mı?', a: 'Evet' }, { s: 'B', q: '2. Eğitici personelin sorumlu olduğu öğrenci grubu sayısı Mesleki ve Teknik Eğitim Yönetmeliğinin 192 nci maddesine uygun mu?', a: 'Evet' }, { s: 'B', q: '3. Meslek eğitimi konusunda koordinatör tarafından eğitici personele yapılan rehberlik ve konusu.', a: 'Gelişim tablolarının kontrol edilmesi, öğrencilere ve eğiticilere güvenli iş ortamının geliştirilmesi.', tall: true }, { s: 'B', q: '4. Eğitici personelin geliştirme ve uyum kursuna ihtiyacı var mı?', a: 'Hayır' }, { s: 'C', q: '1. İşletmelerde meslek eğitimi, yıllık çalışma takvimine uygun olarak sürdürülüyor mu?', a: 'Evet' }, { s: 'C', q: '2. İşletmede meslek eğitiminin mevzuata göre sürdürülmesi ile ilgili gerekli tedbirler alınıyor mu? (Mesleki ve Teknik Eğitim Yönetmeliği madde 196.)', a: 'Evet' }, { s: 'C', q: '4. Öğrenciler için gelişim tablosu uygulanıyor mu?', a: 'Evet' }, { s: 'C', q: '5. İşletme yetkililerinin meslek eğitiminin uygulanışı ve öğretim programları konusundaki görüş ve önerileri', a: '', tall: true }, { s: 'D', q: 'Açıklanması gereken diğer hususlar:', a: '', tall: true }, ]; let currentSection = ''; const rows = questions.map(item => { let sectionHeader = ''; if (item.s !== currentSection) { currentSection = item.s; const sectionNames = {A: 'A. Mesleki ve Teknik Eğitim Yönetmeliği ile ilgili konular:', B: 'B. Eğitici Personelle ilgili konular:', C: 'C. İşletme ile ilgili konular', D: 'D. Açıklanması gereken diğer hususlar:'}; sectionHeader = `<tr style="background:#f0f0f0 !important;"><td colspan="2" style="border:1px solid #000; padding:1px; font-weight:bold; text-align:center; font-size:5.5pt;">${sectionNames[item.s]}</td></tr>`; } const tallClass = item.tall ? 'expandable-area' : ''; const answerCell = `<textarea class="editable-textarea ${tallClass}">${item.a}</textarea>`; return `${sectionHeader}<tr><td style="border:1px solid #000; padding:1px; font-size:6pt; font-weight:bold; line-height:1.1;">${item.q}</td><td style="border:1px solid #000; padding:1px; vertical-align:middle; font-size:5.5pt;">${answerCell}</td></tr>`; }).join(''); return `<table style="width:100%; border-collapse:collapse;"><thead><tr style="background:#f0f0f0 !important;"><th style="border:1px solid #000; padding:1px; width:60%; font-size:6pt;">Koordinatörün Rehberlik Ziyaret Konuları</th><th style="border:1px solid #000; padding:1px; width:40%; font-size:6pt;">Değerlendirme ve Öneriler</th></tr></thead><tbody>${rows}</tbody></table>`;
+        }
+        const visitDatesText = calculateVisitDates(year, month, company.visitDay); 
+        const uniqueStudentFields = [...new Set(company.students.map(s => s.field).filter(Boolean))].join(', ');
+        return `<div style="text-align: center; font-weight: bold; font-size: 7.5pt; line-height:1.1;">İŞLETMELERDE MESLEK EĞİTİMİ KOORDİNATÖRLERİNİN İŞLETMEYE YAPACAĞI AYLIK REHBERLİK RAPOR FORMU</div><div style="text-align: center; font-weight: bold; font-size: 7.5pt; margin-top: 2px;">UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ MÜDÜRLÜĞÜ'NE</div><div style="text-align: center; font-weight: bold; font-size: 7.5pt;">UŞAK</div><p style="font-size: 7pt; line-height: 1.1; margin: 2px 0; text-indent:10px;">Okul/Kurumumuz <b><i>${uniqueStudentFields || '................................'}</i></b> alan/dalı öğrencilerinin meslek eğitimi gördüğü işletmede yapmış olduğum bir aylık koordinatörlük görevlerim sırasında tespit ettiğim hususlar aşağıda belirtilmiştir.<br>Bilgilerinizi ve gereğini arz ederim.</p>
+        <table style="width:100%; border-collapse:collapse; font-size:7pt; margin: 2px 0;"><tr><td style="border:1px solid #000; padding:1px; width:50%; vertical-align:top;"><b>İşletmenin Adı ve Adresi:</b><br><span class="dynamic-text">${company.name}, ${company.address}</span></td><td style="border:1px solid #000; padding:1px; width:50%; vertical-align:top;"><b>GÖREV TARİHLERİ:</b><br><span class="dynamic-text">${visitDatesText}</span></td></tr><tr><td style="border:1px solid #000; padding:1px; line-height:1.1;"><b>İşletme Eğitim Yetkilisinin</b><br>Adı Soyadı: <span class="dynamic-text">${company.official}</span><br><br>İmza:</td><td style="border:1px solid #000; padding:1px; line-height:1.1;"><b>Koordinatör Öğretmenin</b><br>Adı Soyadı: <span class="dynamic-text">${appData.settings.coordinatorName}</span><br><br>İmza:</td></tr></table><div class="form-content-wrapper">${getFormQuestionsHTML()}</div><div style="text-align: center; margin-top: auto; font-size: 6pt; border-top: 1px solid #000; padding-top: 1px;"><strong>AÇIKLAMA:</strong> Bu form her işletme için her ay ayrı ayrı doldurulacak, kurum idaresine verilecektir. FORM A</div>`;
+    }
+    
+    // ESKİ generateDailyGuidanceForm FONKSİYONUNU SİLİP BUNU YAPIŞTIRIN ▼
+    function generateDailyGuidanceForm(business, visitDate) {
+        if (!business || !visitDate) return `<div class="daily-guidance-form"></div>`;
+        let activeStudents = [];
+        if (business.students && business.students.length > 0) {
+            for (const student of business.students) {
+                const startDate = parseDateString(student.startDate);
+                const endDate = student.endDate ? parseDateString(student.endDate) : null;
+                if (startDate && startDate <= visitDate && (!endDate || endDate >= visitDate)) {
+                    activeStudents.push(student);
+                }
+            }
+        }
+        const activeStudentCount = activeStudents.length;
+        const uniqueStudentFields = [...new Set(activeStudents.map(s => s.field).filter(Boolean))].join(', ');
+
+        return `<div class="daily-guidance-form">
+            <h3>İŞLETMELERDE MESLEK EĞİTİMİ<br>GÜNLİK REHBERLİK GÖREV FORMU</h3>
+            <table class="main-table">
+                <tbody>
+                    <tr>
+                        <td class="label-cell">İşletmenin Adı</td>
+                        <td class="data-cell"><span class="dynamic-text">${business.name}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">İzlemede Sorumlu olduğu Öğrenci Sayısı</td>
+                        <td class="data-cell"><span class="dynamic-text">${activeStudentCount}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Meslek Alan/Dalı</td>
+                        <td class="data-cell"><span class="dynamic-text">${uniqueStudentFields}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Görev Tarihi</td>
+                        <td class="data-cell"><span class="dynamic-text">${visitDate.toLocaleDateString('tr-TR')}</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="section-cell">
+                            <p>1- İşletmede öğrenim gören öğrencilerin eğitimini olumsuz yönde etkileyen hususlar. (varsa yazınız.)</p>
+                            <textarea class="editable-textarea"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="section-cell">
+                            <p>2- Belirlenen aksaklıklarla ilgili yapılan rehberlik ve alınan önlemler:</p>
+                            <textarea class="editable-textarea"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="section-cell">
+                            <p>3- Aylık Rehberlik formunda belirtilmesinde yarar görülen hususlar:</p>
+                            <textarea class="editable-textarea"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="signature-cell">
+                            <div class="footer">
+                                <div><span class="dynamic-text">${business.official}</span><br>İşletme Eğitim Yetkilisi<br><br>İmza</div>
+                                <div><span class="dynamic-text">${appData.settings.coordinatorName}</span><br>Koor. Öğretmen<br><br>İmza</div>
+                                <div><span class="dynamic-text">${appData.settings.asstPrincipalName}</span><br>Koor. Md. Yrd.<br><br>İmza</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="notes-cell">
+                            <div class="notes">
+                                Açıklamalar: Bu form koordinatör öğretmen tarafından her görev için görev haftası başında koordinatör Md. Yrd.'ndan alınır. Görev sonrasında okula geldiği gün içinde imzaları tamamlanmış olarak Koordinatör Md. Yrd.'na teslim edilir.<br>
+                                <b>Not: Haftalık devamsızlıkları 3 nolu alanda belirtiniz. (No, isim, tarih)</b>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>`;
+    }
+
+   function generateTerminationForm(e) {
+        e.preventDefault();
+        const studentId = dom.terminationForm.querySelector('#terminationStudentId').value; 
+        const businessId = dom.terminationForm.querySelector('#terminationBusinessId').value; 
+        const terminationDate = dom.terminationForm.querySelector('#terminationDate').value; 
+        const terminationReason = dom.terminationForm.querySelector('#terminationReason').value;
+        const business = appData.businesses.find(b => b.id === businessId); 
+        const student = business.students.find(s => s.id === studentId);
+        
+        student.endDate = terminationDate;  // Bu lazım - fesih tarihi için
+        
+        // Öğrenciyi tamamen sil
+        business.students = business.students.filter(s => s.id !== studentId);
+        saveData(); 
+        renderAll(); 
+        closeModal('terminationModal');
+        
+        const formattedStartDate = student.startDate ? parseDateString(student.startDate).toLocaleDateString('tr-TR') : '';
+        const formattedTerminationDate = parseDateString(terminationDate).toLocaleDateString('tr-TR');
+        
+        const formHTML = `
+        <div class="print-page-container print-page-termination">
+            <div class="termination-container" style="padding-bottom: 25px;">
+                <h1 style="font-size: 14pt;">${appData.settings.schoolName}</h1>
+                <h2 style="font-size: 14pt; margin: 15px 0;">
+                    İŞLETMELERDE BECERİ EĞİTİMİ GÖREN ÖĞRENCİLERE AİT<br>SÖZLEŞME FESİH TUTANAĞI
+                </h2>
+                <table>
+                    <tr><td class="label-col">İŞLETMENİN ADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${business.name}</em></strong></td></tr>
+                    <tr><td class="label-col">ÖĞRENCİNİN ADI SOYADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.name}</em></strong></td></tr>
+                    <tr><td class="label-col">ALANI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.field}</em></strong></td></tr>
+                    <tr><td class="label-col">SINIFI / NUMARASI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.class ? student.class + '. Sınıf' : ''} / ${student.no || ''}</em></strong></td></tr>
+                    <tr><td class="label-col">SÖZLEŞMELİ TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedStartDate}</em></strong></td></tr>
+                    <tr><td class="label-col">SÖZLEŞMENİN FESİH TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedTerminationDate}</em></strong></td></tr>
+                </table>
+                <div class="reasons">
+                    <div class="label-col" style="border-bottom: 1px solid black; padding-bottom: 2px; margin-bottom: 5px;">FESİH NEDENLERİ:</div>
+                    <div class="value-box" style="border: 1px solid transparent; padding: 5px;">
+                        <strong><em>${terminationReason.replace(/\n/g, '<br>')}</em></strong>
+                    </div>
+                </div>
+                <div class="signatures" style="display: flex; flex-wrap: wrap; justify-content: space-between; text-align: center; width: 100%; margin-top: auto; padding-top: 40px;">
+                    <div style="width: 32%; height: 1px;"></div>
+                    <div style="width: 32%; height: 1px;"></div>
+                    <div style="width: 32%; margin-bottom: 20px;">..... / ..... / 2025</div>
+                    <div style="width: 32%;"><strong><em>${business.official}</em></strong><br>İşletme Yetkilisi</div>
+                    <div style="width: 32%;"><strong><em>${appData.settings.coordinatorName}</em></strong><br>Koordinatör Öğretmen</div>
+                    <div style="width: 32%;"><strong><em>${appData.settings.principalName}</em></strong><br>Okul Müdürü</div>
+                </div>
+            </div>
+        </div>`;
+        dom.printContainer.innerHTML = formHTML; 
+        window.print();
+        showNotification('Sözleşme feshi gerçekleştirildi.', 'success');
+    }
+
+    dom.generateSheetBtn.addEventListener('click', () => {
+        const formType = dom.formTypeSelect.value;
+        let allFormsHTML = '';
+        if (formType === 'attendance' || formType === 'monthly_guidance') {
+            const selectedBusinessIds = Array.from(document.querySelectorAll('.business-checkbox:checked')).map(cb => cb.value);
+            if (selectedBusinessIds.length === 0) { showNotification('Lütfen en az bir işletme seçin.', 'error'); return; }
+            const month = parseInt(dom.genMonthSelect.value);
+            const year = parseInt(dom.genYearSelect.value);
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth(); // JavaScript'te aylar 0'dan başlar (Ocak=0)
+
+            if (year > currentYear || (year === currentYear && month > currentMonth)) {
+                showNotification('Henüz gelmemiş bir tarih için form oluşturulamaz.', 'error');
+                return; // İşlemi burada durdurur ama ay ve yıl değerleri korunur
+            }
+            
+            if(formType === 'attendance'){
+                let businessChunks = [];
+                for (let i = 0; i < selectedBusinessIds.length; ) {
+                    const business = appData.businesses.find(b => b.id === selectedBusinessIds[i]); 
+                    const studentCount = business.students.filter(s => !s.endDate || parseDateString(s.endDate) > new Date(year, month, 1)).length;
+                    if (studentCount <= 8) {
+                        const nextBusiness = i + 1 < selectedBusinessIds.length ? appData.businesses.find(b => b.id === selectedBusinessIds[i + 1]) : null;
+                        const hasNextSmallBusiness = nextBusiness && nextBusiness.students.filter(s => !s.endDate || parseDateString(s.endDate) > new Date(year, month, 1)).length <= 8;
+                        if(hasNextSmallBusiness) { businessChunks.push([selectedBusinessIds[i], selectedBusinessIds[i+1]]); i += 2; }
+                        else { businessChunks.push([selectedBusinessIds[i]]); i++; }
+                    } else { businessChunks.push([selectedBusinessIds[i]]); i++; }
+                }
+                businessChunks.forEach(chunk => {
+                    if(chunk.length === 2) {
+                        const formHTML1 = generateAttendanceSheet(chunk[0], month, year); 
+                        const formHTML2 = generateAttendanceSheet(chunk[1], month, year);
+                        allFormsHTML += `<div class="print-page-container print-page-attendance"><div class="print-sheet-wrapper"><div class="print-sheet first-half">${formHTML1}</div><div class="print-sheet second-half">${formHTML2}</div></div></div>`;
+                    } else {
+                        const formHTML = generateAttendanceSheet(chunk[0], month, year);
+                        // Tek işletme de yarım sayfa kullansın, diğer yarısı boş kalsın
+                        allFormsHTML += `<div class="print-page-container print-page-attendance"><div class="print-sheet-wrapper"><div class="print-sheet first-half">${formHTML}</div><div class="print-sheet second-half"></div></div></div>`;
+                    }
+                });
+            } else {
+                for (let i = 0; i < selectedBusinessIds.length; i += 2) {
+                    const company1 = appData.businesses.find(c => c.id === selectedBusinessIds[i]);
+                    const company2 = (i + 1 < selectedBusinessIds.length) ? appData.businesses.find(c => c.id === selectedBusinessIds[i + 1]) : null;
+                    allFormsHTML += `<div class="print-page-container print-page-monthly-guidance"><div class="print-page"><div class="print-form-half">${generateMonthlyGuidanceForm(company1, month, year)}</div><div class="print-form-half">${company2 ? generateMonthlyGuidanceForm(company2, month, year) : ''}</div></div></div>`;
+                }
+            }
+        } else if (formType === 'daily_guidance') {
+            const selectedBusinessIds = Array.from(document.querySelectorAll('.daily-business-checkbox:checked')).map(cb => cb.value);
+            const selectedWeek = parseInt(dom.genWeekSelect1.value);
+            
+            if (selectedBusinessIds.length === 0) { 
+                showNotification('Lütfen en az bir işletme seçin.', 'error'); 
+                return; 
+            }
+            
+            const month = parseInt(dom.dailyMonthSelect.value);
+            const year = parseInt(dom.dailyYearSelect.value);
+            
+            // Seçilen hafta bilgisini almak için
+            const selectedWeekOption = dom.genWeekSelect1.querySelector(`option[value="${selectedWeek}"]`);
+            let weekStartDate = null, weekEndDate = null;
+            
+            if (selectedWeekOption) {
+                // Hafta seçeneklerini yeniden hesapla ve tarihleri al
+                const weeks = [];
+                const firstDayOfMonth = new Date(year, month, 1);
+                const lastDayOfMonth = new Date(year, month + 1, 0);
+                
+                let firstMonday = new Date(firstDayOfMonth);
+                const firstDayWeekday = firstDayOfMonth.getDay();
+                const daysToSubtract = firstDayWeekday === 0 ? 6 : firstDayWeekday - 1;
+                firstMonday.setDate(firstDayOfMonth.getDate() - daysToSubtract);
+                
+                let weekNumber = 1;
+                let currentMonday = new Date(firstMonday);
+                
+                while (currentMonday <= lastDayOfMonth) {
+                    const weekStart = new Date(currentMonday);
+                    const weekEnd = new Date(currentMonday);
+                    weekEnd.setDate(weekEnd.getDate() + 6);
+                    
+                    if (weekEnd >= firstDayOfMonth && weekStart <= lastDayOfMonth) {
+                        if (weekNumber === selectedWeek) {
+                            weekStartDate = weekStart;
+                            weekEndDate = weekEnd;
+                            break;
+                        }
+                        weekNumber++;
+                    }
+                    currentMonday.setDate(currentMonday.getDate() + 7);
+                }
+            }
+            
+            const businessForms = selectedBusinessIds.map(businessId => {
+                const business = appData.businesses.find(b => b.id === businessId);
+                if (!business || !business.visitDay) return null;
+                
+                // Seçilen hafta içindeki ziyaret gününü bul
+                if (!weekStartDate || !weekEndDate) return null;
+                
+                let visitDate = null;
+                for (let d = new Date(weekStartDate); d <= weekEndDate; d.setDate(d.getDate() + 1)) {
+                    if (d.getDay() === parseInt(business.visitDay)) {
+                        visitDate = new Date(d);
+                        break;
+                    }
+                }
+                
+                if (!visitDate) return null;
+                
+                return generateDailyGuidanceForm(business, visitDate);
+            }).filter(form => form !== null);
+            
+            if (businessForms.length === 0) {
+                showNotification('Seçilen hafta için uygun ziyaret günü bulunamadı.', 'error');
+                return;
+            }
+            
+            for (let i = 0; i < businessForms.length; i += 2) {
+                const form1HTML = businessForms[i];
+                const form2HTML = businessForms[i + 1] || null;
+
+                // Sol sütunu oluştur (köşe yazıları + çerçeveli form)
+                let column1 = `<div class="daily-guidance-column">
+                                 <div class="top-right-text">İME-GÖREV REHBERLİK</div>
+                                 ${form1HTML}
+                                 <div class="bottom-left-text">FORM 4A</div>
+                               </div>`;
+                
+                // Sağ sütunu oluştur (eğer ikinci form varsa)
+                let column2 = `<div class="daily-guidance-column">`;
+                if (form2HTML) {
+                    column2 += `<div class="top-right-text">İME-GÖREV REHBERLİK</div>
+                                ${form2HTML}
+                                <div class="bottom-left-text">FORM 4A</div>`;
+                }
+                column2 += `</div>`;
+
+                allFormsHTML += `<div class="print-page-container print-page-daily-guidance"><div class="daily-guidance-container">${column1}${column2}</div></div>`;
+            }
+        }
+        
+        if (allFormsHTML) { 
+            dom.printContainer.innerHTML = allFormsHTML; 
+            window.print(); 
+        }
+    });
+
+
+    dom.formTypeSelect.addEventListener('change', (e) => {
+        if (e.target.value === 'daily_guidance') { dom.controlsMonthly.classList.remove('active'); dom.controlsDaily.classList.add('active'); }
+        else { dom.controlsDaily.classList.remove('active'); dom.controlsMonthly.classList.add('active'); }
+    });
+
+    // Dropdown event listeners
+    dom.businessDropdownHeader.addEventListener('click', () => {
+        dom.businessDropdownHeader.classList.toggle('open');
+        dom.businessDropdownContent.classList.toggle('open');
+    });
+    
+    dom.dailyBusinessDropdownHeader.addEventListener('click', () => {
+        dom.dailyBusinessDropdownHeader.classList.toggle('open');
+        dom.dailyBusinessDropdownContent.classList.toggle('open');
+    });
+    
+    // Dışarı tıklamada dropdown'ları kapat
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dropdown-container')) {
+            document.querySelectorAll('.dropdown-header').forEach(header => header.classList.remove('open'));
+            document.querySelectorAll('.dropdown-content').forEach(content => content.classList.remove('open'));
+        }
+    });
+
+    // Tümünü seç/temizle butonları
+    dom.selectAllBusinesses.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.querySelectorAll('.business-checkbox').forEach(cb => cb.checked = true);
+        updateDropdownText();
+    });
+    
+    dom.deselectAllBusinesses.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.querySelectorAll('.business-checkbox').forEach(cb => cb.checked = false);
+        updateDropdownText();
+    });
+    
+    dom.selectAllDailyBusinesses.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.querySelectorAll('.daily-business-checkbox').forEach(cb => cb.checked = true);
+        updateDropdownText();
+    });
+    
+    dom.deselectAllDailyBusinesses.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.querySelectorAll('.daily-business-checkbox').forEach(cb => cb.checked = false);
+        updateDropdownText();
+    });
+
+    // Checkbox değişikliklerini dinle
+    document.addEventListener('change', (e) => {
+        if (e.target.matches('.business-checkbox, .daily-business-checkbox')) {
+            updateDropdownText();
+        }
+    });
+
+    [dom.dailyMonthSelect, dom.dailyYearSelect].forEach(el => el.addEventListener('change', populateWeeksForDailyForm));
+    
+    dom.tabs.addEventListener('click', e => { if(e.target.matches('.tab')) { const tabId=e.target.dataset.tab; document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(tabId).classList.add('active'); e.target.classList.add('active'); }});
+    document.addEventListener('click', e => { if (e.target.matches('[data-action="cancel-modal"]')) { e.target.closest('.modal').style.display = 'none'; return; } const accordionHeader = e.target.closest('.accordion-header'); if (accordionHeader) { accordionHeader.nextElementSibling.classList.toggle('open'); return; } const action = e.target.dataset.action; if(!action) return; const id = e.target.dataset.id; const businessId = e.target.dataset.businessId; switch(action) { case 'add-student': openModal('studentModal', {businessId: id}); break; case 'edit-business': openModal('businessModal', {id: id}); break; case 'delete-business': deleteBusiness(id); break; case 'edit-student': openModal('studentModal', {id: id, businessId: businessId}); break; case 'delete-student': deleteStudent(id, businessId); break; case 'open-termination-modal': openModal('terminationModal', {studentId: id, businessId: businessId}); break; 
+    case 'cancel-termination': 
+    const studentId = e.target.dataset.studentId || e.target.dataset.id;
+    cancelTermination(studentId, businessId); 
+    break;case 'open-absence-modal': openModal('absenceModal', {studentId: id, businessId: businessId}); break; } });
+    dom.absenceModal.addEventListener('click', e => {
+        const dayEl = e.target.closest('.calendar-day.workday'); if (!dayEl) return;
+        const statusEl = dayEl.querySelector('.calendar-day-status');
+        let currentStatus = statusEl.textContent.replace(/\s/g, ''); let newStatus = '';
+        if (currentStatus === '') newStatus = 'S'; else if (currentStatus === 'S') newStatus = 'Ö'; else if (currentStatus === 'Ö') newStatus = 'SÖ'; else newStatus = '';
+        statusEl.innerHTML = newStatus.replace('SÖ', 'S<br>Ö');
+        statusEl.classList.toggle('f-gold', newStatus !== '');
+    });
+    dom.absenceModal.querySelector('#saveAbsenceBtn').addEventListener('click', saveAbsences);
+    dom.absenceModal.querySelector('#absenceMonthSelect').addEventListener('change', renderAbsenceCalendar);
+    dom.absenceModal.querySelector('#absenceYearSelect').addEventListener('change', renderAbsenceCalendar);
+    dom.addBusinessBtn.addEventListener('click', () => openModal('businessModal', null));
+    dom.businessForm.addEventListener('submit', saveBusiness);
+    dom.studentForm.addEventListener('submit', saveStudent);
+    dom.terminationForm.addEventListener('submit', generateTerminationForm);
+    dom.downloadBtn.addEventListener('click', () => { saveData(); const dataStr = JSON.stringify(appData, null, 2); const blob = new Blob([dataStr], {type: 'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `mesem_verileri_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); showNotification('Veriler başarıyla indirildi.', 'success'); });
+    dom.uploadBtn.addEventListener('click', () => dom.uploadInput.click());
+    dom.uploadInput.addEventListener('change', (event) => { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const loadedData = JSON.parse(e.target.result); if (loadedData.settings && loadedData.businesses) { appData = loadedData; saveData(); loadData(); renderAll(); showNotification('Veriler başarıyla geri yüklendi.', 'success'); } else { showNotification('Hatalı dosya formatı.', 'error'); } } catch (error) { showNotification('Dosya okunurken bir hata oluştu: ' + error, 'error'); } }; reader.readAsText(file); event.target.value = ''; });
+    dom.printListBtn.addEventListener('click', () => { const listHTML = generateListPrint(); dom.printContainer.innerHTML = listHTML; window.print(); });
+
+    // Telefon numarası input'larına otomatik düzenleme
+    document.addEventListener('input', (e) => {
+        if (e.target.hasAttribute('inputmode') && e.target.getAttribute('inputmode') === 'numeric') {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        }
+    });
+    
+  
+    renderAll();
+    dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));
+
+    // Mobil klavye fix
+    document.addEventListener('focusin', function(e) {
+        if (e.target.matches('input, textarea, select')) {
+            setTimeout(() => {
+                e.target.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            }, 300);
+        }
+    });
+
+    // iOS Safari viewport fix
+    function setVhProperty() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    setVhProperty();
+    window.addEventListener('resize', setVhProperty);
+    window.addEventListener('orientationchange', setVhProperty);
+
+</script>
+</body>
+</html>
