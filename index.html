@@ -2327,6 +2327,7 @@
                     content.style.display = 'block';
                     header.classList.add('open');
                 }
+            }
 
                 if (e.target.closest('.dropdown-item')) {
                     const item = e.target.closest('.dropdown-item');
@@ -2336,7 +2337,7 @@
                         updateDropdownText(); // Seçilen işletme sayısını güncelle
                     }
                 }
-               }
+               
             });
         
         dom.dailyBusinessDropdownHeader.addEventListener('click', () => { dom.dailyBusinessDropdownHeader.classList.toggle('open'); dom.dailyBusinessDropdownContent.classList.toggle('open'); });
