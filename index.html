@@ -7,10 +7,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>MESEM Günlük ve Aylık Rehberlik- Devamsızlık- Fesih Formları</title>
-     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <title>MESEM Günlük ve Aylık Rehberlik- Devamsızlık- Fesih Formları</title>   
     <style>
         :root { 
             --dark-bg: #0f172a; --light-bg: #0f172a; --card-bg: #0f172a; --accent-gold: #f4c542;
@@ -196,33 +193,46 @@
         userName: document.getElementById('user-name'),
         googleLoginBtn: document.getElementById('google-login-btn'),
         logoutBtn: document.getElementById('logout-btn'),
-        tabs: document.querySelector('.tabs'), 
-        settingsInputs: document.querySelectorAll('#management-panel .panel .form-input'), 
-        businessesAccordion: document.getElementById('businessesAccordion'), 
-        addBusinessBtn: document.getElementById('add-business-btn'), 
-        businessModal: document.getElementById('businessModal'), 
-        businessForm: document.getElementById('businessForm'), 
-        studentModal: document.getElementById('studentModal'), 
-        studentForm: document.getElementById('studentForm'), 
-        terminationModal: document.getElementById('terminationModal'), 
-        terminationForm: document.getElementById('terminationForm'), 
-        absenceModal: document.getElementById('absenceModal'), 
-        genMonthSelect: document.getElementById('genMonthSelect'), 
-        genYearSelect: document.getElementById('genYearSelect'), 
-        dailyMonthSelect: document.getElementById('dailyMonthSelect'), 
-        dailyYearSelect: document.getElementById('dailyYearSelect'), 
-        genWeekSelect1: document.getElementById('genWeekSelect1'), 
-        generateSheetBtn: document.getElementById('generate-sheet-btn'), 
-        printContainer: document.getElementById('print-container'), 
-        formTypeSelect: document.getElementById('formTypeSelect'), 
-        totalBusinesses: document.getElementById('totalBusinesses'), 
-        totalStudents: document.getElementById('totalStudents'), 
-        businessDropdownHeader: document.getElementById('business-dropdown-header'), 
-        businessDropdownContent: document.getElementById('business-dropdown-content'), 
-        businessDropdownList: document.getElementById('business-dropdown-list'), 
+        container: document.querySelector('.container'),
+        tabs: document.querySelector('.tabs'),
+        settingsInputs: document.querySelectorAll('#management-panel .panel .form-input'),
+        businessesAccordion: document.getElementById('businessesAccordion'),
+        addBusinessBtn: document.getElementById('add-business-btn'),
+        printListBtn: document.getElementById('print-list-btn'),
+        
+        businessModal: document.getElementById('businessModal'),
+        businessForm: document.getElementById('businessForm'),
+        studentModal: document.getElementById('studentModal'),
+        studentForm: document.getElementById('studentForm'),
+        terminationModal: document.getElementById('terminationModal'),
+        terminationForm: document.getElementById('terminationForm'),
+        absenceModal: document.getElementById('absenceModal'),
+
+        genMonthSelect: document.getElementById('genMonthSelect'),
+        genYearSelect: document.getElementById('genYearSelect'),
+        dailyMonthSelect: document.getElementById('dailyMonthSelect'),
+        dailyYearSelect: document.getElementById('dailyYearSelect'),
+        genWeekSelect1: document.getElementById('genWeekSelect1'),
+        generateSheetBtn: document.getElementById('generate-sheet-btn'),
+        printContainer: document.getElementById('print-container'),
+        formTypeSelect: document.getElementById('formTypeSelect'),
+        totalBusinesses: document.getElementById('totalBusinesses'),
+        totalStudents: document.getElementById('totalStudents'),
+
+        businessDropdownHeader: document.getElementById('business-dropdown-header'),
+        businessDropdownContent: document.getElementById('business-dropdown-content'),
+        businessDropdownList: document.getElementById('business-dropdown-list'),
         businessSelectedText: document.getElementById('business-selected-text'),
-        selectAllBusinesses: document.getElementById('select-all-businesses'), 
-        deselectAllBusinesses: document.getElementById('deselect-all-businesses'), 
+        selectAllBusinesses: document.getElementById('select-all-businesses'),
+        deselectAllBusinesses: document.getElementById('deselect-all-businesses'),
+        
+        // Bu elementler HTML'de yok, şimdilik siliyoruz veya daha sonra eklersiniz.
+        dailyBusinessDropdownHeader: document.getElementById('daily-business-dropdown-header'),
+        dailyBusinessDropdownContent: document.getElementById('daily-business-dropdown-content'),
+        dailyBusinessDropdownList: document.getElementById('daily-business-dropdown-list'),
+        dailyBusinessSelectedText: document.getElementById('daily-business-selected-text'),
+        selectAllDailyBusinesses: document.getElementById('select-all-daily-businesses'),
+        deselectAllDailyBusinesses: document.getElementById('deselect-all-daily-businesses')
     };
 
     // --- Firebase Fonksiyonları ---
@@ -299,7 +309,7 @@
                 console.log('Veri başarıyla buluta kaydedildi.');
             } catch (error) {
                 console.error('Buluta kaydetme hatası:', error);
-                showNotification('Veri kaydedilirken bir hata oluştu.', 'error');
+                showNotification('Veri kaydedilirken bir hata oluştu.');
             }
         }
     }
