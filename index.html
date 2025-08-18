@@ -1034,8 +1034,8 @@
             controlsDaily: document.getElementById('controls-daily'),
             totalBusinesses: document.getElementById('totalBusinesses'),
             totalStudents: document.getElementById('totalStudents'),
-            get businessDropdownHeader() { return document.getElementById('business-dropdown-header'); },
-            get businessDropdownContent() { return document.getElementById('business-dropdown-content'); },
+            businessDropdownHeader: document.getElementById('business-dropdown-header'),
+            businessDropdownContent: document.getElementById('business-dropdown-content'),
             businessDropdownList: document.getElementById('business-dropdown-list'),
             businessSelectedText: document.getElementById('business-selected-text'),
             dailyBusinessDropdownHeader: document.getElementById('daily-business-dropdown-header'),
@@ -1046,6 +1046,19 @@
             deselectAllBusinesses: document.getElementById('deselect-all-businesses'),
             selectAllDailyBusinesses: document.getElementById('select-all-daily-businesses'),
             deselectAllDailyBusinesses: document.getElementById('deselect-all-daily-businesses'),
+            
+            setTimeout(() => {
+            const businessHeader = document.getElementById('business-dropdown-header');
+            const businessContent = document.getElementById('business-dropdown-content');
+            const dailyHeader = document.getElementById('daily-business-dropdown-header');
+            const dailyContent = document.getElementById('daily-business-dropdown-content');
+            
+            if (businessHeader && businessContent) {
+                businessHeader.onclick = () => {
+                    businessHeader.classList.toggle('open');
+                    businessContent.classList.toggle('open');
+                };
+            }
         };
 
         // --- Firebase Fonksiyonları ---
@@ -2156,7 +2169,7 @@
         else { dom.controlsDaily.classList.remove('active'); dom.controlsMonthly.classList.add('active'); }
     });
 
-   
+    // Dropdown event listeners
     // Event delegation kullan - DOM timing sorununu çözer
     document.addEventListener('click', (e) => {
         if (e.target.closest('#business-dropdown-header')) {
