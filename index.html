@@ -227,12 +227,12 @@
         deselectAllBusinesses: document.getElementById('deselect-all-businesses'),
         
         // Bu elementler HTML'de yok, şimdilik siliyoruz veya daha sonra eklersiniz.
-        dailyBusinessDropdownHeader: document.getElementById('daily-business-dropdown-header'),
-        dailyBusinessDropdownContent: document.getElementById('daily-business-dropdown-content'),
-        dailyBusinessDropdownList: document.getElementById('daily-business-dropdown-list'),
-        dailyBusinessSelectedText: document.getElementById('daily-business-selected-text'),
-        selectAllDailyBusinesses: document.getElementById('select-all-daily-businesses'),
-        deselectAllDailyBusinesses: document.getElementById('deselect-all-daily-businesses')
+        //dailyBusinessDropdownHeader: document.getElementById('daily-business-dropdown-header'),
+       // dailyBusinessDropdownContent: document.getElementById('daily-business-dropdown-content'),
+        //dailyBusinessDropdownList: document.getElementById('daily-business-dropdown-list'),
+        //dailyBusinessSelectedText: document.getElementById('daily-business-selected-text'),
+        //selectAllDailyBusinesses: document.getElementById('select-all-daily-businesses'),
+        //deselectAllDailyBusinesses: document.getElementById('deselect-all-daily-businesses')
     };
 
     // --- Firebase Fonksiyonları ---
@@ -548,7 +548,10 @@
         ).join('');
         
         dom.businessDropdownList.innerHTML = businessItems || '<div style="padding: 15px; text-align: center; color: var(--text-light);">İşletme bulunamadı</div>';
+        
+        if (dom.dailyBusinessDropdownList) {
         dom.dailyBusinessDropdownList.innerHTML = dailyBusinessItems || '<div style="padding: 15px; text-align: center; color: var(--text-light);">İşletme bulunamadı</div>';
+        }
         
         updateDropdownText();
     }
