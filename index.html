@@ -7,31 +7,19 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>MESEM Günlük ve Aylık Rehberlik- Devamsızlık- Fesih Formları</title>
+    <title>MESEM Günlük ve Aylık Rehberlik- Devamsızlık- Fesih Formları</title>   
     <style>
         :root { 
-            --dark-bg: #0f172a; 
-            --light-bg: #0f172a; 
-            --card-bg: #0f172a; 
-            --accent-gold: #f4c542;
-            --accent-gold-50: rgba(244, 197, 66, 0.5);
-            --btn-red: #b22234;
-            --btn-red-hover: #9b1d2d;
-            --text-light: #e0e6ed; 
-            --text-lighter: #f0f4f8; 
-            --text-white: #ffffff; 
-            --danger-red: #ff6b7a; 
+            --dark-bg: #0f172a; --light-bg: #0f172a; --card-bg: #0f172a; --accent-gold: #f4c542;
+            --accent-gold-50: rgba(244, 197, 66, 0.5); --btn-red: #b22234; --btn-red-hover: #9b1d2d;
+            --text-light: #e0e6ed; --text-lighter: #f0f4f8; --text-white: #ffffff; --danger-red: #ff6b7a; 
             --success-green: #4ecdc4; 
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
-            background-color: #0f172a;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            position: relative;
-            min-height: 100vh;
-            color: var(--text-light);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #0f172a; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            position: relative; min-height: 100vh; color: var(--text-light);
         }
         .container { max-width: 1600px; margin: 0 auto; padding: 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
@@ -51,17 +39,7 @@
         .form-input:focus, .form-select:focus { outline: none; border-color: var(--accent-gold); box-shadow: 0 0 0 3px var(--accent-gold-50); }
         .error-message { color: var(--danger-red); font-size: 0.8rem; margin-top: 4px; display: none; }
         input.invalid, select.invalid { border-color: var(--danger-red) !important; }
-        .btn { 
-            background-color: var(--btn-red); 
-            color: var(--text-white); 
-            border: none; 
-            padding: 10px 18px; 
-            border-radius: 5px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            transition: background-color 0.2s ease; 
-        }
-        
+        .btn { background-color: var(--btn-red); color: var(--text-white); border: none; padding: 10px 18px; border-radius: 5px; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease; }
         .btn:hover { background-color: var(--btn-red-hover); }
         .btn-primary { background-color: var(--btn-red); color: var(--text-white); }
         .btn-primary:hover { background-color: var(--btn-red-hover); }
@@ -76,780 +54,45 @@
         .student-actions { display: flex; flex-wrap: wrap; gap: 8px; }
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(11, 29, 58, 0.9); backdrop-filter: blur(5px); }
         .modal-content { background-color: var(--light-bg); margin: 5% auto; padding: 30px; border: 2px solid var(--accent-gold); border-radius: 10px; width: 90%; max-width: 800px; }
-        .form-controls-container { display: none; }
-        .form-controls-container.active { display: block; }
-        .checkbox-list .item { 
-            display: flex; 
-            align-items: center; 
-            margin-bottom: 8px; 
-            padding: 12px; 
-            background: var(--dark-bg); 
-            border: 1px solid var(--accent-gold); 
-            border-radius: 8px; 
-            transition: all 0.2s ease;
-        }
-        .checkbox-list .item:hover { 
-            background: var(--accent-gold-50); 
-            transform: translateY(-1px);
-        }
-        .checkbox-list label { 
-            font-size: 1rem; 
-            margin-left: 12px; 
-            color: var(--text-lighter); 
-            cursor: pointer; 
-            user-select: none;
-            font-weight: 500;
-        }
-        .checkbox-list input { 
-            width: 20px; 
-            height: 20px; 
-            accent-color: var(--accent-gold);
-            cursor: pointer;
-        }
         .dropdown-container { position: relative; width: 100%; }
-        .dropdown-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 12px 15px; 
-            background: var(--dark-bg); 
-            border: 2px solid var(--accent-gold); 
-            border-radius: 8px; 
-            cursor: pointer; 
-            transition: all 0.2s ease;
-            user-select: none;
-        }
-        .dropdown-header:hover { 
-            border-color: var(--accent-gold); 
-            background: var(--accent-gold-50); 
-        }
-        .dropdown-arrow { 
-            transition: transform 0.3s ease; 
-            color: var(--accent-gold);
-            font-weight: bold;
-        }
-        .dropdown-header.open .dropdown-arrow { transform: rotate(180deg); }
-        .dropdown-content { 
-            position: absolute; 
-            top: 100%; 
-            left: 0; 
-            right: 0; 
-            background: var(--dark-bg); 
-            border: 2px solid var(--accent-gold); 
-            border-top: none; 
-            border-radius: 0 0 8px 8px; 
-            max-height: 300px; 
-            overflow-y: auto; 
-            z-index: 1000; 
-            display: none;
-        }
+        .dropdown-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: var(--dark-bg); border: 2px solid var(--accent-gold); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; user-select: none; }
+        .dropdown-content { position: absolute; top: 100%; left: 0; right: 0; background: var(--dark-bg); border: 2px solid var(--accent-gold); border-top: none; border-radius: 0 0 8px 8px; max-height: 300px; overflow-y: auto; z-index: 1000; display: none; }
         .dropdown-content.open { display: block; }
-        .dropdown-controls { 
-            display: flex; 
-            gap: 8px; 
-            padding: 10px; 
-            border-bottom: 1px solid var(--accent-gold-50);
-        }
-        .dropdown-btn { 
-            padding: 6px 12px; 
-            background: var(--btn-red); 
-            color: var(--text-white); 
-            border: none; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-size: 0.9rem;
-            transition: background 0.2s ease;
-        }
-        .dropdown-btn:hover { background: var(--btn-red-hover); }
-        .dropdown-item { 
-            display: flex; 
-            align-items: center; 
-            padding: 10px 15px; 
-            cursor: pointer; 
-            transition: background 0.2s ease;
-            border-bottom: 1px solid var(--accent-gold-50);
-        }
-        .dropdown-item:hover { background: var(--accent-gold-50); }
-        .dropdown-item:last-child { border-bottom: none; }
-        .dropdown-item input { 
-            margin-right: 10px; 
-            width: 18px; 
-            height: 18px; 
-            accent-color: var(--accent-gold);
-        }
-        .dropdown-item label { 
-            color: var(--text-lighter); 
-            cursor: pointer; 
-            user-select: none;
-        }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 15px; }
-        .calendar-header { text-align: center; font-weight: bold; padding-bottom: 10px; color: var(--text-light); font-size: 0.8rem; }
-        .calendar-day { height: 50px; display: flex; flex-direction:column; align-items: center; justify-content: center; border-radius: 5px; background-color: var(--card-bg); font-weight: bold; cursor: default; line-height: 1.1; border: 2px solid var(--accent-gold); }
-        .calendar-day.workday:hover { background-color: var(--accent-gold-50); }
-        .calendar-day .f-gold { color: var(--accent-gold); } .calendar-day .f-blue { color: #64b5f6; } .calendar-day .f-red { color: var(--danger-red); } .calendar-day .f-green { color: var(--success-green); }
+        .dropdown-controls { display: flex; gap: 8px; padding: 10px; border-bottom: 1px solid var(--accent-gold-50); }
+        .dropdown-btn { padding: 6px 12px; background: var(--btn-red); color: var(--text-white); border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s ease; }
         .summary-panel { margin-top: 40px; padding-top: 25px; border-top: 2px solid var(--accent-gold); display: flex; justify-content: space-around; text-align: center; }
-        .summary-item { color: var(--text-white); }
         .summary-item .count { font-size: 2rem; font-weight: bold; color: var(--accent-gold); }
         .summary-item .label { font-size: 1rem; color: var(--text-light); }
-        .print-list-btn { margin-top: 20px; }
-
-        /* ---- SAYFA TANIMLARI (üst seviye) - Global kenar boşlukları artırıldı ---- */
-        @page attendance  { size: A4 portrait;  margin: 15mm; }   /* Devamsızlık: Dikey */
-        @page termination { size: A4 portrait;  margin: 15mm; }   /* Fesih: Dikey */
-        @page guidance    { size: A4 landscape; margin: 10mm;  }   /* Günlük & Aylık Rehberlik: Yatay */
-        @page list        { size: A4 landscape; margin: 12mm; }   /* Liste: Yatay (varsa) */
-
+        
         @media print {
             .no-print { display: none !important; }
             body, * { background: transparent !important; color: #000 !important; box-shadow: none !important; text-shadow: none !important; }
-            body { font-family: Arial, sans-serif !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             #print-container { display: block !important; }
-            .print-page-container { page-break-after: always; }
-            .dynamic-text { font-weight: bold !important; font-style: italic !important; }
-            .editable-textarea { border: 1px dotted #999 !important; padding: 1px !important; resize: none; height: auto; white-space: pre-wrap; overflow: hidden; font-family: inherit; font-size: inherit; width: 100%; background-color: transparent !important; }
-
-            .print-page-attendance, .print-page-termination {
-                @page { size: A4 portrait; margin: 15mm; }
-                height: 267mm; width: 180mm; /* Kenar boşluğu artırıldığı için boyutlar küçültüldü */
-            }
-            .print-page-monthly-guidance, .print-page-daily-guidance {
-                @page { size: A4 landscape; margin: 10mm; }
-                height: 190mm; width: 277mm; /* Kenar boşluğu artırıldığı için boyutlar küçültüldü */
-            }
-            .print-page-list {
-                @page { size: A4 landscape; margin: 12mm; }
-                height: 186mm; width: 273mm; /* Kenar boşluğu artırıldığı için boyutlar küçültüldü */
-            }
-            
-            /* AYLIK REHBERLİK - Kenar boşlukları artırıldı, tablo satırları küçültüldü */
-            .print-page-monthly-guidance .print-page { 
-                display: flex !important; 
-                justify-content: space-between; 
-                width: 100%; 
-                height: 100%; 
-                gap: 10mm !important; /* Kenar boşluğu artırıldı */
-                padding: 0 8mm !important; /* Global kenar boşluğu */
-            }
-            .print-page-monthly-guidance .print-form-half { 
-                width: 125mm !important; /* Biraz daha daraltıldı */
-                border: 2px solid #000 !important; 
-                padding: 2mm !important; /* Kenar boşluğu artırıldı */
-                display: flex; 
-                flex-direction: column; 
-                height: 100%; 
-            }
-            .print-page-monthly-guidance .editable-textarea { 
-                min-height: 18px !important; /* Daha az alan */
-                font-size: 5.5pt !important; /* Daha küçük font */
-                font-weight: bold;
-                line-height: 1.0 !important;
-                padding: 1px !important;
-            }
-            .print-page-monthly-guidance .editable-textarea.expandable-area { 
-                min-height: 30px !important; 
-            }
-            .print-page-monthly-guidance .form-content-wrapper { 
-                flex-grow: 1; 
-            }
-            .print-page-monthly-guidance tr[style*="background:#f0f0f0;"] { 
-                background-color: #f000 !important; 
-            }
-            .print-page-monthly-guidance table td {
-                padding: 0.3px !important; /* Çok az padding */
-                font-size: 4.5pt !important;
-                line-height: 1.0 !important;
-                height: 18px !important; /* Sabit düşük satır yüksekliği */
-                vertical-align: top !important;
-            }
-        
-          
-         /* GÜNLÜK REHBERLİK FORMU - NİHAİ DIŞ ÇERÇEVE YAZILI DÜZEN ▼ */
-
-            .print-page-daily-guidance {
-                page: guidance;
-            }
-            .print-page-daily-guidance .daily-guidance-container {
-                display: flex;
-                justify-content: space-between;
-                gap: 8mm;
-                height: 100%;
-            }
-            /* YENİ: Her bir form sütununu konumlandırma için temel alır */
-            .print-page-daily-guidance .daily-guidance-column {
-                width: 48%;
-                position: relative; /* Köşe yazılarını buna göre hizalar */
-                padding-top: 3mm;   /* Üst yazı için boşluk */
-                padding-bottom: 3mm;/* Alt yazı için boşluk */
-                box-sizing: border-box;
-                display: flex;
-            }
-            /* Çerçeveli form kutusu artık sütunun tamamını kaplar */
-            .print-page-daily-guidance .daily-guidance-form {
-                border: 2px solid #000;
-                padding: 3mm;
-                box-sizing: border-box;
-                width: 100%;
-                height: 100%;
-            }
-            /* YENİ: Köşe yazılarının stilleri. Artık çerçevenin dışında konumlanacaklar. */
-            .print-page-daily-guidance .top-right-text,
-            .print-page-daily-guidance .bottom-left-text {
-                position: absolute; /* Ana sütuna göre konumlanır */
-                font-size: 6pt;
-                font-weight: bold;
-            }
-            .print-page-daily-guidance .top-right-text {
-                top: 0;
-                right: 0;
-            }
-            .print-page-daily-guidance .bottom-left-text {
-                bottom: 0;
-                left: 0;
-            }
-            .print-page-daily-guidance .dynamic-text {
-                font-weight: bold;
-                font-style: italic;
-            }
-            .print-page-daily-guidance h3 {
-                font-size: 10pt;
-                text-align: center;
-                margin: 0 0 5px 0;
-            }
-            .print-page-daily-guidance .main-table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            .print-page-daily-guidance .main-table td {
-                border: 1px solid #000;
-                padding: 2px 4px;
-                font-size: 8pt;
-                vertical-align: top;
-            }
-            .print-page-daily-guidance .label-cell {
-                font-weight: bold;
-                width: 40%;
-            }
-            .print-page-daily-guidance .section-cell {
-                padding: 3px 2px;
-            }
-            .print-page-daily-guidance .section-cell p {
-                font-size: 8pt;
-                margin: 5px 0 2px 0;
-            }
-            .print-page-daily-guidance .section-cell .editable-textarea {
-                width: 100%;
-                height: 120px;
-                font-size: 8pt;
-                padding: 2px;
-                border: 1px dotted #999;
-                box-sizing: border-box;
-                resize: none;
-            }
-            .print-page-daily-guidance .signature-cell {
-                padding: 20px 2px;
-                border-bottom: none;
-            }
-            .print-page-daily-guidance .footer {
-                display: flex;
-                justify-content: space-between;
-                text-align: center;
-                font-size: 8pt;
-                padding: 0 15px;
-            }
-            .print-page-daily-guidance .notes-cell {
-                font-size: 6pt;
-                line-height: 1.1;
-                border-top: none;
-            }
-
-            /* DEVAMSIZLIK FORMLARI - Footer 5 bölümlü yapı */
-            .print-page-attendance .print-sheet-wrapper { 
-                width: 100%; 
-                height: 100%; 
-                display: flex; 
-                flex-direction: column; 
-            }
-            .print-page-attendance .print-sheet.first-half,
-            .print-page-attendance .print-sheet.second-half {
-                min-height: 49%; /* Sabit yükseklik yerine minimum yükseklik veriyoruz */
-                flex-shrink: 0;  /* Kutuların küçülmesini engelliyoruz */
-            }
-            .print-page-attendance .print-sheet.second-half {
-                margin-top: 2%; /* Aradaki boşluk kalsın */
-            }
-            .print-page-attendance .sheet-content {
-                break-inside: avoid; /* Sayfa ortasında bölünmeyi engeller */
-            }
-            .print-page-attendance .sheet-content { 
-                display: flex; 
-                flex-direction: column; 
-                height: 100%; 
-                border: 2px solid #000; 
-                padding: 3mm; 
-            }
-            .print-page-attendance .print-main-title { 
-                text-align: center; 
-                font-weight: bold; 
-                font-size: 8pt; 
-                text-transform: uppercase; 
-                border-bottom: 2px solid #f4c542; 
-                padding-bottom: 2px; 
-            }
-            .print-page-attendance .print-header-table { 
-                width: 100%; 
-                border-collapse: collapse; 
-                margin: 4px 0; 
-                font-size: 8pt; 
-            }
-            .print-page-attendance .print-header-table td { 
-                border: 1px solid #000; 
-                padding: 2px 4px; 
-                vertical-align: top; 
-            }
-            .print-page-attendance .print-main-table-wrapper { 
-                flex-grow: 1; 
-            }
-            .print-page-attendance .print-main-table { 
-                width: 100%; 
-                border-collapse: collapse; 
-                table-layout: auto; 
-            }
-            .print-page-attendance .print-main-table th, 
-            .print-page-attendance .print-main-table td { 
-                border: 1px solid #000;
-                text-align: center; 
-                padding: 1px; 
-                line-height: 1.2; 
-                vertical-align: middle; 
-                font-size: 6pt; 
-                height: 12px; 
-                overflow: hidden; 
-            }
-            .print-page-attendance .print-main-table .student-info-cell { 
-                text-align: left; 
-                padding: 1px 2px; 
-                white-space: normal; /* Metnin alt satıra geçmesini sağlar */
-                word-break: break-word; /* Satıra sığmayan çok uzun kelimeleri böler */
-                vertical-align: middle;
-            }
-            .print-page-attendance .print-main-table .header-cell-name { 
-                width: 220px; 
-                min-width: 80px; 
-            }
-            .print-page-attendance .print-main-table .header-cell-no { 
-                width: 100px;
-                min-width: 30px;  
-            }
-            .print-page-attendance .print-main-table .header-cell-field { 
-                width: 150px;
-                min-width: 60px; 
-            }
-            .print-page-attendance .print-main-table .header-cell-days { 
-                width: auto; 
-                min-width: 15px; 
-                font-size: 4pt; 
-                writing-mode: vertical-rl; 
-                text-orientation: mixed; 
-                transform: rotate(180deg); 
-            }
-            .print-page-attendance .print-main-table .day-cell { 
-                width: calc((100% - 200px) / 31); 
-                min-width: 8px; 
-                max-width: 12px; 
-            }
-            .print-page-attendance .print-main-table .header-cell-total { 
-                width: auto; 
-                min-width: 25px; 
-            }
-
-            .print-page-attendance .print-main-table .day-cell {
-                width: 2.5%;
-                min-width: 12px; /* Çok daralmasını önlemek için */
-                box-sizing: border-box; /* Genişlik hesaplamasını düzeltmek için */
-            }
-
-            /* YENİ 5 BÖLÜMLÜ FOOTER DÜZENİ (SON HALİ) */
-            .print-page-attendance .print-footer {
-                width: 100%;
-                margin-top: auto;
-                padding-top: 5px;
-                display: flex;
-                justify-content: space-between;
-                align-items: stretch; /* Kutuların yüksekliklerini eşitler */
-                font-size: 6pt !important;
-                gap: 2px;
-                /* Sabit yükseklik kaldırıldı, artık otomatik ayarlanacak */
-            }
-
-            .print-page-attendance .signature-section {
-                text-align: center;
-                width: 19% !important; /* DÜZELTİLDİ */
-                line-height: 1.2;
-                border: 1px solid #000;
-                padding: 2px !important;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
-
-            .print-page-attendance .explanation-section {
-                width: 21% !important; /* DÜZELTİLDİ */
-                text-align: center;
-                font-size: 6.0pt !important;
-                line-height: 1.2;
-                border: 1px solid #000;
-                padding: 2px !important;
-                display: flex;
-                align-items: flex-start;
-                justify-content: center;
-            }
-
-            .print-page-attendance .legend-section {
-                width: 22% !important; /* Bu doğru, değiştirilmedi */
-                text-align: left;
-                display: flex;
-                align-items: center;
-            }
-
-            .print-page-attendance .legend-box {
-                font-size: 5.5pt !important;
-                border: 1px solid #000; 
-                padding: 2px !important;
-                line-height: 1.2;
-                width: 100%;
-                height: 100%;                 /* YENİ: Kapsayıcısını dikeyde doldurur */
-                display: flex;                 /* YENİ: İçindeki yazıyı ortalamak için */
-                flex-direction: column;        /* YENİ: İçindeki yazıyı ortalamak için */
-                justify-content: center;       /* YENİ: İçindeki yazıyı dikeyde ortalar */
-            }
-
-            /* Renk ve font kuralları aynı kalabilir */
-            .print-page-attendance .f-bold {
-                font-weight: bold;
-            }
-            .print-page-attendance .f-blue {
-                color: blue !important;
-            }
-            .print-page-attendance .f-green {
-                color: green !important;
-            }
-            .print-page-attendance .f-red {
-                color: red !important;
-                font-weight: bold !important;
-            }
-            .print-page-attendance .f-teal {
-                color: teal !important;
-            }
-
-
-                        
-            /* FESİH FORMLARI */
-            .print-page-termination .termination-container { 
-                padding: 5mm; 
-                border: 2px solid #000; 
-                height: 100%; 
-                display: flex; 
-                flex-direction: column; 
-                font-family: 'Times New Roman', serif; 
-            }
-            .print-page-termination h1 { 
-                font-size: 14pt; 
-                font-weight: bold; 
-                text-align: center; 
-            } 
-            .print-page-termination h2 { 
-                font-size: 16pt; 
-                font-weight: bold; 
-                margin: 20px 0; 
-                text-align: center; 
-                line-height: 1.4; 
-            }
-            .print-page-termination table { 
-                width: 100%; 
-                margin-top: 30px; 
-                font-size: 12pt; 
-                border-collapse: collapse; 
-            }
-            .print-page-termination td { 
-                padding: 10px 5px; 
-                vertical-align: bottom; 
-            }
-            .print-page-termination .label-col { 
-                width: 30%; 
-                font-weight: bold; 
-            } 
-            .print-page-termination .separator-col { 
-                width: 2%; 
-            } 
-            .print-page-termination .value-col { 
-                border-bottom: 1px dotted #000; 
-            }
-            .print-page-termination .reasons { 
-                margin-top: 40px; 
-                flex-grow: 1; 
-                display: flex; 
-                flex-direction: column; 
-            }
-            .print-page-termination .reasons .label-col { 
-                font-weight: bold; 
-                font-size: 12pt; 
-            }
-            .print-page-termination .reasons .value-box { 
-                flex-grow: 1; 
-                border: 1px solid #000; 
-                margin-top: 5px; 
-                padding: 5px; 
-                font-weight: normal; 
-            }
-            .print-page-termination .signatures { 
-                display: flex; 
-                justify-content: space-between; 
-                margin-top: auto; 
-                padding-top: 60px; 
-                text-align: center; 
-                font-size: 12pt; 
-            }
-
-            /* LİSTE FORMLARI */
-            .print-page-list .list-container { 
-                padding: 10mm; 
-            }
-            .print-page-list h2 { 
-                text-align: center; 
-                font-size: 14pt; 
-                margin-bottom: 20px; 
-            }
-            .print-page-list .business-section { 
-                margin-bottom: 12px; 
-                page-break-inside: avoid; 
-            }
-            .print-page-list .business-header { 
-                background-color: #f0f0f0; 
-                padding: 5px; 
-                font-weight: bold; 
-                border: 1px solid #f000; 
-            }
-            .print-page-list .student-list-table { 
-                width: 100%; 
-                border-collapse: collapse; 
-                font-size: 8pt; 
-            }
-            .print-page-list .student-list-table th, 
-            .print-page-list .student-list-table td { 
-                border: 1px solid #000; 
-                padding: 3px; 
-                text-align: left; 
-            }
-            .print-page-list .student-list-table th { 
-                background-color: #f0f0f0; 
-                font-weight: bold; 
-            }
-
-            .print-page-monthly-guidance table td:first-child {
-                font-size: 5pt !important;
-                font-weight: bold !important;
-                line-height: 1.0 !important; /* EKLENDİ: Satır aralığını artırır */
-            }
-
-            .print-page-monthly-guidance table:first-of-type .dynamic-text {
-                font-size: 5.5pt !important;
-                font-weight: bold !important;
-                font-style: italic !important; /* İsteğiniz olan italik stilini ekler */
-                line-height: 1.2 !important;   /* Okunurluk için satır aralığını biraz artırdım */
-            }           
         }
-        
-        
-        #print-container { display: none; }
-        .print-page-container { page-break-after: always; break-after: page; }
-
-        /* ---- KONTEYNER -> SAYFA ATAMALARI ---- */
-        .print-page-attendance  { page: attendance;  height: 267mm; width: 180mm; }
-        .print-page-termination { page: termination; height: 267mm; width: 180mm; }
-        .print-page-monthly-guidance,
-        .print-page-daily-guidance { page: guidance; height: 190mm; width: 277mm; }
-        .print-page-list { page: list; height: 186mm; width: 273mm; }
-        
-
-
-        .modal { 
-            display: none; 
-            position: fixed; 
-            z-index: 1000; 
-            left: 0; 
-            top: 0; 
-            width: 100%; 
-            height: 100%; 
-            background-color: rgba(11, 29, 58, 0.9); 
-        }
-
-
-
-        /* =================================== */
-        /* MOBİL UYUMLULUK İYİLEŞTİRMELERİ     */
-        /* =================================== */
-
-        /* Temel mobil ayarlar */
-        * {
-            -webkit-tap-highlight-color: rgba(244, 197, 66, 0.3);
-            -webkit-touch-callout: none;
-        }
-
-        /* Tablet için - 768px ve altı */
-        @media (max-width: 768px) {
-            .container { padding: 10px; }
-            
-            .grid { 
-                grid-template-columns: 1fr; 
-                gap: 15px; 
-            }
-            
-            .tabs { 
-                flex-direction: column; 
-            }
-            
-            .tab { 
-                padding: 15px; 
-                font-size: 0.9rem; 
-            }
-            
-            .modal-content { 
-                width: 95%; 
-                padding: 20px; 
-                margin: 5% auto; 
-            }
-            
-            .dropdown-header { 
-                padding: 15px; 
-            }
-            
-            .dropdown-item { 
-                padding: 15px; 
-            }
-        }
-
-        /* Telefon için - 480px ve altı */
         @media (max-width: 480px) {
-            .container { 
-                padding: 5px; 
-            }
-            
-            .panel { 
-                padding: 15px; 
-            }
-            
-            .form-group { 
-                margin-bottom: 12px; 
-            }
-            
-            .btn { 
-                padding: 8px 12px; 
-                font-size: 0.85rem;
-                min-height: 40px;
-                width: auto;
-                max-width: 100%;
-                word-wrap: break-word;
-            }
-            
-            .student-actions {
-                gap: 5px !important;
-            }
-            
-            .student-actions .btn {
-                flex: 1;
-                min-width: 60px;
-                font-size: 0.8rem;
-                padding: 6px 8px;
-            }
-                    
-            .student-item { 
-                flex-direction: column; 
-                gap: 10px; 
-            }
-                        
-            
-            .summary-panel { 
-                flex-direction: column; 
-                gap: 15px; 
-            }
-            
-            /* Grid düzeni tek sütun */
-            .grid[style*="grid-template-columns: 1fr 1fr"] {
-                grid-template-columns: 1fr !important;
-            }
-            
-            .grid[style*="grid-template-columns: 1fr 1fr 1fr 1fr"] {
-                grid-template-columns: 1fr !important;
-            }
-            
-            /* Dropdown daha büyük */
-            .dropdown-content {
-                max-height: 250px;
-            }
-            
-            /* Form inputları daha büyük */
-            .form-input, .form-select {
-                padding: 15px;
-                font-size: 16px; /* iOS zoom önleme */
-            }
-            
-            /* Modal tam ekran benzeri */
-            .modal-content {
-                width: 98%;
-                height: 90vh;
-                overflow-y: auto;
-            }
+            .btn { padding: 8px 12px; font-size: 0.85rem; min-height: 40px; }
+            .student-actions { gap: 5px !important; }
+            .student-actions .btn { flex: 1; min-width: 60px; font-size: 0.8rem; padding: 6px 8px; }
+            .student-item { flex-direction: column; gap: 10px; }
+            .summary-panel { flex-direction: column; gap: 15px; }
+            .form-input, .form-select { font-size: 16px; }
+            .modal-content { width: 98%; height: 90vh; overflow-y: auto; }
         }
-
-        /* Çok küçük ekranlar - 320px */
-        @media (max-width: 320px) {
-            .tab {
-                padding: 10px 5px;
-                font-size: 0.8rem;
-            }
-            
-            .btn {
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-            
-            .modal-content {
-                width: 99%;
-                padding: 10px;
-            }
-        }
-
-        /* Touch optimizasyonu */
-        @media (hover: none) and (pointer: coarse) {
-            .btn:hover,
-            .dropdown-header:hover,
-            .dropdown-item:hover {
-                transform: none;
-                background-color: var(--accent-gold-50);
-            }
-            
-            /* Touch feedback */
-            .btn:active,
-            .dropdown-item:active {
-                transform: scale(0.98);
-            }
-        }
-
-
-     </style>
+    </style>
 </head>
 <body>
 
-    <div id="auth-container" class="no-print" style="background: var(--dark-bg); padding: 15px; border-bottom: 2px solid var(--accent-gold);">
-        <div id="login-section" style="text-align: center;">
-            <h2 style="color: var(--accent-gold); margin-bottom: 10px;">🎓 MESEM Takip Sistemi</h2>
-            <button id="google-login-btn" class="btn btn-primary">🔐 Google Hesabımla Giriş</button>
-        </div>
-        <div id="user-info" style="display: none; text-align: right;">
-            <span id="user-name" style="color: var(--text-light); margin-right: 15px;"></span>
-            <button id="logout-btn" class="btn btn-danger">Çıkış</button>
-        </div>
+    // Bu kısmı 1136. satırdan ÖNCE ekle:
+<div id="auth-container" class="no-print" style="background: var(--dark-bg); padding: 15px; border-bottom: 2px solid var(--accent-gold);">
+    <div id="login-section" style="text-align: center;">
+        <h2 style="color: var(--accent-gold); margin-bottom: 10px;">🎓 MESEM Takip Sistemi</h2>
+        <button id="google-login-btn" class="btn btn-primary">🔐 Google Hesabımla Giriş</button>
     </div>
+    <div id="user-info" style="display: none; text-align: right;">
+        <span id="user-name" style="color: var(--text-light); margin-right: 15px;"></span>
+        <button id="logout-btn" class="btn btn-danger">Çıkış</button>
+    </div>
+</div>
 
     <div class="container no-print" style="display: none;">
         <div class="tabs">
@@ -866,15 +109,6 @@
                          <div class="form-group"><label for="asstPrincipalName">Koordinatör Müdür Yardımcısı</label><input type="text" id="asstPrincipalName" class="form-input"></div>
                          <div class="form-group"><label for="principalName">Okul Müdürü</label><input type="text" id="principalName" class="form-input"></div>
                     </div>
-                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--accent-gold);">
-                        <h3 style="color: var(--white); font-size: 1.2rem; margin-bottom: 15px;">Veri Yönetimi</h3>
-                        <div style="display: flex; gap: 15px;">
-                            <button class="btn btn-primary" id="download-data-btn">Verileri İndir</button>
-                            <button class="btn" id="upload-data-btn">Verileri Yükle</button>
-                            <button class="btn" id="print-list-btn">Liste Yazdır</button>
-                            <input type="file" id="upload-input" accept=".json" style="display: none;">
-                        </div>
-                    </div>
                 </div>
                 <div style="display:flex; justify-content: space-between; align-items: center;">
                     <h2>İşletmeler</h2>
@@ -890,9 +124,8 @@
                         <div id="totalStudents" class="count">0</div>
                         <div class="label">Toplam Öğrenci</div>
                     </div>
-                </div>
+                 </div>
             </div>
-            
             <div id="generator-panel" class="tab-content">
                  <h2>Form Oluştur</h2>
                  <div class="form-group">
@@ -903,1055 +136,188 @@
                         <option value="daily_guidance">Günlük Rehberlik Formu</option>
                      </select>
                  </div>
-
-                <div id="controls-monthly" class="form-controls-container active">
-                    <div class="form-group" style="grid-column: 1 / -1;">
-                        <label for="business-select-dropdown">2. İşletme(ler)i Seçin</label>
-                        <div class="dropdown-container">
-                            <div class="dropdown-header" id="business-dropdown-header">
-                                <span id="business-selected-text">İşletme seçin...</span>
-                                <span class="dropdown-arrow">▼</span>
-                            </div>
-                            <div class="dropdown-content" id="business-dropdown-content">
-                                <div class="dropdown-controls">
-                                    <button type="button" class="dropdown-btn" id="select-all-businesses">Tümünü Seç</button>
-                                    <button type="button" class="dropdown-btn" id="deselect-all-businesses">Temizle</button>
-                                </div>
-                                <div id="business-dropdown-list"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group"><label for="genMonthSelect">3. Ay</label><select id="genMonthSelect" class="form-select"></select></div>
-                    <div class="form-group"><label for="genYearSelect">4. Yıl</label><input type="number" id="genYearSelect" class="form-input"></div>
-                </div>
-
-                <div id="controls-daily" class="form-controls-container">
-                     <div class="form-group" style="grid-column: 1 / -1;"><label>2. Ay ve Yıl Seçin</label></div>
-                     <div class="form-group"><label for="dailyMonthSelect">Ay</label><select id="dailyMonthSelect" class="form-select"></select></div>
-                     <div class="form-group"><label for="dailyYearSelect">Yıl</label><input type="number" id="dailyYearSelect" class="form-input"></div>
-                    <div class="form-group" style="grid-column: 1 / -1;">
-                        <label for="daily-business-select-dropdown">3. İşletme(ler)i Seçin</label>
-                        <div class="dropdown-container">
-                            <div class="dropdown-header" id="daily-business-dropdown-header">
-                                <span id="daily-business-selected-text">İşletme seçin...</span>
-                                <span class="dropdown-arrow">▼</span>
-                            </div>
-                            <div class="dropdown-content" id="daily-business-dropdown-content">
-                                <div class="dropdown-controls">
-                                    <button type="button" class="dropdown-btn" id="select-all-daily-businesses">Tümünü Seç</button>
-                                    <button type="button" class="dropdown-btn" id="deselect-all-daily-businesses">Temizle</button>
-                                </div>
-                                <div id="daily-business-dropdown-list"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group"><label for="genWeekSelect1">4. Hafta Seçin</label><select id="genWeekSelect1" class="form-select"></select></div>
-                </div>
-                 <button class="btn btn-primary" id="generate-sheet-btn" style="margin-top:20px; width: 100%; padding: 15px;">Formları Oluştur ve Yazdır</button>
-            </div>
-        </div>
-    </div>
-    <div id="print-container"></div>
-    <div class="modal" id="businessModal"><div class="modal-content"><h2 id="businessModalTitle"></h2><form id="businessForm" novalidate><input type="hidden" id="businessId"><div class="grid" style="grid-template-columns: 1fr 1fr;"><div class="form-group"><label for="businessName">İşletme Adı<span class="required-star">*</span></label><input required class="form-input" id="businessName" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessAddress">İşletme Adresi</label><input class="form-input" id="businessAddress" type="text"></div><div class="form-group"><label for="businessPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="businessPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessOfficial">İşletme Yetkilisi<span class="required-star">*</span></label><input required class="form-input" id="businessOfficial" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessVisitDay">Koordinatör Ziyaret Günü<span class="required-star">*</span></label><select required class="form-select" id="businessVisitDay"><option disabled selected value="">Günü Seçin</option><option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option></select><span class="error-message"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
-   <div class="modal" id="studentModal"><div class="modal-content"><h2 id="studentModalTitle"></h2><form id="studentForm" novalidate><input id="studentBusinessId" type="hidden"><input id="studentId" type="hidden"><div class="grid" style="grid-template-columns: 1fr 1fr;"><div class="form-group"><label for="studentClass">Sınıfı</label><select class="form-select" id="studentClass"><option value="9">9. Sınıf</option><option value="10">10. Sınıf</option><option value="11">11. Sınıf</option><option value="12">12. Sınıf</option></select></div><div class="form-group"><label for="studentNo">Okul No <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentNo" inputmode="numeric" pattern="[0-9]*" placeholder="1234" type="text"></div><div class="form-group"><label for="studentName">Adı Soyadı<span class="required-star">*</span></label><input required class="form-input" id="studentName" type="text"><span class="error-message"></span></div><div class="form-group"><label for="studentField">Alan/Dalı</label><input class="form-input" id="studentField" type="text" placeholder="Örn: Bilişim Teknolojileri"></div><div class="form-group"><label for="studentSchoolDay">Okul Günü</label><select class="form-select" id="studentSchoolDay"><option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option></select></div><div class="form-group"><label for="studentPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"></div><div class="form-group"><label for="studentStartDate">İşe Başlama Tarihi (Sözleşme)<span class="required-star">*</span></label><input required class="form-input" id="studentStartDate" type="date"><span class="error-message"></span></div><div class="form-group"><label for="studentEndDate">İşten Ayrılma Tarihi (Fesih)</label><input class="form-input" id="studentEndDate" type="date"><span class="error-message" id="studentEndDateError"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
-    <div class="modal" id="terminationModal"><div class="modal-content"><h2>Sözleşme Fesih Bilgileri</h2><form id="terminationForm"><input id="terminationStudentId" type="hidden"><input id="terminationBusinessId" type="hidden"><div class="form-group"><label for="terminationDate">Fesih Tarihi<span class="required-star">*</span></label><input required class="form-input" id="terminationDate" type="date"></div><div class="form-group" style="margin-top:15px;"><label for="terminationReason">Fesih Nedenleri<span class="required-star">*</span></label><textarea required class="form-input" id="terminationReason" rows="5"></textarea></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Fesih Tutanağını Oluştur ve Yazdır</button></div></form></div></div>
-    <div id="absenceModal" class="modal"><div class="modal-content"><h2></h2><div class="grid" style="grid-template-columns: 1fr 1fr; align-items:end;"><div class="form-group"><label for="absenceMonthSelect">Ay</label><select id="absenceMonthSelect" class="form-select"></select></div><div class="form-group"><label for="absenceYearSelect">Yıl</label><input type="number" id="absenceYearSelect" class="form-input"></div></div><div class="grid calendar-grid-header" style="grid-template-columns: repeat(7, 1fr); margin-top: 15px;"><div class="calendar-header">Pzt</div><div class="calendar-header">Sal</div><div class="calendar-header">Çar</div><div class="calendar-header">Per</div><div class="calendar-header">Cum</div><div class="calendar-header">Cmt</div><div class="calendar-header">Paz</div></div><div id="absenceCalendarGrid" class="calendar-grid"></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button type="button" class="btn btn-danger" data-action="cancel-modal">Kapat</button><button type="button" class="btn btn-primary" id="saveAbsenceBtn">Devamsızlığı Kaydet</button></div></div>
-    
-    <div class="modal" id="qrPrePrintModal" style="cursor: pointer;">
-    <div class="modal-content" style="max-width: 500px; text-align: center; background: var(--card-bg); border: 2px solid var(--accent-gold); border-radius: 10px; padding: 30px; margin: 10% auto; cursor: default;">
-        <h2 style="color: var(--accent-gold); margin-bottom: 20px;">Formlar Hazırlanıyor</h2>
-        <p style="color: var(--text-light); font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px;">
-            Belgeleriniz oluşturuluyor. Lütfen bekleyin. Bu pencereyi kapatmak için dışarıdaki herhangi bir alana tıklayabilirsiniz.
-        </p>
-        <div id="processingSpinner" style="display: flex; justify-content: center; align-items: center; height: 100px; color: var(--accent-gold);">
-            <svg width="60" height="60" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_ajPY{transform-origin:center;animation:spinner_AtaB .75s infinite linear}@keyframes spinner_AtaB{100%{transform:rotate(360deg)}}</style><path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" fill="currentColor"/><path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" class="spinner_ajPY" fill="currentColor"/></svg>
-        </div>
-    </div>
-</div>
-    
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#f4c542">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>MESEM Günlük ve Aylık Rehberlik- Devamsızlık- Fesih Formları</title>
-    <style>
-        :root { 
-            --dark-bg: #0f172a; 
-            --light-bg: #0f172a; 
-            --card-bg: #0f172a; 
-            --accent-gold: #f4c542;
-            --accent-gold-50: rgba(244, 197, 66, 0.5);
-            --btn-red: #b22234;
-            --btn-red-hover: #9b1d2d;
-            --text-light: #e0e6ed; 
-            --text-lighter: #f0f4f8; 
-            --text-white: #ffffff; 
-            --danger-red: #ff6b7a; 
-            --success-green: #4ecdc4; 
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
-            background-color: #0f172a;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            position: relative;
-            min-height: 100vh;
-            color: var(--text-light);
-        }
-        .container { max-width: 1600px; margin: 0 auto; padding: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .tabs { display: flex; background: var(--light-bg); border-radius: 10px 10px 0 0; border: 2px solid var(--accent-gold); border-bottom: none; }
-        .tab { flex: 1; padding: 18px; text-align: center; cursor: pointer; color: var(--text-light); font-weight: 600; font-size: 1rem; transition: all 0.2s ease; border: none; background: transparent; }
-        .tab.active { color: var(--accent-gold); background-color: var(--card-bg); }
-        .content { background: var(--light-bg); border-radius: 0 0 10px 10px; border: 2px solid var(--accent-gold); min-height: 70vh; }
-        .tab-content { display: none; padding: 30px; }
-        .tab-content.active { display: block; }
-        .panel { background-color: var(--card-bg); padding: 25px; margin-bottom: 25px; border: 2px solid var(--accent-gold); border-radius: 8px; }
-        .panel h2, .content h2 { color: var(--text-white); font-size: 1.5rem; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--accent-gold); }
-        .form-group { position: relative; display: flex; flex-direction: column; margin-bottom: 15px; }
-        label { font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-lighter); }
-        label .required-star { color: var(--danger-red); font-size: 1.1rem; margin-left: 4px; }
-        label .field-hint { color: var(--accent-gold); font-size: 0.8rem; font-weight: normal; margin-left: 8px; }
-        .form-input, .form-select { width: 100%; background-color: var(--dark-bg); color: var(--text-lighter); border: 2px solid var(--accent-gold); border-radius: 5px; padding: 12px; font-size: 1rem; }
-        .form-input:focus, .form-select:focus { outline: none; border-color: var(--accent-gold); box-shadow: 0 0 0 3px var(--accent-gold-50); }
-        .error-message { color: var(--danger-red); font-size: 0.8rem; margin-top: 4px; display: none; }
-        input.invalid, select.invalid { border-color: var(--danger-red) !important; }
-        .btn { 
-            background-color: var(--btn-red); 
-            color: var(--text-white); 
-            border: none; 
-            padding: 10px 18px; 
-            border-radius: 5px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            transition: background-color 0.2s ease; 
-        }
-        
-        .btn:hover { background-color: var(--btn-red-hover); }
-        .btn-primary { background-color: var(--btn-red); color: var(--text-white); }
-        .btn-primary:hover { background-color: var(--btn-red-hover); }
-        .btn-danger { background-color: #dc3545; color: var(--text-white); }
-        .btn-danger:hover { background-color: #c82333; }
-        .accordion-header { background-color: var(--card-bg); color: var(--text-white); padding: 15px 20px; border-radius: 5px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-top: 15px; border: 2px solid var(--accent-gold); }
-        .accordion-content { padding: 20px; border: 2px solid var(--accent-gold); border-top: none; border-radius: 0 0 5px 5px; display: none; background: var(--card-bg); }
-        .accordion-content.open { display: block; }
-        .student-item { display: flex; justify-content: space-between; align-items: center; background-color: var(--dark-bg); padding: 10px 15px; border-radius: 5px; margin-bottom: 8px; flex-wrap: wrap; gap: 10px; border: 2px solid var(--accent-gold); }
-        .student-info strong { font-size: 1rem; color: var(--text-lighter); }
-        .student-info small { font-size: 0.8rem; color: var(--text-light); }
-        .student-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(11, 29, 58, 0.9); backdrop-filter: blur(5px); }
-        .modal-content { background-color: var(--light-bg); margin: 5% auto; padding: 30px; border: 2px solid var(--accent-gold); border-radius: 10px; width: 90%; max-width: 800px; }
-        .form-controls-container { display: none; }
-        .form-controls-container.active { display: block; }
-        .checkbox-list .item { 
-            display: flex; 
-            align-items: center; 
-            margin-bottom: 8px; 
-            padding: 12px; 
-            background: var(--dark-bg); 
-            border: 1px solid var(--accent-gold); 
-            border-radius: 8px; 
-            transition: all 0.2s ease;
-        }
-        .checkbox-list .item:hover { 
-            background: var(--accent-gold-50); 
-            transform: translateY(-1px);
-        }
-        .checkbox-list label { 
-            font-size: 1rem; 
-            margin-left: 12px; 
-            color: var(--text-lighter); 
-            cursor: pointer; 
-            user-select: none;
-            font-weight: 500;
-        }
-        .checkbox-list input { 
-            width: 20px; 
-            height: 20px; 
-            accent-color: var(--accent-gold);
-            cursor: pointer;
-        }
-        .dropdown-container { position: relative; width: 100%; }
-        .dropdown-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 12px 15px; 
-            background: var(--dark-bg); 
-            border: 2px solid var(--accent-gold); 
-            border-radius: 8px; 
-            cursor: pointer; 
-            transition: all 0.2s ease;
-            user-select: none;
-        }
-        .dropdown-header:hover { 
-            border-color: var(--accent-gold); 
-            background: var(--accent-gold-50); 
-        }
-        .dropdown-arrow { 
-            transition: transform 0.3s ease; 
-            color: var(--accent-gold);
-            font-weight: bold;
-        }
-        .dropdown-header.open .dropdown-arrow { transform: rotate(180deg); }
-        .dropdown-content { 
-            position: absolute; 
-            top: 100%; 
-            left: 0; 
-            right: 0; 
-            background: var(--dark-bg); 
-            border: 2px solid var(--accent-gold); 
-            border-top: none; 
-            border-radius: 0 0 8px 8px; 
-            max-height: 300px; 
-            overflow-y: auto; 
-            z-index: 1000; 
-            display: none;
-        }
-        .dropdown-content.open { display: block; }
-        .dropdown-controls { 
-            display: flex; 
-            gap: 8px; 
-            padding: 10px; 
-            border-bottom: 1px solid var(--accent-gold-50);
-        }
-        .dropdown-btn { 
-            padding: 6px 12px; 
-            background: var(--btn-red); 
-            color: var(--text-white); 
-            border: none; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-size: 0.9rem;
-            transition: background 0.2s ease;
-        }
-        .dropdown-btn:hover { background: var(--btn-red-hover); }
-        .dropdown-item { 
-            display: flex; 
-            align-items: center; 
-            padding: 10px 15px; 
-            cursor: pointer; 
-            transition: background 0.2s ease;
-            border-bottom: 1px solid var(--accent-gold-50);
-        }
-        .dropdown-item:hover { background: var(--accent-gold-50); }
-        .dropdown-item:last-child { border-bottom: none; }
-        .dropdown-item input { 
-            margin-right: 10px; 
-            width: 18px; 
-            height: 18px; 
-            accent-color: var(--accent-gold);
-        }
-        .dropdown-item label { 
-            color: var(--text-lighter); 
-            cursor: pointer; 
-            user-select: none;
-        }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 15px; }
-        .calendar-header { text-align: center; font-weight: bold; padding-bottom: 10px; color: var(--text-light); font-size: 0.8rem; }
-        .calendar-day { height: 50px; display: flex; flex-direction:column; align-items: center; justify-content: center; border-radius: 5px; background-color: var(--card-bg); font-weight: bold; cursor: default; line-height: 1.1; border: 2px solid var(--accent-gold); }
-        .calendar-day.workday:hover { background-color: var(--accent-gold-50); }
-        .calendar-day .f-gold { color: var(--accent-gold); } .calendar-day .f-blue { color: #64b5f6; } .calendar-day .f-red { color: var(--danger-red); } .calendar-day .f-green { color: var(--success-green); }
-        .summary-panel { margin-top: 40px; padding-top: 25px; border-top: 2px solid var(--accent-gold); display: flex; justify-content: space-around; text-align: center; }
-        .summary-item { color: var(--text-white); }
-        .summary-item .count { font-size: 2rem; font-weight: bold; color: var(--accent-gold); }
-        .summary-item .label { font-size: 1rem; color: var(--text-light); }
-        .print-list-btn { margin-top: 20px; }
-
-        /* ---- SAYFA TANIMLARI (üst seviye) - Global kenar boşlukları artırıldı ---- */
-        @page attendance  { size: A4 portrait;  margin: 15mm; }   /* Devamsızlık: Dikey */
-        @page termination { size: A4 portrait;  margin: 15mm; }   /* Fesih: Dikey */
-        @page guidance    { size: A4 landscape; margin: 10mm;  }   /* Günlük & Aylık Rehberlik: Yatay */
-        @page list        { size: A4 landscape; margin: 12mm; }   /* Liste: Yatay (varsa) */
-
-        @media print {
-            .no-print { display: none !important; }
-            body, * { background: transparent !important; color: #000 !important; box-shadow: none !important; text-shadow: none !important; }
-            body { font-family: Arial, sans-serif !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            #print-container { display: block !important; }
-            .print-page-container { page-break-after: always; }
-            .dynamic-text { font-weight: bold !important; font-style: italic !important; }
-            .editable-textarea { border: 1px dotted #999 !important; padding: 1px !important; resize: none; height: auto; white-space: pre-wrap; overflow: hidden; font-family: inherit; font-size: inherit; width: 100%; background-color: transparent !important; }
-
-            .print-page-attendance, .print-page-termination {
-                @page { size: A4 portrait; margin: 15mm; }
-                height: 267mm; width: 180mm; /* Kenar boşluğu artırıldığı için boyutlar küçültüldü */
-            }
-            .print-page-monthly-guidance, .print-page-daily-guidance {
-                @page { size: A4 landscape; margin: 10mm; }
-                height: 190mm; width: 277mm; /* Kenar boşluğu artırıldığı için boyutlar küçültüldü */
-            }
-            .print-page-list {
-                @page { size: A4 landscape; margin: 12mm; }
-                height: 186mm; width: 273mm; /* Kenar boşluğu artırıldığı için boyutlar küçültüldü */
-            }
-            
-            /* AYLIK REHBERLİK - Kenar boşlukları artırıldı, tablo satırları küçültüldü */
-            .print-page-monthly-guidance .print-page { 
-                display: flex !important; 
-                justify-content: space-between; 
-                width: 100%; 
-                height: 100%; 
-                gap: 10mm !important; /* Kenar boşluğu artırıldı */
-                padding: 0 8mm !important; /* Global kenar boşluğu */
-            }
-            .print-page-monthly-guidance .print-form-half { 
-                width: 125mm !important; /* Biraz daha daraltıldı */
-                border: 2px solid #000 !important; 
-                padding: 2mm !important; /* Kenar boşluğu artırıldı */
-                display: flex; 
-                flex-direction: column; 
-                height: 100%; 
-            }
-            .print-page-monthly-guidance .editable-textarea { 
-                min-height: 18px !important; /* Daha az alan */
-                font-size: 5.5pt !important; /* Daha küçük font */
-                font-weight: bold;
-                line-height: 1.0 !important;
-                padding: 1px !important;
-            }
-            .print-page-monthly-guidance .editable-textarea.expandable-area { 
-                min-height: 30px !important; 
-            }
-            .print-page-monthly-guidance .form-content-wrapper { 
-                flex-grow: 1; 
-            }
-            .print-page-monthly-guidance tr[style*="background:#f0f0f0;"] { 
-                background-color: #f000 !important; 
-            }
-            .print-page-monthly-guidance table td {
-                padding: 0.3px !important; /* Çok az padding */
-                font-size: 4.5pt !important;
-                line-height: 1.0 !important;
-                height: 18px !important; /* Sabit düşük satır yüksekliği */
-                vertical-align: top !important;
-            }
-        
-          
-         /* GÜNLÜK REHBERLİK FORMU - NİHAİ DIŞ ÇERÇEVE YAZILI DÜZEN ▼ */
-
-            .print-page-daily-guidance {
-                page: guidance;
-            }
-            .print-page-daily-guidance .daily-guidance-container {
-                display: flex;
-                justify-content: space-between;
-                gap: 8mm;
-                height: 100%;
-            }
-            /* YENİ: Her bir form sütununu konumlandırma için temel alır */
-            .print-page-daily-guidance .daily-guidance-column {
-                width: 48%;
-                position: relative; /* Köşe yazılarını buna göre hizalar */
-                padding-top: 3mm;   /* Üst yazı için boşluk */
-                padding-bottom: 3mm;/* Alt yazı için boşluk */
-                box-sizing: border-box;
-                display: flex;
-            }
-            /* Çerçeveli form kutusu artık sütunun tamamını kaplar */
-            .print-page-daily-guidance .daily-guidance-form {
-                border: 2px solid #000;
-                padding: 3mm;
-                box-sizing: border-box;
-                width: 100%;
-                height: 100%;
-            }
-            /* YENİ: Köşe yazılarının stilleri. Artık çerçevenin dışında konumlanacaklar. */
-            .print-page-daily-guidance .top-right-text,
-            .print-page-daily-guidance .bottom-left-text {
-                position: absolute; /* Ana sütuna göre konumlanır */
-                font-size: 6pt;
-                font-weight: bold;
-            }
-            .print-page-daily-guidance .top-right-text {
-                top: 0;
-                right: 0;
-            }
-            .print-page-daily-guidance .bottom-left-text {
-                bottom: 0;
-                left: 0;
-            }
-            .print-page-daily-guidance .dynamic-text {
-                font-weight: bold;
-                font-style: italic;
-            }
-            .print-page-daily-guidance h3 {
-                font-size: 10pt;
-                text-align: center;
-                margin: 0 0 5px 0;
-            }
-            .print-page-daily-guidance .main-table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            .print-page-daily-guidance .main-table td {
-                border: 1px solid #000;
-                padding: 2px 4px;
-                font-size: 8pt;
-                vertical-align: top;
-            }
-            .print-page-daily-guidance .label-cell {
-                font-weight: bold;
-                width: 40%;
-            }
-            .print-page-daily-guidance .section-cell {
-                padding: 3px 2px;
-            }
-            .print-page-daily-guidance .section-cell p {
-                font-size: 8pt;
-                margin: 5px 0 2px 0;
-            }
-            .print-page-daily-guidance .section-cell .editable-textarea {
-                width: 100%;
-                height: 120px;
-                font-size: 8pt;
-                padding: 2px;
-                border: 1px dotted #999;
-                box-sizing: border-box;
-                resize: none;
-            }
-            .print-page-daily-guidance .signature-cell {
-                padding: 20px 2px;
-                border-bottom: none;
-            }
-            .print-page-daily-guidance .footer {
-                display: flex;
-                justify-content: space-between;
-                text-align: center;
-                font-size: 8pt;
-                padding: 0 15px;
-            }
-            .print-page-daily-guidance .notes-cell {
-                font-size: 6pt;
-                line-height: 1.1;
-                border-top: none;
-            }
-
-            /* DEVAMSIZLIK FORMLARI - Footer 5 bölümlü yapı */
-            .print-page-attendance .print-sheet-wrapper { 
-                width: 100%; 
-                height: 100%; 
-                display: flex; 
-                flex-direction: column; 
-            }
-            .print-page-attendance .print-sheet.first-half,
-            .print-page-attendance .print-sheet.second-half {
-                min-height: 49%; /* Sabit yükseklik yerine minimum yükseklik veriyoruz */
-                flex-shrink: 0;  /* Kutuların küçülmesini engelliyoruz */
-            }
-            .print-page-attendance .print-sheet.second-half {
-                margin-top: 2%; /* Aradaki boşluk kalsın */
-            }
-            .print-page-attendance .sheet-content {
-                break-inside: avoid; /* Sayfa ortasında bölünmeyi engeller */
-            }
-            .print-page-attendance .sheet-content { 
-                display: flex; 
-                flex-direction: column; 
-                height: 100%; 
-                border: 2px solid #000; 
-                padding: 3mm; 
-            }
-            .print-page-attendance .print-main-title { 
-                text-align: center; 
-                font-weight: bold; 
-                font-size: 8pt; 
-                text-transform: uppercase; 
-                border-bottom: 2px solid #f4c542; 
-                padding-bottom: 2px; 
-            }
-            .print-page-attendance .print-header-table { 
-                width: 100%; 
-                border-collapse: collapse; 
-                margin: 4px 0; 
-                font-size: 8pt; 
-            }
-            .print-page-attendance .print-header-table td { 
-                border: 1px solid #000; 
-                padding: 2px 4px; 
-                vertical-align: top; 
-            }
-            .print-page-attendance .print-main-table-wrapper { 
-                flex-grow: 1; 
-            }
-            .print-page-attendance .print-main-table { 
-                width: 100%; 
-                border-collapse: collapse; 
-                table-layout: auto; 
-            }
-            .print-page-attendance .print-main-table th, 
-            .print-page-attendance .print-main-table td { 
-                border: 1px solid #000;
-                text-align: center; 
-                padding: 1px; 
-                line-height: 1.2; 
-                vertical-align: middle; 
-                font-size: 6pt; 
-                height: 12px; 
-                overflow: hidden; 
-            }
-            .print-page-attendance .print-main-table .student-info-cell { 
-                text-align: left; 
-                padding: 1px 2px; 
-                white-space: normal; /* Metnin alt satıra geçmesini sağlar */
-                word-break: break-word; /* Satıra sığmayan çok uzun kelimeleri böler */
-                vertical-align: middle;
-            }
-            .print-page-attendance .print-main-table .header-cell-name { 
-                width: 220px; 
-                min-width: 80px; 
-            }
-            .print-page-attendance .print-main-table .header-cell-no { 
-                width: 100px;
-                min-width: 30px;  
-            }
-            .print-page-attendance .print-main-table .header-cell-field { 
-                width: 150px;
-                min-width: 60px; 
-            }
-            .print-page-attendance .print-main-table .header-cell-days { 
-                width: auto; 
-                min-width: 15px; 
-                font-size: 4pt; 
-                writing-mode: vertical-rl; 
-                text-orientation: mixed; 
-                transform: rotate(180deg); 
-            }
-            .print-page-attendance .print-main-table .day-cell { 
-                width: calc((100% - 200px) / 31); 
-                min-width: 8px; 
-                max-width: 12px; 
-            }
-            .print-page-attendance .print-main-table .header-cell-total { 
-                width: auto; 
-                min-width: 25px; 
-            }
-
-            .print-page-attendance .print-main-table .day-cell {
-                width: 2.5%;
-                min-width: 12px; /* Çok daralmasını önlemek için */
-                box-sizing: border-box; /* Genişlik hesaplamasını düzeltmek için */
-            }
-
-            /* YENİ 5 BÖLÜMLÜ FOOTER DÜZENİ (SON HALİ) */
-            .print-page-attendance .print-footer {
-                width: 100%;
-                margin-top: auto;
-                padding-top: 5px;
-                display: flex;
-                justify-content: space-between;
-                align-items: stretch; /* Kutuların yüksekliklerini eşitler */
-                font-size: 6pt !important;
-                gap: 2px;
-                /* Sabit yükseklik kaldırıldı, artık otomatik ayarlanacak */
-            }
-
-            .print-page-attendance .signature-section {
-                text-align: center;
-                width: 19% !important; /* DÜZELTİLDİ */
-                line-height: 1.2;
-                border: 1px solid #000;
-                padding: 2px !important;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
-
-            .print-page-attendance .explanation-section {
-                width: 21% !important; /* DÜZELTİLDİ */
-                text-align: center;
-                font-size: 6.0pt !important;
-                line-height: 1.2;
-                border: 1px solid #000;
-                padding: 2px !important;
-                display: flex;
-                align-items: flex-start;
-                justify-content: center;
-            }
-
-            .print-page-attendance .legend-section {
-                width: 22% !important; /* Bu doğru, değiştirilmedi */
-                text-align: left;
-                display: flex;
-                align-items: center;
-            }
-
-            .print-page-attendance .legend-box {
-                font-size: 5.5pt !important;
-                border: 1px solid #000; 
-                padding: 2px !important;
-                line-height: 1.2;
-                width: 100%;
-                height: 100%;                 /* YENİ: Kapsayıcısını dikeyde doldurur */
-                display: flex;                 /* YENİ: İçindeki yazıyı ortalamak için */
-                flex-direction: column;        /* YENİ: İçindeki yazıyı ortalamak için */
-                justify-content: center;       /* YENİ: İçindeki yazıyı dikeyde ortalar */
-            }
-
-            /* Renk ve font kuralları aynı kalabilir */
-            .print-page-attendance .f-bold {
-                font-weight: bold;
-            }
-            .print-page-attendance .f-blue {
-                color: blue !important;
-            }
-            .print-page-attendance .f-green {
-                color: green !important;
-            }
-            .print-page-attendance .f-red {
-                color: red !important;
-                font-weight: bold !important;
-            }
-            .print-page-attendance .f-teal {
-                color: teal !important;
-            }
-
-
-                        
-            /* FESİH FORMLARI */
-            .print-page-termination .termination-container { 
-                padding: 5mm; 
-                border: 2px solid #000; 
-                height: 100%; 
-                display: flex; 
-                flex-direction: column; 
-                font-family: 'Times New Roman', serif; 
-            }
-            .print-page-termination h1 { 
-                font-size: 14pt; 
-                font-weight: bold; 
-                text-align: center; 
-            } 
-            .print-page-termination h2 { 
-                font-size: 16pt; 
-                font-weight: bold; 
-                margin: 20px 0; 
-                text-align: center; 
-                line-height: 1.4; 
-            }
-            .print-page-termination table { 
-                width: 100%; 
-                margin-top: 30px; 
-                font-size: 12pt; 
-                border-collapse: collapse; 
-            }
-            .print-page-termination td { 
-                padding: 10px 5px; 
-                vertical-align: bottom; 
-            }
-            .print-page-termination .label-col { 
-                width: 30%; 
-                font-weight: bold; 
-            } 
-            .print-page-termination .separator-col { 
-                width: 2%; 
-            } 
-            .print-page-termination .value-col { 
-                border-bottom: 1px dotted #000; 
-            }
-            .print-page-termination .reasons { 
-                margin-top: 40px; 
-                flex-grow: 1; 
-                display: flex; 
-                flex-direction: column; 
-            }
-            .print-page-termination .reasons .label-col { 
-                font-weight: bold; 
-                font-size: 12pt; 
-            }
-            .print-page-termination .reasons .value-box { 
-                flex-grow: 1; 
-                border: 1px solid #000; 
-                margin-top: 5px; 
-                padding: 5px; 
-                font-weight: normal; 
-            }
-            .print-page-termination .signatures { 
-                display: flex; 
-                justify-content: space-between; 
-                margin-top: auto; 
-                padding-top: 60px; 
-                text-align: center; 
-                font-size: 12pt; 
-            }
-
-            /* LİSTE FORMLARI */
-            .print-page-list .list-container { 
-                padding: 10mm; 
-            }
-            .print-page-list h2 { 
-                text-align: center; 
-                font-size: 14pt; 
-                margin-bottom: 20px; 
-            }
-            .print-page-list .business-section { 
-                margin-bottom: 12px; 
-                page-break-inside: avoid; 
-            }
-            .print-page-list .business-header { 
-                background-color: #f0f0f0; 
-                padding: 5px; 
-                font-weight: bold; 
-                border: 1px solid #f000; 
-            }
-            .print-page-list .student-list-table { 
-                width: 100%; 
-                border-collapse: collapse; 
-                font-size: 8pt; 
-            }
-            .print-page-list .student-list-table th, 
-            .print-page-list .student-list-table td { 
-                border: 1px solid #000; 
-                padding: 3px; 
-                text-align: left; 
-            }
-            .print-page-list .student-list-table th { 
-                background-color: #f0f0f0; 
-                font-weight: bold; 
-            }
-
-            .print-page-monthly-guidance table td:first-child {
-                font-size: 5pt !important;
-                font-weight: bold !important;
-                line-height: 1.0 !important; /* EKLENDİ: Satır aralığını artırır */
-            }
-
-            .print-page-monthly-guidance table:first-of-type .dynamic-text {
-                font-size: 5.5pt !important;
-                font-weight: bold !important;
-                font-style: italic !important; /* İsteğiniz olan italik stilini ekler */
-                line-height: 1.2 !important;   /* Okunurluk için satır aralığını biraz artırdım */
-            }           
-        }
-        
-        
-        #print-container { display: none; }
-        .print-page-container { page-break-after: always; break-after: page; }
-
-        /* ---- KONTEYNER -> SAYFA ATAMALARI ---- */
-        .print-page-attendance  { page: attendance;  height: 267mm; width: 180mm; }
-        .print-page-termination { page: termination; height: 267mm; width: 180mm; }
-        .print-page-monthly-guidance,
-        .print-page-daily-guidance { page: guidance; height: 190mm; width: 277mm; }
-        .print-page-list { page: list; height: 186mm; width: 273mm; }
-        
-
-
-        .modal { 
-            display: none; 
-            position: fixed; 
-            z-index: 1000; 
-            left: 0; 
-            top: 0; 
-            width: 100%; 
-            height: 100%; 
-            background-color: rgba(11, 29, 58, 0.9); 
-        }
-
-
-
-        /* =================================== */
-        /* MOBİL UYUMLULUK İYİLEŞTİRMELERİ     */
-        /* =================================== */
-
-        /* Temel mobil ayarlar */
-        * {
-            -webkit-tap-highlight-color: rgba(244, 197, 66, 0.3);
-            -webkit-touch-callout: none;
-        }
-
-        /* Tablet için - 768px ve altı */
-        @media (max-width: 768px) {
-            .container { padding: 10px; }
-            
-            .grid { 
-                grid-template-columns: 1fr; 
-                gap: 15px; 
-            }
-            
-            .tabs { 
-                flex-direction: column; 
-            }
-            
-            .tab { 
-                padding: 15px; 
-                font-size: 0.9rem; 
-            }
-            
-            .modal-content { 
-                width: 95%; 
-                padding: 20px; 
-                margin: 5% auto; 
-            }
-            
-            .dropdown-header { 
-                padding: 15px; 
-            }
-            
-            .dropdown-item { 
-                padding: 15px; 
-            }
-        }
-
-        /* Telefon için - 480px ve altı */
-        @media (max-width: 480px) {
-            .container { 
-                padding: 5px; 
-            }
-            
-            .panel { 
-                padding: 15px; 
-            }
-            
-            .form-group { 
-                margin-bottom: 12px; 
-            }
-            
-            .btn { 
-                padding: 12px 20px; 
-                font-size: 1rem;
-                min-height: 44px; /* Touch-friendly */
-            }
-            
-            .student-item { 
-                flex-direction: column; 
-                gap: 10px; 
-            }
-            
-            .student-actions { 
-                width: 100%; 
-                justify-content: space-between; 
-            }
-            
-            .summary-panel { 
-                flex-direction: column; 
-                gap: 15px; 
-            }
-            
-            /* Grid düzeni tek sütun */
-            .grid[style*="grid-template-columns: 1fr 1fr"] {
-                grid-template-columns: 1fr !important;
-            }
-            
-            .grid[style*="grid-template-columns: 1fr 1fr 1fr 1fr"] {
-                grid-template-columns: 1fr !important;
-            }
-            
-            /* Dropdown daha büyük */
-            .dropdown-content {
-                max-height: 250px;
-            }
-            
-            /* Form inputları daha büyük */
-            .form-input, .form-select {
-                padding: 15px;
-                font-size: 16px; /* iOS zoom önleme */
-            }
-            
-            /* Modal tam ekran benzeri */
-            .modal-content {
-                width: 98%;
-                height: 90vh;
-                overflow-y: auto;
-            }
-        }
-
-        /* Çok küçük ekranlar - 320px */
-        @media (max-width: 320px) {
-            .tab {
-                padding: 10px 5px;
-                font-size: 0.8rem;
-            }
-            
-            .btn {
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-            
-            .modal-content {
-                width: 99%;
-                padding: 10px;
-            }
-        }
-
-        /* Touch optimizasyonu */
-        @media (hover: none) and (pointer: coarse) {
-            .btn:hover,
-            .dropdown-header:hover,
-            .dropdown-item:hover {
-                transform: none;
-                background-color: var(--accent-gold-50);
-            }
-            
-            /* Touch feedback */
-            .btn:active,
-            .dropdown-item:active {
-                transform: scale(0.98);
-            }
-        }
-
-
-     </style>
-</head>
-<body>
-  
-    <!-- Google Authentication Container -->
-    <div id="auth-container" class="no-print" style="background: var(--dark-bg); padding: 15px; border-bottom: 2px solid var(--accent-gold);">
-        <div id="login-section" style="text-align: center;">
-            <h2 style="color: var(--accent-gold); margin-bottom: 10px;">🎓 MESEM Takip Sistemi</h2>
-            <button id="google-login-btn" class="btn btn-primary">🔐 Google Hesabımla Giriş</button>
-        </div>
-        <div id="user-info" style="display: none; text-align: right;">
-            <span id="user-name" style="color: var(--text-light); margin-right: 15px;"></span>
-            <button id="logout-btn" class="btn btn-danger">Çıkış</button>
-        </div>
-    </div>
-    
-    <div class="container no-print" style="display: none;">
-        <div class="tabs">
-            <button class="tab active" data-tab="management-panel">🏢 Yönetim Paneli</button>
-            <button class="tab" data-tab="generator-panel">📋 Form Oluştur</button>
-        </div>
-        <div class="content">
-            <div id="management-panel" class="tab-content active">
-                <div class="panel">
-                    <h2>Genel Ayarlar</h2>
-                    <div class="grid" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
-                         <div class="form-group"><label for="schoolName">Okul/Kurumun Adı</label><input type="text" id="schoolName" class="form-input"></div>
-                         <div class="form-group"><label for="coordinatorName">Koordinatör Öğretmen</label><input type="text" id="coordinatorName" class="form-input"></div>
-                         <div class="form-group"><label for="asstPrincipalName">Koordinatör Müdür Yardımcısı</label><input type="text" id="asstPrincipalName" class="form-input"></div>
-                         <div class="form-group"><label for="principalName">Okul Müdürü</label><input type="text" id="principalName" class="form-input"></div>
-                    </div>
-                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--accent-gold);">
-                        <h3 style="color: var(--white); font-size: 1.2rem; margin-bottom: 15px;">Veri Yönetimi</h3>
-                        <div style="display: flex; gap: 15px;">
-                            <button class="btn btn-primary" id="download-data-btn">Verileri İndir</button>
-                            <button class="btn" id="upload-data-btn">Verileri Yükle</button>
-                            <button class="btn" id="print-list-btn">Liste Yazdır</button>
-                            <input type="file" id="upload-input" accept=".json" style="display: none;">
-                        </div>
-                    </div>
-                </div>
-                <div style="display:flex; justify-content: space-between; align-items: center;">
-                    <h2>İşletmeler</h2>
-                    <button class="btn btn-primary" id="add-business-btn">Yeni İşletme Ekle</button>
-                </div>
-                <div id="businessesAccordion" style="margin-top: 20px;"></div>
-                <div class="summary-panel" id="summary-panel">
-                    <div class="summary-item">
-                        <div id="totalBusinesses" class="count">0</div>
-                        <div class="label">Toplam İşletme</div>
-                    </div>
-                    <div class="summary-item">
-                        <div id="totalStudents" class="count">0</div>
-                        <div class="label">Toplam Öğrenci</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="generator-panel" class="tab-content">
-                 <h2>Form Oluştur</h2>
                  <div class="form-group">
-                     <label>1. Form Türünü Seçin</label>
-                     <select id="formTypeSelect" class="form-select">
-                        <option value="attendance">Devamsızlık Çizelgesi</option>
-                        <option value="monthly_guidance">Aylık Rehberlik Formu</option>
-                        <option value="daily_guidance">Günlük Rehberlik Formu</option>
-                     </select>
+                     <label for="business-select-dropdown">2. İşletme(ler)i Seçin</label>
+                     <div class="dropdown-container">
+                         <div class="dropdown-header" id="business-dropdown-header">
+                             <span id="business-selected-text">İşletme seçin...</span>
+                             <span class="dropdown-arrow">▼</span>
+                         </div>
+                         <div class="dropdown-content" id="business-dropdown-content">
+                              <div class="dropdown-controls">
+                                 <button type="button" class="dropdown-btn" id="select-all-businesses">Tümünü Seç</button>
+                                 <button type="button" class="dropdown-btn" id="deselect-all-businesses">Temizle</button>
+                              </div>
+                             <div id="business-dropdown-list"></div>
+                         </div>
+                      </div>
                  </div>
-
-                <div id="controls-monthly" class="form-controls-container active">
-                    <div class="form-group" style="grid-column: 1 / -1;">
-                        <label for="business-select-dropdown">2. İşletme(ler)i Seçin</label>
-                        <div class="dropdown-container">
-                            <div class="dropdown-header" id="business-dropdown-header">
-                                <span id="business-selected-text">İşletme seçin...</span>
-                                <span class="dropdown-arrow">▼</span>
-                            </div>
-                            <div class="dropdown-content" id="business-dropdown-content">
-                                <div class="dropdown-controls">
-                                    <button type="button" class="dropdown-btn" id="select-all-businesses">Tümünü Seç</button>
-                                    <button type="button" class="dropdown-btn" id="deselect-all-businesses">Temizle</button>
-                                </div>
-                                <div id="business-dropdown-list"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group"><label for="genMonthSelect">3. Ay</label><select id="genMonthSelect" class="form-select"></select></div>
-                    <div class="form-group"><label for="genYearSelect">4. Yıl</label><input type="number" id="genYearSelect" class="form-input"></div>
-                </div>
-
-                <div id="controls-daily" class="form-controls-container">
-                     <div class="form-group" style="grid-column: 1 / -1;"><label>2. Ay ve Yıl Seçin</label></div>
-                     <div class="form-group"><label for="dailyMonthSelect">Ay</label><select id="dailyMonthSelect" class="form-select"></select></div>
-                     <div class="form-group"><label for="dailyYearSelect">Yıl</label><input type="number" id="dailyYearSelect" class="form-input"></div>
-                    <div class="form-group" style="grid-column: 1 / -1;">
-                        <label for="daily-business-select-dropdown">3. İşletme(ler)i Seçin</label>
-                        <div class="dropdown-container">
-                            <div class="dropdown-header" id="daily-business-dropdown-header">
-                                <span id="daily-business-selected-text">İşletme seçin...</span>
-                                <span class="dropdown-arrow">▼</span>
-                            </div>
-                            <div class="dropdown-content" id="daily-business-dropdown-content">
-                                <div class="dropdown-controls">
-                                    <button type="button" class="dropdown-btn" id="select-all-daily-businesses">Tümünü Seç</button>
-                                    <button type="button" class="dropdown-btn" id="deselect-all-daily-businesses">Temizle</button>
-                                </div>
-                                <div id="daily-business-dropdown-list"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group"><label for="genWeekSelect1">4. Hafta Seçin</label><select id="genWeekSelect1" class="form-select"></select></div>
-                </div>
                  <button class="btn btn-primary" id="generate-sheet-btn" style="margin-top:20px; width: 100%; padding: 15px;">Formları Oluştur ve Yazdır</button>
             </div>
         </div>
     </div>
-    <div id="print-container"></div>
-    <div class="modal" id="businessModal"><div class="modal-content"><h2 id="businessModalTitle"></h2><form id="businessForm" novalidate><input type="hidden" id="businessId"><div class="grid" style="grid-template-columns: 1fr 1fr;"><div class="form-group"><label for="businessName">İşletme Adı<span class="required-star">*</span></label><input required class="form-input" id="businessName" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessAddress">İşletme Adresi</label><input class="form-input" id="businessAddress" type="text"></div><div class="form-group"><label for="businessPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="businessPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessOfficial">İşletme Yetkilisi<span class="required-star">*</span></label><input required class="form-input" id="businessOfficial" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessVisitDay">Koordinatör Ziyaret Günü<span class="required-star">*</span></label><select required class="form-select" id="businessVisitDay"><option disabled selected value="">Günü Seçin</option><option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option></select><span class="error-message"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
-   <div class="modal" id="studentModal"><div class="modal-content"><h2 id="studentModalTitle"></h2><form id="studentForm" novalidate><input id="studentBusinessId" type="hidden"><input id="studentId" type="hidden"><div class="grid" style="grid-template-columns: 1fr 1fr;"><div class="form-group"><label for="studentClass">Sınıfı</label><select class="form-select" id="studentClass"><option value="9">9. Sınıf</option><option value="10">10. Sınıf</option><option value="11">11. Sınıf</option><option value="12">12. Sınıf</option></select></div><div class="form-group"><label for="studentNo">Okul No <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentNo" inputmode="numeric" pattern="[0-9]*" placeholder="1234" type="text"></div><div class="form-group"><label for="studentName">Adı Soyadı<span class="required-star">*</span></label><input required class="form-input" id="studentName" type="text"><span class="error-message"></span></div><div class="form-group"><label for="studentField">Alan/Dalı</label><input class="form-input" id="studentField" type="text" placeholder="Örn: Bilişim Teknolojileri"></div><div class="form-group"><label for="studentSchoolDay">Okul Günü</label><select class="form-select" id="studentSchoolDay"><option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option></select></div><div class="form-group"><label for="studentPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"></div><div class="form-group"><label for="studentStartDate">İşe Başlama Tarihi (Sözleşme)<span class="required-star">*</span></label><input required class="form-input" id="studentStartDate" type="date"><span class="error-message"></span></div><div class="form-group"><label for="studentEndDate">İşten Ayrılma Tarihi (Fesih)</label><input class="form-input" id="studentEndDate" type="date"><span class="error-message" id="studentEndDateError"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
-    <div class="modal" id="terminationModal"><div class="modal-content"><h2>Sözleşme Fesih Bilgileri</h2><form id="terminationForm"><input id="terminationStudentId" type="hidden"><input id="terminationBusinessId" type="hidden"><div class="form-group"><label for="terminationDate">Fesih Tarihi<span class="required-star">*</span></label><input required class="form-input" id="terminationDate" type="date"></div><div class="form-group" style="margin-top:15px;"><label for="terminationReason">Fesih Nedenleri<span class="required-star">*</span></label><textarea required class="form-input" id="terminationReason" rows="5"></textarea></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Fesih Tutanağını Oluştur ve Yazdır</button></div></form></div></div>
-    <div id="absenceModal" class="modal"><div class="modal-content"><h2></h2><div class="grid" style="grid-template-columns: 1fr 1fr; align-items:end;"><div class="form-group"><label for="absenceMonthSelect">Ay</label><select id="absenceMonthSelect" class="form-select"></select></div><div class="form-group"><label for="absenceYearSelect">Yıl</label><input type="number" id="absenceYearSelect" class="form-input"></div></div><div class="grid calendar-grid-header" style="grid-template-columns: repeat(7, 1fr); margin-top: 15px;"><div class="calendar-header">Pzt</div><div class="calendar-header">Sal</div><div class="calendar-header">Çar</div><div class="calendar-header">Per</div><div class="calendar-header">Cum</div><div class="calendar-header">Cmt</div><div class="calendar-header">Paz</div></div><div id="absenceCalendarGrid" class="calendar-grid"></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button type="button" class="btn btn-danger" data-action="cancel-modal">Kapat</button><button type="button" class="btn btn-primary" id="saveAbsenceBtn">Devamsızlığı Kaydet</button></div></div>
     
-    <div class="modal" id="qrPrePrintModal" style="cursor: pointer;">
-    <div class="modal-content" style="max-width: 500px; text-align: center; background: var(--card-bg); border: 2px solid var(--accent-gold); border-radius: 10px; padding: 30px; margin: 10% auto; cursor: default;">
-        <h2 style="color: var(--accent-gold); margin-bottom: 20px;">Formlar Hazırlanıyor</h2>
-        <p style="color: var(--text-light); font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px;">
-            Belgeleriniz oluşturuluyor. Lütfen bekleyin. Bu pencereyi kapatmak için dışarıdaki herhangi bir alana tıklayabilirsiniz.
-        </p>
-        <div id="processingSpinner" style="display: flex; justify-content: center; align-items: center; height: 100px; color: var(--accent-gold);">
-            <svg width="60" height="60" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_ajPY{transform-origin:center;animation:spinner_AtaB .75s infinite linear}@keyframes spinner_AtaB{100%{transform:rotate(360deg)}}</style><path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" fill="currentColor"/><path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" class="spinner_ajPY" fill="currentColor"/></svg>
-        </div>
-    </div>
-</div>
+    <div id="print-container"></div>
+    
+    <div class="modal" id="businessModal"><div class="modal-content"> ... </div></div>
+    <div class="modal" id="studentModal"><div class="modal-content"> ... </div></div>
     
 <script type="module">
-    // Supabase PostgreSQL entegrasyonu
-    import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js@2'
+  // Supabase PostgreSQL entegrasyonu
+  import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js@2'
+  
+  const supabaseUrl = 'https://pobcwutafjijwhzfyhpi.supabase.co'
+  const supabaseKey = 'YOUR_ANON_KEY_HERE' // Anon public key'inizi buraya yazın
+  const supabase = createClient(supabaseUrl, supabaseKey)
+  
+  let currentUser = null;
+  let userSession = null;
+  
+  // 3. TÜM UYGULAMA MANTIĞI BU BLOK İÇİNE ALINDI
+  document.addEventListener('DOMContentLoaded', () => {
     
-    const supabaseUrl = 'https://pobcwutafjijwhzfyhpi.supabase.co'
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvYmN3dXRhZmppandoemZ5aHBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1MzQwNDksImV4cCI6MjA3MTExMDA0OX0.Iu2A5Ueojqp4IyNTajNMYQigERDXIMykwoiEpZsNC68'
-    const supabase = createClient(supabaseUrl, supabaseKey)
-    
-    let currentUser = null;
-    let userSession = null;
-
-    document.addEventListener('DOMContentLoaded', () => {
-    const DB_KEY = 'mesem_unified_system_v15_enhanced';
     let appData = {};
     let currentAbsence = { studentId: null, businessId: null };
+
     const dom = {
-        tabs: document.querySelector('.tabs'), settingsInputs: document.querySelectorAll('#management-panel .panel .form-input'), businessesAccordion: document.getElementById('businessesAccordion'), addBusinessBtn: document.getElementById('add-business-btn'), businessModal: document.getElementById('businessModal'), businessForm: document.getElementById('businessForm'), studentModal: document.getElementById('studentModal'), studentForm: document.getElementById('studentForm'), terminationModal: document.getElementById('terminationModal'), terminationForm: document.getElementById('terminationForm'), absenceModal: document.getElementById('absenceModal'), genMonthSelect: document.getElementById('genMonthSelect'), genYearSelect: document.getElementById('genYearSelect'), dailyMonthSelect: document.getElementById('dailyMonthSelect'), dailyYearSelect: document.getElementById('dailyYearSelect'), genWeekSelect1: document.getElementById('genWeekSelect1'), generateSheetBtn: document.getElementById('generate-sheet-btn'), printContainer: document.getElementById('print-container'), downloadBtn: document.getElementById('download-data-btn'), uploadBtn: document.getElementById('upload-data-btn'), uploadInput: document.getElementById('upload-input'), printListBtn: document.getElementById('print-list-btn'), formTypeSelect: document.getElementById('formTypeSelect'), controlsMonthly: document.getElementById('controls-monthly'), controlsDaily: document.getElementById('controls-daily'), totalBusinesses: document.getElementById('totalBusinesses'), totalStudents: document.getElementById('totalStudents'), businessDropdownHeader: document.getElementById('business-dropdown-header'), businessDropdownContent: document.getElementById('business-dropdown-content'), businessDropdownList: document.getElementById('business-dropdown-list'), businessSelectedText: document.getElementById('business-selected-text'), dailyBusinessDropdownHeader: document.getElementById('daily-business-dropdown-header'), dailyBusinessDropdownContent: document.getElementById('daily-business-dropdown-content'), dailyBusinessDropdownList: document.getElementById('daily-business-dropdown-list'), dailyBusinessSelectedText: document.getElementById('daily-business-selected-text'), selectAllBusinesses: document.getElementById('select-all-businesses'), deselectAllBusinesses: document.getElementById('deselect-all-businesses'), selectAllDailyBusinesses: document.getElementById('select-all-daily-businesses'), deselectAllDailyBusinesses: document.getElementById('deselect-all-daily-businesses'),
+        loginSection: document.getElementById('login-section'),
+        userInfo: document.getElementById('user-info'),
+        userName: document.getElementById('user-name'),
+        googleLoginBtn: document.getElementById('google-login-btn'),
+        logoutBtn: document.getElementById('logout-btn'),
+        container: document.querySelector('.container'),
+        tabs: document.querySelector('.tabs'),
+        settingsInputs: document.querySelectorAll('#management-panel .panel .form-input'),
+        businessesAccordion: document.getElementById('businessesAccordion'),
+        addBusinessBtn: document.getElementById('add-business-btn'),
+        printListBtn: document.getElementById('print-list-btn'),
+        
+        businessModal: document.getElementById('businessModal'),
+        businessForm: document.getElementById('businessForm'),
+        studentModal: document.getElementById('studentModal'),
+        studentForm: document.getElementById('studentForm'),
+        terminationModal: document.getElementById('terminationModal'),
+        terminationForm: document.getElementById('terminationForm'),
+        absenceModal: document.getElementById('absenceModal'),
+
+        genMonthSelect: document.getElementById('genMonthSelect'),
+        genYearSelect: document.getElementById('genYearSelect'),
+        dailyMonthSelect: document.getElementById('dailyMonthSelect'),
+        dailyYearSelect: document.getElementById('dailyYearSelect'),
+        genWeekSelect1: document.getElementById('genWeekSelect1'),
+        generateSheetBtn: document.getElementById('generate-sheet-btn'),
+        printContainer: document.getElementById('print-container'),
+        formTypeSelect: document.getElementById('formTypeSelect'),
+        totalBusinesses: document.getElementById('totalBusinesses'),
+        totalStudents: document.getElementById('totalStudents'),
+
+        businessDropdownHeader: document.getElementById('business-dropdown-header'),
+        businessDropdownContent: document.getElementById('business-dropdown-content'),
+        businessDropdownList: document.getElementById('business-dropdown-list'),
+        businessSelectedText: document.getElementById('business-selected-text'),
+        selectAllBusinesses: document.getElementById('select-all-businesses'),
+        deselectAllBusinesses: document.getElementById('deselect-all-businesses'),
+        
+        // Bu elementler HTML'de yok, şimdilik siliyoruz veya daha sonra eklersiniz.
+        dailyBusinessDropdownHeader: document.getElementById('daily-business-dropdown-header'),
+        dailyBusinessDropdownContent: document.getElementById('daily-business-dropdown-content'),
+        dailyBusinessDropdownList: document.getElementById('daily-business-dropdown-list'),
+        dailyBusinessSelectedText: document.getElementById('daily-business-selected-text'),
+        selectAllDailyBusinesses: document.getElementById('select-all-daily-businesses'),
+        deselectAllDailyBusinesses: document.getElementById('deselect-all-daily-businesses')
     };
+
+    // --- Firebase Fonksiyonları ---
+    async function signInWithGoogle() {
+        try {
+            const provider = new GoogleAuthProvider();
+            await signInWithPopup(auth, provider);
+        } catch (error) {
+            console.error('Giriş hatası:', error);
+            showNotification('Giriş yapılamadı: ' + error.message, 'error');
+        }
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+        const container = document.querySelector('.container');
+        if (user) {
+            currentUser = user;
+            dom.loginSection.style.display = 'none';
+            dom.userInfo.style.display = 'block';
+            dom.userName.textContent = user.displayName;
+            container.style.display = 'block';
+            try {
+                await loadUserData();
+            } catch (error) {
+                console.log('Veri yüklenemedi, local veri kullanılıyor');
+                loadData();
+                renderAll();
+            }
+        } else {
+            currentUser = null;
+            dom.loginSection.style.display = 'block';
+            dom.userInfo.style.display = 'none';
+            container.style.display = 'none';
+            loadDefaultData();
+        }
+    });
+
+    async function loadUserData() {
+        if (!currentUser) return;
+        try {
+            const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+            if (userDoc.exists()) {
+                appData = userDoc.data();
+            } else {
+                console.log("Yeni kullanıcı için varsayılan veri oluşturuluyor.");
+                loadDefaultData(false);
+            }
+            renderAll();
+        } catch (error) {
+            console.error('Veri yükleme hatası:', error);
+            showNotification('Veri yüklenirken bir hata oluştu.', 'error');
+        }
+    }
+    
+    function loadDefaultData(shouldRender = true) {
+        appData = { 
+            settings: { 
+                schoolName: 'UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ', 
+                coordinatorName: '', 
+                asstPrincipalName: 'Salih SEVİM', 
+                principalName: 'Seçkin ŞENTÜRK' 
+            }, 
+            businesses: [] 
+        };
+        if (shouldRender) {
+            renderAll();
+        }
+    }
+
+    async function saveData() {
+        dom.settingsInputs.forEach(input => { 
+            if(input.id && appData.settings) {
+                appData.settings[input.id] = input.value; 
+            }
+        });
+        
+        if (currentUser) {
+            try {
+                await setDoc(doc(db, 'users', currentUser.uid), appData);
+                console.log('Veri başarıyla buluta kaydedildi.');
+            } catch (error) {
+                console.error('Buluta kaydetme hatası:', error);
+                showNotification('Veri kaydedilirken bir hata oluştu.');
+            }
+        }
+    }
+
+    dom.googleLoginBtn.onclick = signInWithGoogle;
+    dom.logoutBtn.onclick = () => signOut(auth);
+    
     const monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 
-       // 2024-2025-2026 Yılı Resmi Tatil Günleri (Ay 0'dan başlar: Ocak=0, Şubat=1...)
+    // 2024-2025-2026 Yılı Resmi Tatil Günleri (Ay 0'dan başlar: Ocak=0, Şubat=1...)
     const publicHolidays = {
         '2024': [
             { month: 9, day: 29, halfDay: false }, // Cumhuriyet Bayramı
@@ -2011,7 +377,7 @@
         { start: new Date(2026, 5, 27), end: new Date(2026, 8, 6) }    // Yaz Tatili başlangıcı
     ];
 
-    // YENİ EKLENECEK YARDIMCI FONKSİYONLAR ▼
+    // Yardımcı fonksiyonlar
     function isPublicHoliday(date) {
         const year = date.getFullYear().toString();
         const month = date.getMonth();
@@ -2021,49 +387,17 @@
     }
 
     function isSchoolHoliday(date) {
-        // Saat, dakika vs. sıfırlayarak sadece tarih bazlı karşılaştırma yap
         const checkDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
         return schoolHolidays.some(period => checkDate >= period.start && checkDate <= period.end);
     }
 
-
-    function getFormHeightInPixels(businessId, month, year) {
-        // Gizli bir ölçüm alanı oluştur
-        const measuringDiv = document.createElement('div');
-        measuringDiv.style.position = 'absolute';
-        measuringDiv.style.visibility = 'hidden';
-        measuringDiv.style.left = '-9999px';
-        measuringDiv.style.width = '190mm'; // A4 portre sayfa genişliği (kenar boşlukları hariç)
-
-        // Formun HTML'ini oluştur ve ölçüm alanına ekle
-        const formHTML = generateAttendanceSheet(businessId, month, year);
-        measuringDiv.innerHTML = `<div class="print-page-attendance"><div class="sheet-content">${formHTML}</div></div>`;
-
-        document.body.appendChild(measuringDiv);
-
-        // Yüksekliği ölç
-        const height = measuringDiv.offsetHeight;
-
-        // Ölçüm alanını temizle
-        document.body.removeChild(measuringDiv);
-
-        return height;
-    }
-
     function parseDateString(dateStr) { if (!dateStr) return null; const parts = dateStr.split('-'); return new Date(parts[0], parts[1] - 1, parts[2]); }
     function getVisitDatesForMonth(year, month, dayOfWeek) { const dates = []; const targetDay = parseInt(dayOfWeek); if (isNaN(targetDay)) return []; const date = new Date(year, month, 1); while (date.getMonth() === month) { if (date.getDay() === targetDay) { dates.push(new Date(date.getTime())); } date.setDate(date.getDate() + 1); } return dates; }
-    function getWeeksInMonth(year, month, dayOfWeek) { const visitDates = getVisitDatesForMonth(year, month, dayOfWeek); return visitDates.map((date, index) => ({ week: index + 1, date: date, label: `${index + 1}. Hafta (${date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })})` })); }
     
-    // Bir tarihin, yılın kaçıncı haftasında olduğunu (ISO 8601 standardına göre) hesaplar
     function getWeekOfYear(d) {
-        // Tarihin bir kopyasını oluşturarak orijinalini bozmuyoruz
         d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-        // Haftanın Perşembe gününü bul (ISO standardı Perşembe gününü baz alır)
-        // Pazar gününü 7. gün olarak ayarla
         d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-        // Yılın ilk gününü bul
         var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-        // Yılın başından bu Perşembe'ye kadar geçen hafta sayısını hesapla
         var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
         return weekNo;
     }
@@ -2075,132 +409,11 @@
         checkAndUpgradeClasses();
     }
 
-    // Supabase Authentication
-    async function signInWithGoogle() {
-        try {
-            const { data, error } = await supabase.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    redirectTo: window.location.origin + window.location.pathname
-                }
-            });
-            
-            if (error) {
-                console.error('Giriş hatası:', error);
-                showNotification('Giriş yapılamadı: ' + error.message, 'error');
-            }
-        } catch (error) {
-            console.error('Giriş hatası:', error);
-            showNotification('Giriş yapılamadı: ' + error.message, 'error');
-        }
-    }
-
-    supabase.auth.onAuthStateChange(async (event, session) => {
-        const container = document.querySelector('.container');
-        userSession = session;
-        
-        if (session && session.user) {
-            currentUser = session.user;
-            const loginSection = document.getElementById('login-section');
-            const userInfo = document.getElementById('user-info');
-            const userName = document.getElementById('user-name');
-            
-            if (loginSection) loginSection.style.display = 'none';
-            if (userInfo) userInfo.style.display = 'block';
-            if (userName) userName.textContent = session.user.user_metadata.full_name || session.user.email;
-            if (container) container.style.display = 'block';
-            
-            await loadUserData();
-        } else {
-            currentUser = null;
-            const loginSection = document.getElementById('login-section');
-            const userInfo = document.getElementById('user-info');
-            
-            if (loginSection) loginSection.style.display = 'block';
-            if (userInfo) userInfo.style.display = 'none';
-            if (container) container.style.display = 'none';
-            
-            loadData();
-        }
-    });
-
-    async function loadUserData() {
-        if (!currentUser) {
-            loadData();
-            return;
-        }
-        
-        try {
-            const { data, error } = await supabase
-                .from('user_data')
-                .select('data')
-                .eq('user_id', currentUser.id)
-                .single();
-                
-            if (error && error.code !== 'PGRST116') {
-                console.error('Veri yükleme hatası:', error);
-                loadData();
-                renderAll();
-                return;
-            }
-            
-            if (data && data.data) {
-                appData = data.data;
-                console.log("Kullanıcı verisi PostgreSQL'den yüklendi");
-            } else {
-                console.log("Yeni kullanıcı için varsayılan veri oluşturuluyor");
-                loadData();
-                await saveDataToSupabase();
-            }
-            
-            renderAll();
-        } catch (error) {
-            console.error('Veri yükleme hatası:', error);
-            loadData();
-            renderAll();
-        }
-    }
-    
-    async function saveDataToSupabase() {
-        if (!currentUser || !userSession) {
-            localStorage.setItem(DB_KEY, JSON.stringify(appData));
-            return;
-        }
-        
-        try {
-            const { data, error } = await supabase
-                .from('user_data')
-                .upsert({
-                    user_id: currentUser.id,
-                    user_email: currentUser.email,
-                    data: appData
-                });
-                
-            if (error) {
-                console.error('PostgreSQL kaydetme hatası:', error);
-            } else {
-                console.log('Veri PostgreSQL veritabanına başarıyla kaydedildi');
-            }
-            
-            localStorage.setItem(DB_KEY, JSON.stringify(appData));
-        } catch (error) {
-            console.error('PostgreSQL kaydetme hatası:', error);
-            localStorage.setItem(DB_KEY, JSON.stringify(appData));
-        }
-    }
-
-    // Google login button event listener
-    document.getElementById('google-login-btn').onclick = signInWithGoogle;
-    document.getElementById('logout-btn').onclick = async () => {
-        await supabase.auth.signOut();
-    };
-
-
     function checkAndUpgradeClasses() {
         const currentYear = new Date().getFullYear();
         const currentMonth = new Date().getMonth();
         
-        if (currentMonth >= 8) { // Eylül'den itibaren yeni eğitim yılı
+        if (currentMonth >= 8) {
             const academicYear = currentYear;
             
             if (!appData.lastClassUpgrade || appData.lastClassUpgrade < academicYear) {
@@ -2224,24 +437,33 @@
     }
 
     async function saveData() {
-        dom.settingsInputs.forEach(input => { if(input.id) appData.settings[input.id] = input.value; });
-        await saveDataToSupabase();
-    }
+        dom.settingsInputs.forEach(input => { 
+            if(input.id) {
+                if (!appData.settings) appData.settings = {};
+                appData.settings[input.id] = input.value; 
+            }
+        });
 
+        // Local storage'a kaydet
+        localStorage.setItem(DB_KEY, JSON.stringify(appData));
+
+        // Eğer kullanıcı giriş yapmışsa, buluta da kaydet
+        if (window.currentUser && window.saveDataToCloud) {
+            await window.saveDataToCloud();
+        }
+    }
     
     function showNotification(message, type = 'info', callback = null) {
-        const alertModal = document.getElementById('alertModal');
+        let alertModal = document.getElementById('alertModal');
         if (!alertModal) {
-            const alertModal = document.createElement('div');
+            alertModal = document.createElement('div');
             alertModal.id = 'alertModal';
             alertModal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;display:none;';
             document.body.appendChild(alertModal);
         }
         
-        const modal = document.getElementById('alertModal');
-        
         if (type === 'confirm') {
-            modal.innerHTML = `
+            alertModal.innerHTML = `
                 <div style="background:var(--card-bg);padding:30px;width:400px;text-align:center;border:2px solid var(--accent-gold);border-radius:10px;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);">
                     <h2 style="color:var(--accent-gold);">⚠️ Onay</h2>
                     <p style="color:var(--text-light);">${message}</p>
@@ -2252,42 +474,31 @@
                 </div>
             `;
             
-            modal.style.display = 'block';
+            alertModal.style.display = 'block';
             
             document.getElementById('confirmYes').onclick = function() {
-                modal.style.display = 'none';
+                alertModal.style.display = 'none';
                 if (callback) callback(true);
             };
             
             document.getElementById('confirmNo').onclick = function() {
-                modal.style.display = 'none';
+                alertModal.style.display = 'none';
                 if (callback) callback(false);
             };
         } else {
-            modal.innerHTML = '<div style="background:var(--card-bg);padding:30px;width:400px;text-align:center;border:2px solid var(--accent-gold);border-radius:10px;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);"><h2 style="color:var(--accent-gold);">⚠️ Uyarı</h2><p style="color:var(--text-light);">' + message + '</p></div>';
-            modal.style.display = 'block';
+            alertModal.innerHTML = `<div style="background:var(--card-bg);padding:30px;width:400px;text-align:center;border:2px solid var(--accent-gold);border-radius:10px;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);"><h2 style="color:var(--accent-gold);">⚠️ Uyarı</h2><p style="color:var(--text-light);">${message}</p></div>`;
+            alertModal.style.display = 'block';
             
-            modal.onclick = function(e) {
-                if (e.target === modal) modal.style.display = 'none';
+            alertModal.onclick = function(e) {
+                if (e.target === alertModal) alertModal.style.display = 'none';
             };
         }
-        
-        console.log(type.toUpperCase() + ': ' + message);
     }
-
-    // Modal kapatma - boş alana tıklayınca kapanır
-    document.addEventListener('click', (event) => {
-        const alertModal = document.getElementById('alertModal');
-        if (event.target === alertModal) {
-            alertModal.style.display = 'none';
-        }
-    });
-
 
     function renderAll() { renderBusinessesAccordion(); renderGeneratorUI(); updateSummaryPanel(); }
 
     function renderBusinessesAccordion() {
-        dom.businessesAccordion.innerHTML = appData.businesses.map(b => `<div><div class="accordion-header" data-id="${b.id}"><h3>${b.name}</h3><span>${b.students?.length||0} Öğrenci</span></div><div class="accordion-content" id="content-${b.id}">${renderBusinessContent(b)}</div></div>`).join('') || '<p style="text-align:center; margin-top:20px;">Kayıtlı işletme bulunmuyor.</p>';
+       dom.businessesAccordion.innerHTML = (appData.businesses || []).map(b => `<div><div class="accordion-header" data-id="${b.id}"><h3>${b.name}</h3><span>${b.students?.length||0} Öğrenci</span></div><div class="accordion-content" id="content-${b.id}">${renderBusinessContent(b)}</div></div>`).join('') || '<p style="text-align:center; margin-top:20px;">Kayıtlı işletme bulunmuyor.</p>';
     }
 
     function renderBusinessContent(business) {
@@ -2320,14 +531,14 @@
     }
 
     function renderBusinessDropdowns() {
-        const businessItems = appData.businesses.map(b => 
+        const businessItems = (appData.businesses || []).map(b => 
             `<div class="dropdown-item">
                 <input type="checkbox" value="${b.id}" class="business-checkbox" id="monthly-business-${b.id}">
                 <label for="monthly-business-${b.id}">${b.name}</label>
             </div>`
         ).join('');
         
-        const dailyBusinessItems = appData.businesses.map(b => 
+        const dailyBusinessItems = (appData.businesses || []).map(b => 
             `<div class="dropdown-item">
                 <input type="checkbox" value="${b.id}" class="daily-business-checkbox" id="daily-business-${b.id}">
                 <label for="daily-business-${b.id}">${b.name}</label>
@@ -2363,7 +574,6 @@
         }
     }
 
-    // YENİ HAFTA HESAPLAMA FONKSİYONU - Pazartesi başlangıçlı
     function populateWeeksForDailyForm() {
         const month = parseInt(dom.dailyMonthSelect.value);
         const year = parseInt(dom.dailyYearSelect.value);
@@ -2377,7 +587,7 @@
         const daysToSubtract = firstDayWeekday === 0 ? 6 : firstDayWeekday - 1;
         firstMonday.setDate(firstDayOfMonth.getDate() - daysToSubtract);
 
-        let monthWeekNumber = 1; // Bu, formun value'su için kullanılacak (1, 2, 3, 4, 5)
+        let monthWeekNumber = 1;
         let currentMonday = new Date(firstMonday);
 
         while (currentMonday <= lastDayOfMonth) {
@@ -2386,14 +596,11 @@
             weekEnd.setDate(weekEnd.getDate() + 6);
 
             if (weekEnd >= firstDayOfMonth && weekStart <= lastDayOfMonth) {
-                // YENİ EKLENEN KISIM: Yılın haftasını hesapla
                 const yearWeekNumber = getWeekOfYear(weekStart);
-
-                // DEĞİŞEN KISIM: Etiketi (label) yılın haftasına göre oluştur
                 const label = `${yearWeekNumber}. Hafta (${weekStart.toLocaleDateString('tr-TR')} - ${weekEnd.toLocaleDateString('tr-TR')})`;
 
                 weeks.push({ 
-                    week: monthWeekNumber, // Değer olarak ayın haftasını (1-5) koruyoruz ki form mantığı bozulmasın
+                    week: monthWeekNumber,
                     label: label, 
                     startDate: weekStart,
                     endDate: weekEnd 
@@ -2406,7 +613,6 @@
 
         dom.genWeekSelect1.innerHTML = weeks.map(w => `<option value="${w.week}">${w.label}</option>`).join('');
 
-         // Eğer görüntülenen ay ve yıl, bugünün ay ve yılı ile aynıysa, mevcut haftayı seçili yap
         const today = new Date();
         if (year === today.getFullYear() && month === today.getMonth()) {
             const currentWeekObject = weeks.find(w => today >= w.startDate && today <= w.endDate);
@@ -2417,73 +623,70 @@
     }
     
     function updateSummaryPanel() {
-        dom.totalBusinesses.textContent = appData.businesses.length;
-        const totalStudents = appData.businesses.reduce((sum, business) => sum + (business.students ? business.students.length : 0), 0);
+        dom.totalBusinesses.textContent = (appData.businesses || []).length;
+        const totalStudents = (appData.businesses || []).reduce((sum, business) => sum + (business.students ? business.students.length : 0), 0);
         dom.totalStudents.textContent = totalStudents;
     }
 
+    // Modal ve form fonksiyonları
     function openModal(modalId, data) {
         const modal = document.getElementById(modalId);
-        const form = modal.querySelector('form'); if (form) form.reset();
-        if (form) { form.querySelectorAll('.error-message').forEach(el => el.style.display = 'none'); form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid')); }
-        const title = modal.querySelector('h2');
-        if (modalId === 'businessModal') {
-            if (data && data.id) { const b = appData.businesses.find(b => b.id === data.id); title.textContent = 'İşletmeyi Düzenle'; form.querySelector('#businessId').value = b.id; form.querySelector('#businessName').value = b.name; form.querySelector('#businessAddress').value = b.address; form.querySelector('#businessPhone').value = b.phone; form.querySelector('#businessOfficial').value = b.official; form.querySelector('#businessVisitDay').value = b.visitDay; } 
-            else { title.textContent = 'Yeni İşletme Ekle'; form.querySelector('#businessId').value = ''; }
-        }else if (modalId === 'studentModal') {
-        form.querySelector('#studentBusinessId').value = data.businessId;
-        if (data && data.id) { 
-            const s = appData.businesses.find(b => b.id === data.businessId).students.find(s => s.id === data.id); 
-            title.textContent = 'Öğrenciyi Düzenle'; 
-            form.querySelector('#studentId').value = s.id; 
-            form.querySelector('#studentClass').value = s.class || '9';
-            form.querySelector('#studentNo').value = s.no; 
-            form.querySelector('#studentName').value = s.name; 
-            form.querySelector('#studentField').value = s.field; 
-            form.querySelector('#studentSchoolDay').value = s.schoolDay; 
-            form.querySelector('#studentPhone').value = s.phone; 
-            form.querySelector('#studentStartDate').value = s.startDate; 
-            form.querySelector('#studentEndDate').value = s.endDate; 
-        } 
-        else { 
-            title.textContent = 'Yeni Öğrenci Ekle'; 
-            form.querySelector('#studentId').value = ''; 
+        const form = modal.querySelector('form'); 
+        if (form) {
+            form.reset();
+            form.querySelectorAll('.error-message').forEach(el => el.style.display = 'none'); 
+            form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
         }
         
-        // Modal'ı ekran ortasına hizala
-        setTimeout(() => {
-            const modalContent = modal.querySelector('.modal-content');
-            modalContent.style.position = 'fixed';
-            modalContent.style.top = '50%';
-            modalContent.style.left = '50%';
-            modalContent.style.transform = 'translate(-50%, -50%)';
-            modalContent.style.margin = '0';
-        }, 10);
-
-    
-        }else if (modalId === 'terminationModal') {
+        const title = modal.querySelector('h2');
+        
+        if (modalId === 'businessModal') {
+            if (data && data.id) { 
+                const b = appData.businesses.find(b => b.id === data.id); 
+                title.textContent = 'İşletmeyi Düzenle'; 
+                form.querySelector('#businessId').value = b.id; 
+                form.querySelector('#businessName').value = b.name; 
+                form.querySelector('#businessAddress').value = b.address; 
+                form.querySelector('#businessPhone').value = b.phone; 
+                form.querySelector('#businessOfficial').value = b.official; 
+                form.querySelector('#businessVisitDay').value = b.visitDay; 
+            } else { 
+                title.textContent = 'Yeni İşletme Ekle'; 
+                form.querySelector('#businessId').value = ''; 
+            }
+        } else if (modalId === 'studentModal') {
+            form.querySelector('#studentBusinessId').value = data.businessId;
+            if (data && data.id) { 
+                const s = appData.businesses.find(b => b.id === data.businessId).students.find(s => s.id === data.id); 
+                title.textContent = 'Öğrenciyi Düzenle'; 
+                form.querySelector('#studentId').value = s.id; 
+                form.querySelector('#studentClass').value = s.class || '9';
+                form.querySelector('#studentNo').value = s.no; 
+                form.querySelector('#studentName').value = s.name; 
+                form.querySelector('#studentField').value = s.field; 
+                form.querySelector('#studentSchoolDay').value = s.schoolDay; 
+                form.querySelector('#studentPhone').value = s.phone; 
+                form.querySelector('#studentStartDate').value = s.startDate; 
+                form.querySelector('#studentEndDate').value = s.endDate; 
+            } else { 
+                title.textContent = 'Yeni Öğrenci Ekle'; 
+                form.querySelector('#studentId').value = ''; 
+            }
+        } else if (modalId === 'terminationModal') {
             form.querySelector('#terminationStudentId').value = data.studentId; 
             form.querySelector('#terminationBusinessId').value = data.businessId; 
             form.querySelector('#terminationDate').value = new Date().toISOString().slice(0, 10);
-            
-            // Modal'ı ekran ortasına getir
-            setTimeout(() => {
-                const modalContent = modal.querySelector('.modal-content');
-                modalContent.style.position = 'fixed';
-                modalContent.style.top = '50%';
-                modalContent.style.left = '50%';
-                modalContent.style.transform = 'translate(-50%, -50%)';
-                modalContent.style.margin = '0';
-            }, 10);
-        
         } else if (modalId === 'absenceModal') {
             currentAbsence = { studentId: data.studentId, businessId: data.businessId };
             const student = appData.businesses.find(b=>b.id===data.businessId).students.find(s=>s.id===data.studentId);
             modal.querySelector('h2').textContent = `${student.name} - Devamsızlık Girişi`;
             const monthSelect = modal.querySelector('#absenceMonthSelect');
             const yearSelect = modal.querySelector('#absenceYearSelect');
-            if (monthSelect.innerHTML === '') { monthSelect.innerHTML = monthNames.map((n,i) => `<option value="${i}">${n}</option>`).join(''); }
-            monthSelect.value = new Date().getMonth(); yearSelect.value = new Date().getFullYear();
+            if (monthSelect.innerHTML === '') { 
+                monthSelect.innerHTML = monthNames.map((n,i) => `<option value="${i}">${n}</option>`).join(''); 
+            }
+            monthSelect.value = new Date().getMonth(); 
+            yearSelect.value = new Date().getFullYear();
             renderAbsenceCalendar();
         }
         modal.style.display = 'block';
@@ -2503,7 +706,7 @@
                 isValid = false;
             }
         });
-        // Telefon numarası validasyonu
+        
         const phoneFields = form.querySelectorAll('input[inputmode="numeric"]');
         phoneFields.forEach(input => {
             const errorSpan = input.parentElement.querySelector('.error-message');
@@ -2535,7 +738,8 @@
         return true;
     }
 
-    function saveBusiness(e) { e.preventDefault(); if (!validateForm(dom.businessForm)) return; const form = dom.businessForm; const id = form.querySelector('#businessId').value; const businessData = { id: id || Date.now().toString(), name: form.querySelector('#businessName').value, address: form.querySelector('#businessAddress').value, phone: form.querySelector('#businessPhone').value, official: form.querySelector('#businessOfficial').value, visitDay: form.querySelector('#businessVisitDay').value, students: id ? appData.businesses.find(b => b.id === id).students : [] }; if (id) appData.businesses = appData.businesses.map(b => b.id === id ? businessData : b); else appData.businesses.push(businessData); saveData(); renderAll(); closeModal('businessModal'); showNotification('İşletme başarıyla kaydedildi.', 'success'); }
+    function saveBusiness(e) { e.preventDefault(); if (!validateForm(dom.businessForm)) return; const form = dom.businessForm; const id = form.querySelector('#businessId').value; const businessData = { id: id || Date.now().toString(), name: form.querySelector('#businessName').value, address: form.querySelector('#businessAddress').value, phone: form.querySelector('#businessPhone').value, official: form.querySelector('#businessOfficial').value,
+     visitDay: form.querySelector('#businessVisitDay').value, students: id ? appData.businesses.find(b => b.id === id).students : [] }; if (id) appData.businesses = appData.businesses.map(b => b.id === id ? businessData : b); else appData.businesses.push(businessData); saveData(); renderAll(); closeModal('businessModal'); showNotification('İşletme başarıyla kaydedildi.', 'success'); }
     function saveStudent(e) { e.preventDefault(); if (!validateStudentForm()) return; const form = dom.studentForm; const businessId = form.querySelector('#studentBusinessId').value; const id = form.querySelector('#studentId').value; const business = appData.businesses.find(b => b.id === businessId); const existingStudent = id ? business.students.find(s => s.id === id) : {}; const studentData = { id: id || Date.now().toString(), no: form.querySelector('#studentNo').value, name: form.querySelector('#studentName').value, class: form.querySelector('#studentClass').value, field: form.querySelector('#studentField').value, schoolDay: form.querySelector('#studentSchoolDay').value, phone: form.querySelector('#studentPhone').value, startDate: form.querySelector('#studentStartDate').value, endDate: form.querySelector('#studentEndDate').value, terminationReason: existingStudent.terminationReason || '', absences: existingStudent.absences || {} }; if (id) business.students = business.students.map(s => s.id === id ? studentData : s); else { if(!business.students) business.students = []; business.students.push(studentData); } saveData(); renderAll(); closeModal('studentModal'); showNotification('Öğrenci başarıyla kaydedildi.', 'success'); }
     
     function deleteBusiness(id) {
@@ -3162,7 +1366,7 @@
         }
     });
     
-    loadData();
+  
     renderAll();
     dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));
 
@@ -3187,6 +1391,7 @@
     window.addEventListener('resize', setVhProperty);
     window.addEventListener('orientationchange', setVhProperty);
 });
+
 </script>
 </body>
 </html>
