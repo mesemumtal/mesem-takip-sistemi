@@ -1046,7 +1046,35 @@
             deselectAllBusinesses: document.getElementById('deselect-all-businesses'),
             selectAllDailyBusinesses: document.getElementById('select-all-daily-businesses'),
             deselectAllDailyBusinesses: document.getElementById('deselect-all-daily-businesses'),
-        };
+        }
+
+            setTimeout(() => {
+                // İşletme dropdown'ı düzelt
+                const businessDropdown = document.getElementById('business-dropdown-header');
+                const businessContent = document.getElementById('business-dropdown-content');
+                
+                if (businessDropdown && businessContent) {
+                    businessDropdown.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        businessDropdown.classList.toggle('open');
+                        businessContent.classList.toggle('open');
+                    });
+                }
+                
+                // Günlük dropdown'ı düzelt  
+                const dailyDropdown = document.getElementById('daily-business-dropdown-header');
+                const dailyContent = document.getElementById('daily-business-dropdown-content');
+                
+                if (dailyDropdown && dailyContent) {
+                    dailyDropdown.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        dailyDropdown.classList.toggle('open');
+                        dailyContent.classList.toggle('open');
+                    });
+                }
+            }, 1000);
+
+        
 
         // --- Firebase Fonksiyonları ---
         async function signInWithGoogle() {
@@ -2301,7 +2329,21 @@
         
         dom.generateSheetBtn.addEventListener('click', () => { /* ... Mevcut kodunuzdaki gibi ... */ });
         dom.formTypeSelect.addEventListener('change', (e) => { /* ... Mevcut kodunuzdaki gibi ... */ });
-        dom.businessDropdownHeader.addEventListener('click', () => { dom.businessDropdownHeader.classList.toggle('open'); dom.businessDropdownContent.classList.toggle('open'); });
+        // Dropdown düzgün çalışsın
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('#business-dropdown-header')) {
+                const content = document.getElementById('business-dropdown-content');
+                const header = document.getElementById('business-dropdown-header');
+                
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    header.classList.remove('open');
+                } else {
+                    content.style.display = 'block';
+                    header.classList.add('open');
+                }
+            }
+        });
         dom.dailyBusinessDropdownHeader.addEventListener('click', () => { dom.dailyBusinessDropdownHeader.classList.toggle('open'); dom.dailyBusinessDropdownContent.classList.toggle('open'); });
         document.addEventListener('click', (e) => { if (!e.target.closest('.dropdown-container')) { document.querySelectorAll('.dropdown-header.open').forEach(h => h.classList.remove('open')); document.querySelectorAll('.dropdown-content.open').forEach(c => c.classList.remove('open')); } });
         dom.selectAllBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.business-checkbox').forEach(cb => cb.checked = true); updateDropdownText(); });
