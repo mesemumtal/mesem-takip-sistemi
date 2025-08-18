@@ -2085,7 +2085,15 @@
                 }
             }
         } else if (formType === 'daily_guidance') {
-            //const selectedBusinessIds = Array.from(document.querySelectorAll('.daily-business-checkbox:checked')).map(cb => cb.value);
+            /// generateSheetBtn click event'inde bunu yap
+            const formType = dom.formTypeSelect.value;
+            let selectedBusinessIds = [];
+
+            if (formType === 'daily_guidance') {
+                selectedBusinessIds = Array.from(document.querySelectorAll('.daily-business-checkbox:checked')).map(cb => cb.value);
+            } else {
+                selectedBusinessIds = Array.from(document.querySelectorAll('.business-checkbox:checked')).map(cb => cb.value);
+            }
             const selectedWeek = parseInt(dom.genWeekSelect1.value);
             
             if (selectedBusinessIds.length === 0) { 
@@ -2193,22 +2201,42 @@
     });
 
    
-    // Event delegation kullan - DOM timing sorununu çözer
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', function(e) {
+        // Aylık dropdown
         if (e.target.closest('#business-dropdown-header')) {
-            e.stopPropagation();
-            const header = document.getElementById('business-dropdown-header');
             const content = document.getElementById('business-dropdown-content');
-            header.classList.toggle('open');
-            content.classList.toggle('open');
+            const header = document.getElementById('business-dropdown-header');
+            
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                header.classList.remove('open');
+            } else {
+                content.style.display = 'block';
+                header.classList.add('open');
+            }
         }
         
+        // ⭐ BURAYI EKLE - Günlük dropdown
         if (e.target.closest('#daily-business-dropdown-header')) {
-            e.stopPropagation();
-            const header = document.getElementById('daily-business-dropdown-header');
             const content = document.getElementById('daily-business-dropdown-content');
-            header.classList.toggle('open');
-            content.classList.toggle('open');
+            const header = document.getElementById('daily-business-dropdown-header');
+            
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                header.classList.remove('open');
+            } else {
+                content.style.display = 'block';
+                header.classList.add('open');
+            }
+        }
+        
+        // Checkbox seçimi (her iki form için)
+        if (e.target.closest('.dropdown-item')) {
+            const item = e.target.closest('.dropdown-item');
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+            }
         }
     });
         
