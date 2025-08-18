@@ -2329,8 +2329,7 @@
         
         dom.generateSheetBtn.addEventListener('click', () => { /* ... Mevcut kodunuzdaki gibi ... */ });
         dom.formTypeSelect.addEventListener('change', (e) => { /* ... Mevcut kodunuzdaki gibi ... */ });
-        // Dropdown düzgün çalışsın
-        document.addEventListener('click', function(e) {
+       document.addEventListener('click', function(e) {
             // Dropdown açma/kapama
             if (e.target.closest('#business-dropdown-header')) {
                 const content = document.getElementById('business-dropdown-content');
@@ -2343,29 +2342,25 @@
                     content.style.display = 'block';
                     header.classList.add('open');
                 }
+                return; // Önemli! Diğer eventleri engelle
             }
             
-            // Günlük dropdown için de aynısı
-            if (e.target.closest('#daily-business-dropdown-header')) {
-                const content = document.getElementById('daily-business-dropdown-content');
-                const header = document.getElementById('daily-business-dropdown-header');
-                
-                if (content.style.display === 'block') {
-                    content.style.display = 'none';
-                    header.classList.remove('open');
-                } else {
-                    content.style.display = 'block';
-                    header.classList.add('open');
-                }
-            }
-            
-            // İşletme seçimi - checkbox otomatik seçim
-            if (e.target.closest('.dropdown-item')) {
+            // İşletme checkbox seçimi
+            if (e.target.closest('.dropdown-item') && !e.target.closest('button')) {
+                e.preventDefault();
                 const item = e.target.closest('.dropdown-item');
                 const checkbox = item.querySelector('input[type="checkbox"]');
                 if (checkbox) {
                     checkbox.checked = !checkbox.checked;
-                    updateDropdownText();
+                    
+                    // Seçili işletme sayısını güncelle
+                    const selectedCount = document.querySelectorAll('.business-checkbox:checked').length;
+                    const textElement = document.getElementById('business-selected-text');
+                    if (selectedCount === 0) {
+                        textElement.textContent = 'İşletme seçin...';
+                    } else {
+                        textElement.textContent = `${selectedCount} işletme seçildi`;
+                    }
                 }
             }
         });
