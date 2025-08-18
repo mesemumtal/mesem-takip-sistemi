@@ -263,7 +263,7 @@
             }
         
           
-         /* GÜNLİK REHBERLİK FORMU - NİHAİ DIŞ ÇERÇEVE YAZILI DÜZEN ▼ */
+         /* GÜNLÜK REHBERLİK FORMU - NİHAİ DIŞ ÇERÇEVE YAZILI DÜZEN ▼ */
 
             .print-page-daily-guidance {
                 page: guidance;
@@ -468,7 +468,7 @@
                 box-sizing: border-box; /* Genişlik hesaplamasını düzeltmek için */
             }
 
-            /* YENİ 5 BÖLÜMLİ FOOTER DÜZENİ (SON HALİ) */
+            /* YENİ 5 BÖLÜMLÜ FOOTER DÜZENİ (SON HALİ) */
             .print-page-attendance .print-footer {
                 width: 100%;
                 margin-top: auto;
@@ -970,12 +970,11 @@
 </div>
     
 <script type="module">
-  // Firebase modular imports
+  // Senin Firebase config'i
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
   import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
   import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyB8H41-2uK39kWSRhLJOBmnzdlaxzVyGC0",
     authDomain: "mesem-takip-sistemi-408d8.firebaseapp.com",
@@ -985,17 +984,17 @@
     appId: "1:66667379009:web:7303e9bb7cc49b751a89c0"
   };
 
-  // Initialize Firebase
+  // Firebase'i başlat
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
   
-  // Global variables
+  // Global değişkenler
   window.auth = auth;
   window.db = db;
   window.currentUser = null;
 
-// Firebase functions
+  // Firebase Auth işlemleri
 async function signInWithGoogle() {
     try {
         const provider = new GoogleAuthProvider();
@@ -1007,95 +1006,64 @@ async function signInWithGoogle() {
     }
 }
 
+onAuthStateChanged(auth, async (user) => {
+        const container = document.querySelector('.container');
+        if (user) {
+            currentUser = user;
+            dom.loginSection.style.display = 'none';
+            dom.userInfo.style.display = 'block';
+            dom.userName.textContent = user.displayName;
+            container.style.display = 'block'; // Ana içeriği göster
+            await loadUserData(); // Veriyi Firebase'den yükle
+        } else {
+            currentUser = null;
+            dom.loginSection.style.display = 'block';
+            dom.userInfo.style.display = 'none';
+            container.style.display = 'none'; // Ana içeriği gizle
+        }
+    });
+
+// Veri yükleme
 async function loadUserData() {
     try {
         const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
         if (userDoc.exists()) {
             appData = userDoc.data();
             renderAll();
-        } else {
-            // İlk kez giriş yapan kullanıcı için default data
-            loadData();
-            await saveDataToCloud();
         }
     } catch (error) {
         console.error('Veri yükleme hatası:', error);
-        // Hata durumunda local storage'dan yükle
-        loadData();
     }
 }
 
+// Veri kaydetme (mevcut saveData fonksiyonunu güncelle)
 async function saveDataToCloud() {
     if (!currentUser) return;
     try {
         await setDoc(doc(db, 'users', currentUser.uid), appData);
-        console.log('Veri buluta kaydedildi');
+        console.log('Veri kaydedildi');
     } catch (error) {
-        console.error('Buluta kaydetme hatası:', error);
+        console.error('Kaydetme hatası:', error);
     }
 }
 
-// Make functions global
-window.signInWithGoogle = signInWithGoogle;
-window.loadUserData = loadUserData;
-window.saveDataToCloud = saveDataToCloud;
-</script>
-
-<script>
+// Event listeners
 document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('google-login-btn').onclick = signInWithGoogle;
+    document.getElementById('logout-btn').onclick = () => signOut(auth);
+});
+
+
+  
     const DB_KEY = 'mesem_unified_system_v15_enhanced';
     let appData = {};
     let currentAbsence = { studentId: null, businessId: null };
     const dom = {
-        tabs: document.querySelector('.tabs'), 
-        settingsInputs: document.querySelectorAll('#management-panel .panel .form-input'), 
-        businessesAccordion: document.getElementById('businessesAccordion'), 
-        addBusinessBtn: document.getElementById('add-business-btn'), 
-        businessModal: document.getElementById('businessModal'), 
-        businessForm: document.getElementById('businessForm'), 
-        studentModal: document.getElementById('studentModal'), 
-        studentForm: document.getElementById('studentForm'), 
-        terminationModal: document.getElementById('terminationModal'), 
-        terminationForm: document.getElementById('terminationForm'), 
-        absenceModal: document.getElementById('absenceModal'), 
-        genMonthSelect: document.getElementById('genMonthSelect'), 
-        genYearSelect: document.getElementById('genYearSelect'), 
-        dailyMonthSelect: document.getElementById('dailyMonthSelect'), 
-        dailyYearSelect: document.getElementById('dailyYearSelect'), 
-        genWeekSelect1: document.getElementById('genWeekSelect1'), 
-        generateSheetBtn: document.getElementById('generate-sheet-btn'), 
-        printContainer: document.getElementById('print-container'), 
-        downloadBtn: document.getElementById('download-data-btn'), 
-        uploadBtn: document.getElementById('upload-data-btn'), 
-        uploadInput: document.getElementById('upload-input'), 
-        printListBtn: document.getElementById('print-list-btn'), 
-        formTypeSelect: document.getElementById('formTypeSelect'), 
-        controlsMonthly: document.getElementById('controls-monthly'), 
-        controlsDaily: document.getElementById('controls-daily'), 
-        totalBusinesses: document.getElementById('totalBusinesses'), 
-        totalStudents: document.getElementById('totalStudents'), 
-        businessDropdownHeader: document.getElementById('business-dropdown-header'), 
-        businessDropdownContent: document.getElementById('business-dropdown-content'), 
-        businessDropdownList: document.getElementById('business-dropdown-list'), 
-        businessSelectedText: document.getElementById('business-selected-text'), 
-        dailyBusinessDropdownHeader: document.getElementById('daily-business-dropdown-header'), 
-        dailyBusinessDropdownContent: document.getElementById('daily-business-dropdown-content'), 
-        dailyBusinessDropdownList: document.getElementById('daily-business-dropdown-list'), 
-        dailyBusinessSelectedText: document.getElementById('daily-business-selected-text'), 
-        selectAllBusinesses: document.getElementById('select-all-businesses'), 
-        deselectAllBusinesses: document.getElementById('deselect-all-businesses'), 
-        selectAllDailyBusinesses: document.getElementById('select-all-daily-businesses'), 
-        deselectAllDailyBusinesses: document.getElementById('deselect-all-daily-businesses'),
-        loginSection: document.getElementById('login-section'),
-        userInfo: document.getElementById('user-info'),
-        userName: document.getElementById('user-name'),
-        googleLoginBtn: document.getElementById('google-login-btn'),
-        logoutBtn: document.getElementById('logout-btn')
+        tabs: document.querySelector('.tabs'), settingsInputs: document.querySelectorAll('#management-panel .panel .form-input'), businessesAccordion: document.getElementById('businessesAccordion'), addBusinessBtn: document.getElementById('add-business-btn'), businessModal: document.getElementById('businessModal'), businessForm: document.getElementById('businessForm'), studentModal: document.getElementById('studentModal'), studentForm: document.getElementById('studentForm'), terminationModal: document.getElementById('terminationModal'), terminationForm: document.getElementById('terminationForm'), absenceModal: document.getElementById('absenceModal'), genMonthSelect: document.getElementById('genMonthSelect'), genYearSelect: document.getElementById('genYearSelect'), dailyMonthSelect: document.getElementById('dailyMonthSelect'), dailyYearSelect: document.getElementById('dailyYearSelect'), genWeekSelect1: document.getElementById('genWeekSelect1'), generateSheetBtn: document.getElementById('generate-sheet-btn'), printContainer: document.getElementById('print-container'), downloadBtn: document.getElementById('download-data-btn'), uploadBtn: document.getElementById('upload-data-btn'), uploadInput: document.getElementById('upload-input'), printListBtn: document.getElementById('print-list-btn'), formTypeSelect: document.getElementById('formTypeSelect'), controlsMonthly: document.getElementById('controls-monthly'), controlsDaily: document.getElementById('controls-daily'), totalBusinesses: document.getElementById('totalBusinesses'), totalStudents: document.getElementById('totalStudents'), businessDropdownHeader: document.getElementById('business-dropdown-header'), businessDropdownContent: document.getElementById('business-dropdown-content'), businessDropdownList: document.getElementById('business-dropdown-list'), businessSelectedText: document.getElementById('business-selected-text'), dailyBusinessDropdownHeader: document.getElementById('daily-business-dropdown-header'), dailyBusinessDropdownContent: document.getElementById('daily-business-dropdown-content'), dailyBusinessDropdownList: document.getElementById('daily-business-dropdown-list'), dailyBusinessSelectedText: document.getElementById('daily-business-selected-text'), selectAllBusinesses: document.getElementById('select-all-businesses'), deselectAllBusinesses: document.getElementById('deselect-all-businesses'), selectAllDailyBusinesses: document.getElementById('select-all-daily-businesses'), deselectAllDailyBusinesses: document.getElementById('deselect-all-daily-businesses'),
     };
-    
     const monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 
-    // 2024-2025-2026 Yılı Resmi Tatil Günleri (Ay 0'dan başlar: Ocak=0, Şubat=1...)
+       // 2024-2025-2026 Yılı Resmi Tatil Günleri (Ay 0'dan başlar: Ocak=0, Şubat=1...)
     const publicHolidays = {
         '2024': [
             { month: 9, day: 29, halfDay: false }, // Cumhuriyet Bayramı
@@ -1155,7 +1123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { start: new Date(2026, 5, 27), end: new Date(2026, 8, 6) }    // Yaz Tatili başlangıcı
     ];
 
-    // Yardımcı fonksiyonlar
+    // YENİ EKLENECEK YARDIMCI FONKSİYONLAR ▼
     function isPublicHoliday(date) {
         const year = date.getFullYear().toString();
         const month = date.getMonth();
@@ -1165,17 +1133,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function isSchoolHoliday(date) {
+        // Saat, dakika vs. sıfırlayarak sadece tarih bazlı karşılaştırma yap
         const checkDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
         return schoolHolidays.some(period => checkDate >= period.start && checkDate <= period.end);
     }
 
+
+    function getFormHeightInPixels(businessId, month, year) {
+        // Gizli bir ölçüm alanı oluştur
+        const measuringDiv = document.createElement('div');
+        measuringDiv.style.position = 'absolute';
+        measuringDiv.style.visibility = 'hidden';
+        measuringDiv.style.left = '-9999px';
+        measuringDiv.style.width = '190mm'; // A4 portre sayfa genişliği (kenar boşlukları hariç)
+
+        // Formun HTML'ini oluştur ve ölçüm alanına ekle
+        const formHTML = generateAttendanceSheet(businessId, month, year);
+        measuringDiv.innerHTML = `<div class="print-page-attendance"><div class="sheet-content">${formHTML}</div></div>`;
+
+        document.body.appendChild(measuringDiv);
+
+        // Yüksekliği ölç
+        const height = measuringDiv.offsetHeight;
+
+        // Ölçüm alanını temizle
+        document.body.removeChild(measuringDiv);
+
+        return height;
+    }
+
     function parseDateString(dateStr) { if (!dateStr) return null; const parts = dateStr.split('-'); return new Date(parts[0], parts[1] - 1, parts[2]); }
     function getVisitDatesForMonth(year, month, dayOfWeek) { const dates = []; const targetDay = parseInt(dayOfWeek); if (isNaN(targetDay)) return []; const date = new Date(year, month, 1); while (date.getMonth() === month) { if (date.getDay() === targetDay) { dates.push(new Date(date.getTime())); } date.setDate(date.getDate() + 1); } return dates; }
+    function getWeeksInMonth(year, month, dayOfWeek) { const visitDates = getVisitDatesForMonth(year, month, dayOfWeek); return visitDates.map((date, index) => ({ week: index + 1, date: date, label: `${index + 1}. Hafta (${date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })})` })); }
     
+    // Bir tarihin, yılın kaçıncı haftasında olduğunu (ISO 8601 standardına göre) hesaplar
     function getWeekOfYear(d) {
+        // Tarihin bir kopyasını oluşturarak orijinalini bozmuyoruz
         d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        // Haftanın Perşembe gününü bul (ISO standardı Perşembe gününü baz alır)
+        // Pazar gününü 7. gün olarak ayarla
         d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+        // Yılın ilk gününü bul
         var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+        // Yılın başından bu Perşembe'ye kadar geçen hafta sayısını hesapla
         var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
         return weekNo;
     }
@@ -1191,7 +1191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentYear = new Date().getFullYear();
         const currentMonth = new Date().getMonth();
         
-        if (currentMonth >= 8) {
+        if (currentMonth >= 8) { // Eylül'den itibaren yeni eğitim yılı
             const academicYear = currentYear;
             
             if (!appData.lastClassUpgrade || appData.lastClassUpgrade < academicYear) {
@@ -1214,7 +1214,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Bu yeni versiyon verileri localStorage yerine Firebase'e kaydeder.
     async function saveData() {
+        // Önce Genel Ayarlar'daki verileri appData objesine işle
         dom.settingsInputs.forEach(input => { 
             if(input.id) {
                 if (!appData.settings) appData.settings = {};
@@ -1222,26 +1224,32 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Local storage'a kaydet
-        localStorage.setItem(DB_KEY, JSON.stringify(appData));
-
-        // Eğer kullanıcı giriş yapmışsa, buluta da kaydet
-        if (window.currentUser && window.saveDataToCloud) {
-            await window.saveDataToCloud();
+        // Eğer kullanıcı giriş yapmışsa, güncel appData'yı buluta kaydet
+        if (currentUser) {
+            try {
+                await setDoc(doc(db, 'users', currentUser.uid), appData);
+                console.log('Veri başarıyla buluta kaydedildi.');
+            } catch (error) {
+                console.error('Buluta kaydetme hatası:', error);
+                showNotification('Veri kaydedilirken bir hata oluştu.', 'error');
+            }
         }
     }
+
     
     function showNotification(message, type = 'info', callback = null) {
-        let alertModal = document.getElementById('alertModal');
+        const alertModal = document.getElementById('alertModal');
         if (!alertModal) {
-            alertModal = document.createElement('div');
+            const alertModal = document.createElement('div');
             alertModal.id = 'alertModal';
             alertModal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;display:none;';
             document.body.appendChild(alertModal);
         }
         
+        const modal = document.getElementById('alertModal');
+        
         if (type === 'confirm') {
-            alertModal.innerHTML = `
+            modal.innerHTML = `
                 <div style="background:var(--card-bg);padding:30px;width:400px;text-align:center;border:2px solid var(--accent-gold);border-radius:10px;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);">
                     <h2 style="color:var(--accent-gold);">⚠️ Onay</h2>
                     <p style="color:var(--text-light);">${message}</p>
@@ -1252,26 +1260,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             
-            alertModal.style.display = 'block';
+            modal.style.display = 'block';
             
             document.getElementById('confirmYes').onclick = function() {
-                alertModal.style.display = 'none';
+                modal.style.display = 'none';
                 if (callback) callback(true);
             };
             
             document.getElementById('confirmNo').onclick = function() {
-                alertModal.style.display = 'none';
+                modal.style.display = 'none';
                 if (callback) callback(false);
             };
         } else {
-            alertModal.innerHTML = `<div style="background:var(--card-bg);padding:30px;width:400px;text-align:center;border:2px solid var(--accent-gold);border-radius:10px;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);"><h2 style="color:var(--accent-gold);">⚠️ Uyarı</h2><p style="color:var(--text-light);">${message}</p></div>`;
-            alertModal.style.display = 'block';
+            modal.innerHTML = '<div style="background:var(--card-bg);padding:30px;width:400px;text-align:center;border:2px solid var(--accent-gold);border-radius:10px;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);"><h2 style="color:var(--accent-gold);">⚠️ Uyarı</h2><p style="color:var(--text-light);">' + message + '</p></div>';
+            modal.style.display = 'block';
             
-            alertModal.onclick = function(e) {
-                if (e.target === alertModal) alertModal.style.display = 'none';
+            modal.onclick = function(e) {
+                if (e.target === modal) modal.style.display = 'none';
             };
         }
+        
+        console.log(type.toUpperCase() + ': ' + message);
     }
+
+    // Modal kapatma - boş alana tıklayınca kapanır
+    document.addEventListener('click', (event) => {
+        const alertModal = document.getElementById('alertModal');
+        if (event.target === alertModal) {
+            alertModal.style.display = 'none';
+        }
+    });
+
 
     function renderAll() { renderBusinessesAccordion(); renderGeneratorUI(); updateSummaryPanel(); }
 
@@ -1309,14 +1328,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderBusinessDropdowns() {
-        const businessItems = (appData.businesses || []).map(b => 
+        const businessItems = appData.businesses.map(b => 
             `<div class="dropdown-item">
                 <input type="checkbox" value="${b.id}" class="business-checkbox" id="monthly-business-${b.id}">
                 <label for="monthly-business-${b.id}">${b.name}</label>
             </div>`
         ).join('');
         
-        const dailyBusinessItems = (appData.businesses || []).map(b => 
+        const dailyBusinessItems = appData.businesses.map(b => 
             `<div class="dropdown-item">
                 <input type="checkbox" value="${b.id}" class="daily-business-checkbox" id="daily-business-${b.id}">
                 <label for="daily-business-${b.id}">${b.name}</label>
@@ -1352,6 +1371,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // YENİ HAFTA HESAPLAMA FONKSİYONU - Pazartesi başlangıçlı
     function populateWeeksForDailyForm() {
         const month = parseInt(dom.dailyMonthSelect.value);
         const year = parseInt(dom.dailyYearSelect.value);
@@ -1365,7 +1385,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const daysToSubtract = firstDayWeekday === 0 ? 6 : firstDayWeekday - 1;
         firstMonday.setDate(firstDayOfMonth.getDate() - daysToSubtract);
 
-        let monthWeekNumber = 1;
+        let monthWeekNumber = 1; // Bu, formun value'su için kullanılacak (1, 2, 3, 4, 5)
         let currentMonday = new Date(firstMonday);
 
         while (currentMonday <= lastDayOfMonth) {
@@ -1374,11 +1394,14 @@ document.addEventListener('DOMContentLoaded', () => {
             weekEnd.setDate(weekEnd.getDate() + 6);
 
             if (weekEnd >= firstDayOfMonth && weekStart <= lastDayOfMonth) {
+                // YENİ EKLENEN KISIM: Yılın haftasını hesapla
                 const yearWeekNumber = getWeekOfYear(weekStart);
+
+                // DEĞİŞEN KISIM: Etiketi (label) yılın haftasına göre oluştur
                 const label = `${yearWeekNumber}. Hafta (${weekStart.toLocaleDateString('tr-TR')} - ${weekEnd.toLocaleDateString('tr-TR')})`;
 
                 weeks.push({ 
-                    week: monthWeekNumber,
+                    week: monthWeekNumber, // Değer olarak ayın haftasını (1-5) koruyoruz ki form mantığı bozulmasın
                     label: label, 
                     startDate: weekStart,
                     endDate: weekEnd 
@@ -1391,6 +1414,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         dom.genWeekSelect1.innerHTML = weeks.map(w => `<option value="${w.week}">${w.label}</option>`).join('');
 
+         // Eğer görüntülenen ay ve yıl, bugünün ay ve yılı ile aynıysa, mevcut haftayı seçili yap
         const today = new Date();
         if (year === today.getFullYear() && month === today.getMonth()) {
             const currentWeekObject = weeks.find(w => today >= w.startDate && today <= w.endDate);
@@ -1401,70 +1425,73 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function updateSummaryPanel() {
-        dom.totalBusinesses.textContent = (appData.businesses || []).length;
-        const totalStudents = (appData.businesses || []).reduce((sum, business) => sum + (business.students ? business.students.length : 0), 0);
+        dom.totalBusinesses.textContent = appData.businesses.length;
+        const totalStudents = appData.businesses.reduce((sum, business) => sum + (business.students ? business.students.length : 0), 0);
         dom.totalStudents.textContent = totalStudents;
     }
 
-    // Modal ve form fonksiyonları
     function openModal(modalId, data) {
         const modal = document.getElementById(modalId);
-        const form = modal.querySelector('form'); 
-        if (form) {
-            form.reset();
-            form.querySelectorAll('.error-message').forEach(el => el.style.display = 'none'); 
-            form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+        const form = modal.querySelector('form'); if (form) form.reset();
+        if (form) { form.querySelectorAll('.error-message').forEach(el => el.style.display = 'none'); form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid')); }
+        const title = modal.querySelector('h2');
+        if (modalId === 'businessModal') {
+            if (data && data.id) { const b = appData.businesses.find(b => b.id === data.id); title.textContent = 'İşletmeyi Düzenle'; form.querySelector('#businessId').value = b.id; form.querySelector('#businessName').value = b.name; form.querySelector('#businessAddress').value = b.address; form.querySelector('#businessPhone').value = b.phone; form.querySelector('#businessOfficial').value = b.official; form.querySelector('#businessVisitDay').value = b.visitDay; } 
+            else { title.textContent = 'Yeni İşletme Ekle'; form.querySelector('#businessId').value = ''; }
+        }else if (modalId === 'studentModal') {
+        form.querySelector('#studentBusinessId').value = data.businessId;
+        if (data && data.id) { 
+            const s = appData.businesses.find(b => b.id === data.businessId).students.find(s => s.id === data.id); 
+            title.textContent = 'Öğrenciyi Düzenle'; 
+            form.querySelector('#studentId').value = s.id; 
+            form.querySelector('#studentClass').value = s.class || '9';
+            form.querySelector('#studentNo').value = s.no; 
+            form.querySelector('#studentName').value = s.name; 
+            form.querySelector('#studentField').value = s.field; 
+            form.querySelector('#studentSchoolDay').value = s.schoolDay; 
+            form.querySelector('#studentPhone').value = s.phone; 
+            form.querySelector('#studentStartDate').value = s.startDate; 
+            form.querySelector('#studentEndDate').value = s.endDate; 
+        } 
+        else { 
+            title.textContent = 'Yeni Öğrenci Ekle'; 
+            form.querySelector('#studentId').value = ''; 
         }
         
-        const title = modal.querySelector('h2');
-        
-        if (modalId === 'businessModal') {
-            if (data && data.id) { 
-                const b = appData.businesses.find(b => b.id === data.id); 
-                title.textContent = 'İşletmeyi Düzenle'; 
-                form.querySelector('#businessId').value = b.id; 
-                form.querySelector('#businessName').value = b.name; 
-                form.querySelector('#businessAddress').value = b.address; 
-                form.querySelector('#businessPhone').value = b.phone; 
-                form.querySelector('#businessOfficial').value = b.official; 
-                form.querySelector('#businessVisitDay').value = b.visitDay; 
-            } else { 
-                title.textContent = 'Yeni İşletme Ekle'; 
-                form.querySelector('#businessId').value = ''; 
-            }
-        } else if (modalId === 'studentModal') {
-            form.querySelector('#studentBusinessId').value = data.businessId;
-            if (data && data.id) { 
-                const s = appData.businesses.find(b => b.id === data.businessId).students.find(s => s.id === data.id); 
-                title.textContent = 'Öğrenciyi Düzenle'; 
-                form.querySelector('#studentId').value = s.id; 
-                form.querySelector('#studentClass').value = s.class || '9';
-                form.querySelector('#studentNo').value = s.no; 
-                form.querySelector('#studentName').value = s.name; 
-                form.querySelector('#studentField').value = s.field; 
-                form.querySelector('#studentSchoolDay').value = s.schoolDay; 
-                form.querySelector('#studentPhone').value = s.phone; 
-                form.querySelector('#studentStartDate').value = s.startDate; 
-                form.querySelector('#studentEndDate').value = s.endDate; 
-            } else { 
-                title.textContent = 'Yeni Öğrenci Ekle'; 
-                form.querySelector('#studentId').value = ''; 
-            }
-        } else if (modalId === 'terminationModal') {
+        // Modal'ı ekran ortasına hizala
+        setTimeout(() => {
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.style.position = 'fixed';
+            modalContent.style.top = '50%';
+            modalContent.style.left = '50%';
+            modalContent.style.transform = 'translate(-50%, -50%)';
+            modalContent.style.margin = '0';
+        }, 10);
+
+    
+        }else if (modalId === 'terminationModal') {
             form.querySelector('#terminationStudentId').value = data.studentId; 
             form.querySelector('#terminationBusinessId').value = data.businessId; 
             form.querySelector('#terminationDate').value = new Date().toISOString().slice(0, 10);
+            
+            // Modal'ı ekran ortasına getir
+            setTimeout(() => {
+                const modalContent = modal.querySelector('.modal-content');
+                modalContent.style.position = 'fixed';
+                modalContent.style.top = '50%';
+                modalContent.style.left = '50%';
+                modalContent.style.transform = 'translate(-50%, -50%)';
+                modalContent.style.margin = '0';
+            }, 10);
+        
         } else if (modalId === 'absenceModal') {
             currentAbsence = { studentId: data.studentId, businessId: data.businessId };
             const student = appData.businesses.find(b=>b.id===data.businessId).students.find(s=>s.id===data.studentId);
             modal.querySelector('h2').textContent = `${student.name} - Devamsızlık Girişi`;
             const monthSelect = modal.querySelector('#absenceMonthSelect');
             const yearSelect = modal.querySelector('#absenceYearSelect');
-            if (monthSelect.innerHTML === '') { 
-                monthSelect.innerHTML = monthNames.map((n,i) => `<option value="${i}">${n}</option>`).join(''); 
-            }
-            monthSelect.value = new Date().getMonth(); 
-            yearSelect.value = new Date().getFullYear();
+            if (monthSelect.innerHTML === '') { monthSelect.innerHTML = monthNames.map((n,i) => `<option value="${i}">${n}</option>`).join(''); }
+            monthSelect.value = new Date().getMonth(); yearSelect.value = new Date().getFullYear();
             renderAbsenceCalendar();
         }
         modal.style.display = 'block';
@@ -1484,7 +1511,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 isValid = false;
             }
         });
-        
+        // Telefon numarası validasyonu
         const phoneFields = form.querySelectorAll('input[inputmode="numeric"]');
         phoneFields.forEach(input => {
             const errorSpan = input.parentElement.querySelector('.error-message');
@@ -1516,8 +1543,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     }
 
-    function saveBusiness(e) { e.preventDefault(); if (!validateForm(dom.businessForm)) return; const form = dom.businessForm; const id = form.querySelector('#businessId').value; const businessData = { id: id || Date.now().toString(), name: form.querySelector('#businessName').value, address: form.querySelector('#businessAddress').value, phone: form.querySelector('#businessPhone').value, official: form.querySelector('#businessOfficial').value,
-     visitDay: form.querySelector('#businessVisitDay').value, students: id ? appData.businesses.find(b => b.id === id).students : [] }; if (id) appData.businesses = appData.businesses.map(b => b.id === id ? businessData : b); else appData.businesses.push(businessData); saveData(); renderAll(); closeModal('businessModal'); showNotification('İşletme başarıyla kaydedildi.', 'success'); }
+    function saveBusiness(e) { e.preventDefault(); if (!validateForm(dom.businessForm)) return; const form = dom.businessForm; const id = form.querySelector('#businessId').value; const businessData = { id: id || Date.now().toString(), name: form.querySelector('#businessName').value, address: form.querySelector('#businessAddress').value, phone: form.querySelector('#businessPhone').value, official: form.querySelector('#businessOfficial').value, visitDay: form.querySelector('#businessVisitDay').value, students: id ? appData.businesses.find(b => b.id === id).students : [] }; if (id) appData.businesses = appData.businesses.map(b => b.id === id ? businessData : b); else appData.businesses.push(businessData); saveData(); renderAll(); closeModal('businessModal'); showNotification('İşletme başarıyla kaydedildi.', 'success'); }
     function saveStudent(e) { e.preventDefault(); if (!validateStudentForm()) return; const form = dom.studentForm; const businessId = form.querySelector('#studentBusinessId').value; const id = form.querySelector('#studentId').value; const business = appData.businesses.find(b => b.id === businessId); const existingStudent = id ? business.students.find(s => s.id === id) : {}; const studentData = { id: id || Date.now().toString(), no: form.querySelector('#studentNo').value, name: form.querySelector('#studentName').value, class: form.querySelector('#studentClass').value, field: form.querySelector('#studentField').value, schoolDay: form.querySelector('#studentSchoolDay').value, phone: form.querySelector('#studentPhone').value, startDate: form.querySelector('#studentStartDate').value, endDate: form.querySelector('#studentEndDate').value, terminationReason: existingStudent.terminationReason || '', absences: existingStudent.absences || {} }; if (id) business.students = business.students.map(s => s.id === id ? studentData : s); else { if(!business.students) business.students = []; business.students.push(studentData); } saveData(); renderAll(); closeModal('studentModal'); showNotification('Öğrenci başarıyla kaydedildi.', 'success'); }
     
     function deleteBusiness(id) {
@@ -2168,7 +2194,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setVhProperty();
     window.addEventListener('resize', setVhProperty);
     window.addEventListener('orientationchange', setVhProperty);
-});
 
 </script>
 </body>
