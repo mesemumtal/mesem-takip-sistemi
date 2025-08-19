@@ -1583,12 +1583,19 @@
     
     // Scroll pozisyonunu kaydet ve body'yi sabitle
     const scrollY = window.scrollY;
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = '100%';
-    
-    modal.style.display = 'block';
-    }
+    document.body.style.overflow = 'hidden';
+    document.body.dataset.scrollY = scrollY;
+
+    modal.style.display = 'block';    }
+
+    setTimeout(() => {
+        const modalContent = modal.querySelector('.modal-content');
+        modalContent.style.position = 'fixed';
+        modalContent.style.top = '50%';
+        modalContent.style.left = '50%';
+        modalContent.style.transform = 'translate(-50%, -50%)';
+        modalContent.style.zIndex = '10001';
+    }, 10);
 
     function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
     
@@ -2330,8 +2337,13 @@
     document.addEventListener('click', e => { 
         if (e.target.matches('[data-action="cancel-modal"]')) { 
             e.target.closest('.modal').style.display = 'none'; 
+            
+            document.body.style.overflow = '';
+            const scrollY = document.body.dataset.scrollY || 0;
+            window.scrollTo(0, parseInt(scrollY));
+            
             return; 
-        } 
+        }
         
         // Accordion header kontrolü - BURASI ÖNEMLİ
         const accordionHeader = e.target.closest('.accordion-header'); 
