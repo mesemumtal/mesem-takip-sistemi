@@ -880,6 +880,25 @@
                 transition: all 0.3s ease;
             }
 
+            /* VERİ YÖNETİMİ: üçlü buton satırı */
+            .actions{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            padding: 0 12px 16px;   /* altın çerçevenin içine çek */
+            box-sizing: border-box;
+            }
+            .actions > *{
+            min-width: 0;
+            max-width: 100%;
+            }
+
+            /* Daha dar telefonlarda 2 sütuna düşür */
+            @media (max-width: 420px){
+            .actions{ grid-template-columns: repeat(2, 1fr); }
+            }
+
+
 
             /* --- MOBİL YAMASI (sadece mobilde çalışır) --- */
             @media (max-width: 768px), (pointer: coarse) {
@@ -938,6 +957,7 @@
                 line-height: 1.2;
             }
             }
+            
 
 
 
