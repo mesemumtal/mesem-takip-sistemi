@@ -1214,6 +1214,8 @@
         async function signInWithGoogle() {
             try {
                 const provider = new GoogleAuthProvider();
+                // YENİ EKLENEN SATIR: Her seferinde hesap seçme ekranını göstermeye zorla
+                provider.setCustomParameters({ prompt: 'select_account' });
                 await signInWithPopup(auth, provider);
             } catch (error) {
                 console.error('Giriş hatası:', error);
