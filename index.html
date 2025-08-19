@@ -1537,16 +1537,19 @@
             form.querySelector('#studentId').value = ''; 
         }
 
-
-        // Modal sabitlemesi
-        const modalContent = modal.querySelector('.modal-content');
-        modalContent.style.position = 'fixed';
-        modalContent.style.top = '50%';
-        modalContent.style.left = '50%';
-        modalContent.style.transform = 'translate(-50%, -50%)';
-        modalContent.style.margin = '0';
-        modalContent.style.zIndex = '10001';
         
+
+
+        
+        // Modal'ı ekran ortasına hizala
+        setTimeout(() => {
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.style.position = 'fixed';
+            modalContent.style.top = '50%';
+            modalContent.style.left = '50%';
+            modalContent.style.transform = 'translate(-50%, -50%)';
+            modalContent.style.margin = '0';
+        }, 10);
 
     
         }else if (modalId === 'terminationModal') {
@@ -2368,8 +2371,13 @@
     loadData();
     dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));
 
-    // Mobil klavye fix
     document.addEventListener('focusin', function(e) {
+        // Modal açıksa input ortalama yapma
+        const openModal = document.querySelector('.modal[style*="display: block"]');
+        if (openModal) {
+            return; // Modal açıksa dur
+        }
+        
         if (e.target.matches('input, textarea, select')) {
             setTimeout(() => {
                 e.target.scrollIntoView({ 
