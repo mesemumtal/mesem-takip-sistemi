@@ -2342,8 +2342,15 @@
     loadData();
     dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));
 
+   
     // Mobil klavye fix
     document.addEventListener('focusin', function(e) {
+        // Modal açık olduğunda input ortalama yapma
+        const openModal = document.querySelector('.modal[style*="display: block"]');
+        if (openModal) {
+            return; // Modal açıksa ortalama yapma
+        }
+        
         if (e.target.matches('input, textarea, select')) {
             setTimeout(() => {
                 e.target.scrollIntoView({ 
