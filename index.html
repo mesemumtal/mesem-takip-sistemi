@@ -690,16 +690,16 @@
             scroll-margin-block-start: 99vh;
         }
 
+        /* Masaüstünde modal kendi yerinde kalsın; sürükleyince pozisyonu korunur */
         .modal-content{
         position: fixed;
-        top: 50%;        /* tekrar ekle */
+         top: 50%;        /* tekrar ekle */
         left: 50%;       /* tekrar ekle */
         transform: translate(-50%, -50%); /* tekrar ekle */
         margin: 0;
         z-index: 10001;
         will-change: auto;
         }
-
 
         /* SADECE mobil/tablet’te ortala (dokunmatik için) */
         @media (max-width: 768px) {
