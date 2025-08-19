@@ -692,13 +692,13 @@
 
         /* Masaüstünde modal kendi yerinde kalsın; sürükleyince pozisyonu korunur */
         .modal-content{
-        position: fixed !important;
-        top: 50% !important;
-        left: 50% !important;
-        transform: translate(-50%, -50%) !important;
-        margin: 0;
-        z-index: 10001;
-        will-change: auto;
+            position: fixed;
+            top: 50%;        /* tekrar ekle */
+            left: 50%;       /* tekrar ekle */
+            transform: translate(-50%, -50%); /* tekrar ekle */
+            margin: 0;
+            z-index: 10001;
+            will-change: auto;
         }
 
         /* SADECE mobil/tablet’te ortala (dokunmatik için) */
@@ -2391,6 +2391,7 @@
     loadData();
     dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));
 
+    
     // iOS Safari viewport fix
     function setVhProperty() {
         const vh = window.innerHeight * 0.01;
