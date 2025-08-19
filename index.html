@@ -2344,18 +2344,31 @@
 
    
     // Mobil klavye fix
-    document.addEventListener('focusin', function(e) {
-        // Modal açık olduğunda input ortalama yapma
+   document.addEventListener('focusin', function(e) {
+        // Sadece birincil giriş yöntemi dokunmatik olan (mobil/tablet gibi)
+        // cihazlarda çalışması için kontrol ekleniyor.
+        const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+
+        // Eğer dokunmatik bir cihaz değilse (yani fare kullanılıyorsa),
+        // fonksiyonu hemen sonlandır. Bu, masaüstünde kodun çalışmasını engeller.
+        if (!isTouchDevice) {
+            return;
+        }
+
+        // --- Mevcut modal kontrolünüz olduğu gibi kalmalı ---
+        // Bu kontrol, dokunmatik cihazlarda bile modal içindeyken
+        // ortalama yapmasını engeller.
         const openModal = document.querySelector('.modal[style*="display: block"]');
         if (openModal) {
-            return; // Modal açıksa ortalama yapma
+            return;
         }
-        
+
+        // Sadece input, textarea ve select elemanları için devam et
         if (e.target.matches('input, textarea, select')) {
             setTimeout(() => {
-                e.target.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'center' 
+                e.target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
                 });
             }, 300);
         }
