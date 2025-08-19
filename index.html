@@ -683,17 +683,19 @@
             background-color: rgba(11, 29, 58, 0.9); 
         }
 
-        .modal-content {
-            background-color: var(--light-bg);
-            margin: 80px auto;
-            padding: 30px;
-            border: 2px solid var(--accent-gold);
-            border-radius: 10px;
-            width: 90%;
-            max-width: 800px;
-            position: static;
-            max-height: 80vh;
-            overflow-y: auto;
+       .modal-content {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 90% !important;
+            max-width: 800px !important;
+            background-color: var(--light-bg) !important;
+            padding: 30px !important;
+            border: 2px solid var(--accent-gold) !important;
+            border-radius: 10px !important;
+            z-index: 10001 !important;
+            margin: 0 !important;
         }
 
 
