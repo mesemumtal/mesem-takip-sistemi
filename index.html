@@ -684,14 +684,17 @@
         }
 
         .modal-content {
-            position: fixed !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            margin: 0 !important;
-            z-index: 10000 !important;
-            max-height: 90vh !important;
-            overflow-y: auto !important;
+            background-color: var(--light-bg);
+            margin: 50px auto !important;
+            padding: 30px;
+            border: 2px solid var(--accent-gold);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            position: relative !important;
+            top: auto !important;
+            left: auto !important;
+            transform: none !important;
         }
 
 
@@ -1556,8 +1559,7 @@
             modalContent.style.left = '50%';
             modalContent.style.transform = 'translate(-50%, -50%)';
             modalContent.style.margin = '0';
-            modalContent.style.zIndex = '10000';
-        }, 50);
+        }, 10);
 
     
         }else if (modalId === 'terminationModal') {
