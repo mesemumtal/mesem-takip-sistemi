@@ -1608,6 +1608,12 @@
             yearSelect.value = new Date().getFullYear();
             renderAbsenceCalendar();
         }
+
+        const mc = modal.querySelector('.modal-content');
+        mc.style.top = '50%';
+        mc.style.left = '50%';
+        mc.style.transform = 'translate(-50%, -50%)';
+
         
         modal.style.display = 'block';
     }
