@@ -900,18 +900,28 @@
                 -webkit-overflow-scrolling: touch;
             }
 
-            /* Buton barlarını taşmayacak şekilde sar: 2 sütun */
+            /* Yalnızca mobil */
+            @media (max-width: 768px){
+            /* Konteyner: yan yana sığmayan butonlar otomatik bir alt satıra iner, ortalanır */
             .modal .modal-footer,
             .button-bar, .actions, .toolbar{
-                display: grid;
-                grid-template-columns: 1fr 1fr;
+                display: flex;
+                flex-wrap: wrap;          /* ALT SATIRA İNSİN */
+                justify-content: center;  /* ORTALA */
                 gap: 8px;
             }
+
+            /* Butonlar: metin KIRILMAZ; sığmazsa buton komple alta geçer */
             .modal .modal-footer > *,
             .button-bar > *, .actions > *, .toolbar > *{
-                width: 100%;
-                min-width: 0;          /* taşma/kayma önler */
+                flex: 0 0 auto;           /* içeriğe göre genişlik */
+                white-space: nowrap;      /* buton içi metin tek satır */
+                min-height: 44px;
+                padding: 10px 12px;
+                font-size: clamp(12px, 3.2vw, 14px);  /* mobilde biraz küçült */
+                max-width: 100%;          /* güvenlik: taşma engeli */
             }
+            
 
             /* Çok dar telefonlarda tek sütun */
             @media (max-width: 360px){
@@ -919,21 +929,15 @@
                 .button-bar, .actions, .toolbar{
                 grid-template-columns: 1fr;
                 }
-            }           
-
-            
-            /* Buton yazısını biraz küçült */
-            .btn, button {
-                font-size: clamp(12px, 3.4vw, 14px);
-                line-height: 1.15;
             }
 
-            /* İkonlu butonlarda ikon metne göre çok büyükse hafif küçült */
-            .btn .icon, button .icon, .btn i, button i, .btn svg, button svg {
-                font-size: 1.1em;
+            /* Buton metni kırılabilsin; üst üste binmeyi kes */
+            .btn, button{
+                max-width: 100%;
+                white-space: normal;
+                line-height: 1.2;
             }
             }
-
 
 
 
