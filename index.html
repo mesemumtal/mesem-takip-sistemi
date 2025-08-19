@@ -707,8 +707,20 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+        }        
+
+        /* Sadece 'Öğrenciyi Düzenle' penceresini (studentModal) açılışta ekranın tam ortasına al */
+            #studentModal .modal-content{
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                margin: 0;         /* varsa margin:5% auto’yu geçersiz kılar */
+                max-height: 90vh;  /* taşmayı önler */
+                overflow: auto;    /* içerik uzun olursa kaydır */
+            }
         }
-        }
+
             
 
 
