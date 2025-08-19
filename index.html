@@ -692,10 +692,10 @@
 
         /* Masaüstünde modal kendi yerinde kalsın; sürükleyince pozisyonu korunur */
         .modal-content{
-        position: fixed;
-        top: 50% !important;        /* tekrar ekle */
-        left: 50% !important;       /* tekrar ekle */
-        transform: translate(-50%, -50%) !important; /* tekrar ekle */
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
         margin: 0;
         z-index: 10001;
         will-change: auto;
@@ -2391,17 +2391,6 @@
     loadData();
     dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));
 
-    // Mobil klavye fix
-    document.addEventListener('focusin', function(e) {
-    if (!e.target.matches('input, textarea, select')) return;
-    // Masaüstünde kaydırma/ortalamayı kapat
-    if (!window.matchMedia('(max-width: 768px)').matches) return;
-    setTimeout(() => {
-        e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 300);
-    });
-
-
     // iOS Safari viewport fix
     function setVhProperty() {
         const vh = window.innerHeight * 0.01;
@@ -2521,7 +2510,7 @@
         dom.uploadInput.addEventListener('change', (event) => { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const loadedData = JSON.parse(e.target.result); if (loadedData.settings && loadedData.businesses) { appData = loadedData; saveData(); renderAll(); showNotification('Veriler başarıyla geri yüklendi ve buluta kaydedildi.', 'success'); } else { showNotification('Hatalı dosya formatı.', 'error'); } } catch (error) { showNotification('Dosya okunurken bir hata oluştu: ' + error, 'error'); } }; reader.readAsText(file); event.target.value = ''; });
         dom.printListBtn.addEventListener('click', () => { const listHTML = generateListPrint(); dom.printContainer.innerHTML = listHTML; window.print(); });
         document.addEventListener('input', (e) => { if (e.target.hasAttribute('inputmode') && e.target.getAttribute('inputmode') === 'numeric') { e.target.value = e.target.value.replace(/[^0-9]/g, ''); } });
-        document.addEventListener('focusin', function(e) { if (e.target.matches('input, textarea, select')) { setTimeout(() => { e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300); } });
+        
         dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));        
      
         
