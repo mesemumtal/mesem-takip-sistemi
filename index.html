@@ -688,12 +688,13 @@
             position: fixed !important;
             top: 50% !important;
             left: 50% !important;
-            margin-top: -300px !important;
-            margin-left: -400px !important;
+            transform: translate(-50%, -50%) !important;
+            margin: 0 !important;
             z-index: 10001 !important;
+            max-height: 80vh !important;
+            overflow-y: auto !important;
         }
-
-        
+                
 
 
 
@@ -1522,80 +1523,67 @@
     }
 
     function openModal(modalId, data) {
-    const modal = document.getElementById(modalId);
-    const form = modal.querySelector('form'); 
-    if (form) form.reset();
-    if (form) { 
-        form.querySelectorAll('.error-message').forEach(el => el.style.display = 'none'); 
-        form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid')); 
+        const modal = document.getElementById(modalId);
+        const form = modal.querySelector('form'); 
+        if (form) form.reset();
+        if (form) { 
+            form.querySelectorAll('.error-message').forEach(el => el.style.display = 'none'); 
+            form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid')); 
+        }
+        const title = modal.querySelector('h2');
+        
+        if (modalId === 'businessModal') {
+            if (data && data.id) { 
+                const b = appData.businesses.find(b => b.id === data.id); 
+                title.textContent = 'İşletmeyi Düzenle'; 
+                form.querySelector('#businessId').value = b.id; 
+                form.querySelector('#businessName').value = b.name; 
+                form.querySelector('#businessAddress').value = b.address; 
+                form.querySelector('#businessPhone').value = b.phone; 
+                form.querySelector('#businessOfficial').value = b.official; 
+                form.querySelector('#businessVisitDay').value = b.visitDay; 
+            } else { 
+                title.textContent = 'Yeni İşletme Ekle'; 
+                form.querySelector('#businessId').value = ''; 
+            }
+        } else if (modalId === 'studentModal') {
+            form.querySelector('#studentBusinessId').value = data.businessId;
+            if (data && data.id) { 
+                const s = appData.businesses.find(b => b.id === data.businessId).students.find(s => s.id === data.id); 
+                title.textContent = 'Öğrenciyi Düzenle'; 
+                form.querySelector('#studentId').value = s.id; 
+                form.querySelector('#studentClass').value = s.class || '9';
+                form.querySelector('#studentNo').value = s.no; 
+                form.querySelector('#studentName').value = s.name; 
+                form.querySelector('#studentField').value = s.field; 
+                form.querySelector('#studentSchoolDay').value = s.schoolDay; 
+                form.querySelector('#studentPhone').value = s.phone; 
+                form.querySelector('#studentStartDate').value = s.startDate; 
+                form.querySelector('#studentEndDate').value = s.endDate; 
+            } else { 
+                title.textContent = 'Yeni Öğrenci Ekle'; 
+                form.querySelector('#studentId').value = ''; 
+            }
+        } else if (modalId === 'terminationModal') {
+            form.querySelector('#terminationStudentId').value = data.studentId; 
+            form.querySelector('#terminationBusinessId').value = data.businessId; 
+            form.querySelector('#terminationDate').value = new Date().toISOString().slice(0, 10);
+        } else if (modalId === 'absenceModal') {
+            currentAbsence = { studentId: data.studentId, businessId: data.businessId };
+            const student = appData.businesses.find(b=>b.id===data.businessId).students.find(s=>s.id===data.studentId);
+            modal.querySelector('h2').textContent = `${student.name} - Devamsızlık Girişi`;
+            const monthSelect = modal.querySelector('#absenceMonthSelect');
+            const yearSelect = modal.querySelector('#absenceYearSelect');
+            if (monthSelect.innerHTML === '') { 
+                monthSelect.innerHTML = monthNames.map((n,i) => `<option value="${i}">${n}</option>`).join(''); 
+            }
+            monthSelect.value = new Date().getMonth(); 
+            yearSelect.value = new Date().getFullYear();
+            renderAbsenceCalendar();
+        }
+        
+        modal.style.display = 'block';
     }
-    const title = modal.querySelector('h2');
-    
-    if (modalId === 'businessModal') {
-        if (data && data.id) { 
-            const b = appData.businesses.find(b => b.id === data.id); 
-            title.textContent = 'İşletmeyi Düzenle'; 
-            form.querySelector('#businessId').value = b.id; 
-            form.querySelector('#businessName').value = b.name; 
-            form.querySelector('#businessAddress').value = b.address; 
-            form.querySelector('#businessPhone').value = b.phone; 
-            form.querySelector('#businessOfficial').value = b.official; 
-            form.querySelector('#businessVisitDay').value = b.visitDay; 
-        } else { 
-            title.textContent = 'Yeni İşletme Ekle'; 
-            form.querySelector('#businessId').value = ''; 
-        }
-    } else if (modalId === 'studentModal') {
-        form.querySelector('#studentBusinessId').value = data.businessId;
-        if (data && data.id) { 
-            const s = appData.businesses.find(b => b.id === data.businessId).students.find(s => s.id === data.id); 
-            title.textContent = 'Öğrenciyi Düzenle'; 
-            form.querySelector('#studentId').value = s.id; 
-            form.querySelector('#studentClass').value = s.class || '9';
-            form.querySelector('#studentNo').value = s.no; 
-            form.querySelector('#studentName').value = s.name; 
-            form.querySelector('#studentField').value = s.field; 
-            form.querySelector('#studentSchoolDay').value = s.schoolDay; 
-            form.querySelector('#studentPhone').value = s.phone; 
-            form.querySelector('#studentStartDate').value = s.startDate; 
-            form.querySelector('#studentEndDate').value = s.endDate; 
-        } else { 
-            title.textContent = 'Yeni Öğrenci Ekle'; 
-            form.querySelector('#studentId').value = ''; 
-        }
-    } else if (modalId === 'terminationModal') {
-        form.querySelector('#terminationStudentId').value = data.studentId; 
-        form.querySelector('#terminationBusinessId').value = data.businessId; 
-        form.querySelector('#terminationDate').value = new Date().toISOString().slice(0, 10);
-    } else if (modalId === 'absenceModal') {
-        currentAbsence = { studentId: data.studentId, businessId: data.businessId };
-        const student = appData.businesses.find(b=>b.id===data.businessId).students.find(s=>s.id===data.studentId);
-        modal.querySelector('h2').textContent = `${student.name} - Devamsızlık Girişi`;
-        const monthSelect = modal.querySelector('#absenceMonthSelect');
-        const yearSelect = modal.querySelector('#absenceYearSelect');
-        if (monthSelect.innerHTML === '') { 
-            monthSelect.innerHTML = monthNames.map((n,i) => `<option value="${i}">${n}</option>`).join(''); 
-        }
-        monthSelect.value = new Date().getMonth(); 
-        yearSelect.value = new Date().getFullYear();
-        renderAbsenceCalendar();
-    }
-    
-    // Scroll pozisyonunu kaydet ve body'yi sabitle
-    const scrollY = window.scrollY;
-    document.body.style.overflow = 'hidden';
-    document.body.dataset.scrollY = scrollY;
-
-    modal.style.display = 'block';    }
-
-    setTimeout(() => {
-        const modalContent = modal.querySelector('.modal-content');
-        modalContent.style.position = 'fixed';
-        modalContent.style.top = '50%';
-        modalContent.style.left = '50%';
-        modalContent.style.transform = 'translate(-50%, -50%)';
-        modalContent.style.zIndex = '10001';
-    }, 10);
 
     function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
     
@@ -2337,13 +2325,8 @@
     document.addEventListener('click', e => { 
         if (e.target.matches('[data-action="cancel-modal"]')) { 
             e.target.closest('.modal').style.display = 'none'; 
-            
-            document.body.style.overflow = '';
-            const scrollY = document.body.dataset.scrollY || 0;
-            window.scrollTo(0, parseInt(scrollY));
-            
             return; 
-        }
+        } 
         
         // Accordion header kontrolü - BURASI ÖNEMLİ
         const accordionHeader = e.target.closest('.accordion-header'); 
