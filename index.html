@@ -688,10 +688,9 @@
             position: fixed !important;
             top: 50% !important;
             left: 50% !important;
-            margin-top: -250px !important;
-            margin-left: -350px !important;
-            width: 700px !important;
-            height: 500px !important;
+            margin-top: -300px !important;
+            margin-left: -400px !important;
+            z-index: 10001 !important;
         }
 
 
@@ -1576,8 +1575,6 @@
             monthSelect.value = new Date().getMonth(); yearSelect.value = new Date().getFullYear();
             renderAbsenceCalendar();
         }
-
-        document.body.style.overflow = 'hidden';
         modal.style.display = 'block';
     }
 
@@ -2321,7 +2318,6 @@
     document.addEventListener('click', e => { 
         if (e.target.matches('[data-action="cancel-modal"]')) { 
             e.target.closest('.modal').style.display = 'none'; 
-            document.body.style.overflow = '';
             return; 
         } 
         
