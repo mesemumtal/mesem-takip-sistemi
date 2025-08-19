@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <meta name="theme-color" content="#f4c542">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -881,61 +881,54 @@
             }
 
 
-            /* Modal gövdesi mobilde akıcı kaydırılsın (iOS dâhil) */
+            /* --- MOBİL YAMASI (sadece mobilde çalışır) --- */
+            @media (max-width: 768px), (pointer: coarse) {
+
+            /* Modal içerik: iOS/Android'de akıcı kaydırma, taşmadan görünüm */
             .modal .modal-content,
             #studentModal .modal-content{
-            max-height: min(90vh, 90dvh);
-            overflow: auto;
-            -webkit-overflow-scrolling: touch;
-            touch-action: pan-y; /* içerikte dikey kaydırma serbest */
+                max-height: 90dvh;              /* iOS barlarını hesaba katar */
+                width: 96vw;                     /* ekrandan taşmayı engeller */
+                overflow: auto;                  /* içerik kayar */
+                -webkit-overflow-scrolling: touch;
             }
 
-            /* Sürükleme sadece başlıktan (scroll ile çakışmasın) */
-            .modal-header{
-            touch-action: none;   /* sürükleme için sayfa kaydırmasını kapatır */
-            -webkit-user-select: none;
-            user-select: none;
-            cursor: grab;
+            /* Varsa modal gövdesini kaydırılabilir yap (tercih edilir) */
+            .modal .modal-body{
+                max-height: 70dvh;
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
             }
 
-            /* iOS odakta zoom’u engelle (butonları da bozmadan) */
-            @media (max-width: 768px){
-            input, select, textarea { font-size: 16px; }
-            }
-
-            /* Genel buton ergonomisi */
-            button, .btn{
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            min-height: 44px;          /* dokunmatik hedef boyutu */
-            padding: 10px 12px;
-            line-height: 1.2;
-            max-width: 100%;
-            white-space: normal;        /* metin kırılabilsin */
-            word-break: break-word;
-            }
-
-            /* Mobilde buton barlarını 2 sütun yap */
-            @media (max-width: 480px){
-            .button-bar, .actions, .modal-footer, .toolbar{
+            /* Buton barlarını taşmayacak şekilde sar: 2 sütun */
+            .modal .modal-footer,
+            .button-bar, .actions, .toolbar{
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
             }
-            .button-bar > *, .actions > *, .modal-footer > *, .toolbar > *{
+            .modal .modal-footer > *,
+            .button-bar > *, .actions > *, .toolbar > *{
                 width: 100%;
-                min-width: 0;            /* taşmayı engeller */
+                min-width: 0;          /* taşma/kayma önler */
+            }
+
+            /* Çok dar telefonlarda tek sütun */
+            @media (max-width: 360px){
+                .modal .modal-footer,
+                .button-bar, .actions, .toolbar{
+                grid-template-columns: 1fr;
+                }
+            }
+
+            /* Buton metni kırılabilsin; üst üste binmeyi kes */
+            .btn, button{
+                max-width: 100%;
+                white-space: normal;
+                line-height: 1.2;
             }
             }
 
-            /* Çok dar ekranlarda tek sütuna düşür */
-            @media (max-width: 360px){
-            .button-bar, .actions, .modal-footer, .toolbar{
-                grid-template-columns: 1fr;
-            }
-            }
 
 
 
