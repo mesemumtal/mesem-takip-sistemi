@@ -7,6 +7,9 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
     <title>MESEM Günlük ve Aylık Rehberlik- Devamsızlık- Fesih Formları</title>
     <style>
         :root { 
@@ -876,6 +879,65 @@
             .accordion-content {
                 transition: all 0.3s ease;
             }
+
+
+            /* Modal gövdesi mobilde akıcı kaydırılsın (iOS dâhil) */
+            .modal .modal-content,
+            #studentModal .modal-content{
+            max-height: min(90vh, 90dvh);
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y; /* içerikte dikey kaydırma serbest */
+            }
+
+            /* Sürükleme sadece başlıktan (scroll ile çakışmasın) */
+            .modal-header{
+            touch-action: none;   /* sürükleme için sayfa kaydırmasını kapatır */
+            -webkit-user-select: none;
+            user-select: none;
+            cursor: grab;
+            }
+
+            /* iOS odakta zoom’u engelle (butonları da bozmadan) */
+            @media (max-width: 768px){
+            input, select, textarea { font-size: 16px; }
+            }
+
+            /* Genel buton ergonomisi */
+            button, .btn{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;          /* dokunmatik hedef boyutu */
+            padding: 10px 12px;
+            line-height: 1.2;
+            max-width: 100%;
+            white-space: normal;        /* metin kırılabilsin */
+            word-break: break-word;
+            }
+
+            /* Mobilde buton barlarını 2 sütun yap */
+            @media (max-width: 480px){
+            .button-bar, .actions, .modal-footer, .toolbar{
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .button-bar > *, .actions > *, .modal-footer > *, .toolbar > *{
+                width: 100%;
+                min-width: 0;            /* taşmayı engeller */
+            }
+            }
+
+            /* Çok dar ekranlarda tek sütuna düşür */
+            @media (max-width: 360px){
+            .button-bar, .actions, .modal-footer, .toolbar{
+                grid-template-columns: 1fr;
+            }
+            }
+
+
 
 
      </style>
