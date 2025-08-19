@@ -683,17 +683,6 @@
             background-color: rgba(11, 29, 58, 0.9); 
         }
 
-        .modal-content {
-            position: fixed !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            margin: 0 !important;
-            width: 90% !important;
-            max-width: 800px !important;
-            z-index: 10001 !important;
-        }
-
 
 
         /* =================================== */
@@ -1547,7 +1536,16 @@
             title.textContent = 'Yeni Öğrenci Ekle'; 
             form.querySelector('#studentId').value = ''; 
         }
-               
+        
+        // Modal'ı ekran ortasına hizala
+        setTimeout(() => {
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.style.position = 'fixed';
+            modalContent.style.top = '50%';
+            modalContent.style.left = '50%';
+            modalContent.style.transform = 'translate(-50%, -50%)';
+            modalContent.style.margin = '0';
+        }, 10);
 
     
         }else if (modalId === 'terminationModal') {
@@ -1555,7 +1553,16 @@
             form.querySelector('#terminationBusinessId').value = data.businessId; 
             form.querySelector('#terminationDate').value = new Date().toISOString().slice(0, 10);
             
-                   
+            // Modal'ı ekran ortasına getir
+            setTimeout(() => {
+                const modalContent = modal.querySelector('.modal-content');
+                modalContent.style.position = 'fixed';
+                modalContent.style.top = '50%';
+                modalContent.style.left = '50%';
+                modalContent.style.transform = 'translate(-50%, -50%)';
+                modalContent.style.margin = '0';
+            }, 10);
+        
         } else if (modalId === 'absenceModal') {
             currentAbsence = { studentId: data.studentId, businessId: data.businessId };
             const student = appData.businesses.find(b=>b.id===data.businessId).students.find(s=>s.id===data.studentId);
@@ -2335,27 +2342,17 @@
     loadData();
     dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));
 
-   
-    /*
-document.addEventListener('focusin', function(e) {
-    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
-    if (!isTouchDevice) {
-        return;
-    }
-    const openModal = document.querySelector('.modal[style*="display: block"]');
-    if (openModal) {
-        return;
-    }
-    if (e.target.matches('input, textarea, select')) {
-        setTimeout(() => {
-            e.target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-            });
-        }, 300);
-    }
-});
-*/
+    // Mobil klavye fix
+    document.addEventListener('focusin', function(e) {
+        if (e.target.matches('input, textarea, select')) {
+            setTimeout(() => {
+                e.target.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            }, 300);
+        }
+    });
 
     // iOS Safari viewport fix
     function setVhProperty() {
