@@ -672,34 +672,28 @@
         
 
 
-        .modal {
-            display: none; /* Açılıp kapanması için bu kalmalı */
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(11, 29, 58, 0.9);
-            backdrop-filter: blur(5px);
-            
-            /* YENİ EKLENEN ORTALAMA KODLARI */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(11, 29, 58, 0.9); 
         }
 
         .modal-content {
-            /* ESKİ ORTALAMA KODLARI KALDIRILDI */
-            background-color: var(--light-bg);
-            border: 2px solid var(--accent-gold);
-            border-radius: 10px;
-            width: 90%; /* Genişlik ayarı */
-            max-width: 800px; /* Maksimum genişlik */
-            max-height: 90vh; /* Ekranın %90'ından uzun olmasın */
-            padding: 30px;
-            overflow-y: auto; /* Eğer içerik sığmazsa kendi içinde scroll olsun */
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            margin: 0 !important;
+            width: 90% !important;
+            max-width: 800px !important;
+            z-index: 10001 !important;
         }
+
 
 
         /* =================================== */
@@ -1553,16 +1547,7 @@
             title.textContent = 'Yeni Öğrenci Ekle'; 
             form.querySelector('#studentId').value = ''; 
         }
-        
-        // Modal'ı ekran ortasına hizala
-        setTimeout(() => {
-            const modalContent = modal.querySelector('.modal-content');
-            modalContent.style.position = 'fixed';
-            modalContent.style.top = '50%';
-            modalContent.style.left = '50%';
-            modalContent.style.transform = 'translate(-50%, -50%)';
-            modalContent.style.margin = '0';
-        }, 10);
+               
 
     
         }else if (modalId === 'terminationModal') {
@@ -1570,16 +1555,7 @@
             form.querySelector('#terminationBusinessId').value = data.businessId; 
             form.querySelector('#terminationDate').value = new Date().toISOString().slice(0, 10);
             
-            // Modal'ı ekran ortasına getir
-            setTimeout(() => {
-                const modalContent = modal.querySelector('.modal-content');
-                modalContent.style.position = 'fixed';
-                modalContent.style.top = '50%';
-                modalContent.style.left = '50%';
-                modalContent.style.transform = 'translate(-50%, -50%)';
-                modalContent.style.margin = '0';
-            }, 10);
-        
+                   
         } else if (modalId === 'absenceModal') {
             currentAbsence = { studentId: data.studentId, businessId: data.businessId };
             const student = appData.businesses.find(b=>b.id===data.businessId).students.find(s=>s.id===data.studentId);
