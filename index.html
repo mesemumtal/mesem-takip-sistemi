@@ -684,6 +684,12 @@
             background-color: rgba(11, 29, 58, 0.9); 
         }
 
+        .modal input,
+        .modal textarea,
+        .modal select {
+            scroll-margin: 0 !important;
+        }
+
         .modal-content {
             position: fixed !important;
             top: 50% !important;
@@ -691,10 +697,8 @@
             transform: translate(-50%, -50%) !important;
             margin: 0 !important;
             z-index: 10001 !important;
-            max-height: 80vh !important;
-            overflow-y: auto !important;
-        }
-                
+            will-change: auto !important;
+        }       
 
 
 
@@ -2377,7 +2381,12 @@
     dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));
 
     // Mobil klavye fix
-    document.addEventListener('focusin', function(e) {
+    ddocument.addEventListener('focusin', function(e) {
+        // Modal açıksa scroll yapma
+        if (e.target.closest('.modal')) {
+            return;
+        }
+        
         if (e.target.matches('input, textarea, select')) {
             setTimeout(() => {
                 e.target.scrollIntoView({ 
