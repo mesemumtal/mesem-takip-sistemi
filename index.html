@@ -1536,20 +1536,7 @@
             title.textContent = 'Yeni Öğrenci Ekle'; 
             form.querySelector('#studentId').value = ''; 
         }
-
-        
-
-
-        
-        // Modal'ı ekran ortasına hizala
-        setTimeout(() => {
-            const modalContent = modal.querySelector('.modal-content');
-            modalContent.style.position = 'fixed';
-            modalContent.style.top = '50%';
-            modalContent.style.left = '50%';
-            modalContent.style.transform = 'translate(-50%, -50%)';
-            modalContent.style.margin = '0';
-        }, 10);
+               
 
     
         }else if (modalId === 'terminationModal') {
@@ -2206,69 +2193,69 @@
 
    
     document.addEventListener('click', function(e) {
-        // Checkbox'a direkt tıklama - EN ÖNCELİKLİ
-        if (e.target.type === 'checkbox' && (e.target.classList.contains('business-checkbox') || e.target.classList.contains('daily-business-checkbox'))) {
-            setTimeout(() => {
-                updateDropdownText();
-            }, 10);
-            return;
-        }
-        
-        // Label'a tıklama
-        if (e.target.tagName === 'LABEL') {
-            const checkbox = document.getElementById(e.target.getAttribute('for'));
-            if (checkbox) {
-                checkbox.checked = !checkbox.checked;
+            // Checkbox'a direkt tıklama - EN ÖNCELİKLİ
+            if (e.target.type === 'checkbox' && (e.target.classList.contains('business-checkbox') || e.target.classList.contains('daily-business-checkbox'))) {
                 setTimeout(() => {
                     updateDropdownText();
                 }, 10);
+                return;
             }
-            return;
-        }
-        
-        // Aylık dropdown açma/kapama
-        if (e.target.closest('#business-dropdown-header')) {
-            const content = document.getElementById('business-dropdown-content');
-            const header = document.getElementById('business-dropdown-header');
             
-            if (content.style.display === 'block') {
-                content.style.display = 'none';
-                header.classList.remove('open');
-            } else {
-                content.style.display = 'block';
-                header.classList.add('open');
+            // Label'a tıklama
+            if (e.target.tagName === 'LABEL') {
+                const checkbox = document.getElementById(e.target.getAttribute('for'));
+                if (checkbox) {
+                    checkbox.checked = !checkbox.checked;
+                    setTimeout(() => {
+                        updateDropdownText();
+                    }, 10);
+                }
+                return;
             }
-            return;
-        }
-        
-        // Günlük dropdown açma/kapama
-        if (e.target.closest('#daily-business-dropdown-header')) {
-            const content = document.getElementById('daily-business-dropdown-content');
-            const header = document.getElementById('daily-business-dropdown-header');
             
-            if (content.style.display === 'block') {
-                content.style.display = 'none';
-                header.classList.remove('open');
-            } else {
-                content.style.display = 'block';
-                header.classList.add('open');
+            // Aylık dropdown açma/kapama
+            if (e.target.closest('#business-dropdown-header')) {
+                const content = document.getElementById('business-dropdown-content');
+                const header = document.getElementById('business-dropdown-header');
+                
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    header.classList.remove('open');
+                } else {
+                    content.style.display = 'block';
+                    header.classList.add('open');
+                }
+                return;
             }
-            return;
-        }
-        
-        // Dropdown item'a tıklama (yedek sistem)
-        if (e.target.closest('.dropdown-item') && !e.target.closest('button')) {
-            const item = e.target.closest('.dropdown-item');
-            const checkbox = item.querySelector('input[type="checkbox"]');
-            if (checkbox) {
-                checkbox.checked = !checkbox.checked;
-                setTimeout(() => {
-                    updateDropdownText();
-                }, 10);
-            }
-        }
-    });
             
+            // Günlük dropdown açma/kapama
+            if (e.target.closest('#daily-business-dropdown-header')) {
+                const content = document.getElementById('daily-business-dropdown-content');
+                const header = document.getElementById('daily-business-dropdown-header');
+                
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    header.classList.remove('open');
+                } else {
+                    content.style.display = 'block';
+                    header.classList.add('open');
+                }
+                return;
+            }
+            
+            // Dropdown item'a tıklama (yedek sistem)
+            if (e.target.closest('.dropdown-item') && !e.target.closest('button')) {
+                const item = e.target.closest('.dropdown-item');
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                if (checkbox) {
+                    checkbox.checked = !checkbox.checked;
+                    setTimeout(() => {
+                        updateDropdownText();
+                    }, 10);
+                }
+            }
+        });
+                
     dom.dailyBusinessDropdownHeader.addEventListener('click', () => {
         dom.dailyBusinessDropdownHeader.classList.toggle('open');
         dom.dailyBusinessDropdownContent.classList.toggle('open');
@@ -2371,21 +2358,13 @@
     loadData();
     dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));
 
+    // Mobil klavye fix
     document.addEventListener('focusin', function(e) {
-        // Modal açıksa input ortalama yapma
-        const openModal = document.querySelector('.modal[style*="display: block"]');
-        if (openModal) {
-            return; // Modal açıksa dur
+        // Modal açıksa dur
+        if (document.querySelector('.modal[style*="display: block"]')) {
+            return;
         }
-        
-        if (e.target.matches('input, textarea, select')) {
-            setTimeout(() => {
-                e.target.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'center' 
-                });
-            }, 300);
-        }
+        // Normal focus işlemi...
     });
 
     // iOS Safari viewport fix
