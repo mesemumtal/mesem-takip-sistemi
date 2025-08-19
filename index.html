@@ -1536,16 +1536,17 @@
             title.textContent = 'Yeni Öğrenci Ekle'; 
             form.querySelector('#studentId').value = ''; 
         }
+
+
+        // Modal sabitlemesi
+        const modalContent = modal.querySelector('.modal-content');
+        modalContent.style.position = 'fixed';
+        modalContent.style.top = '50%';
+        modalContent.style.left = '50%';
+        modalContent.style.transform = 'translate(-50%, -50%)';
+        modalContent.style.margin = '0';
+        modalContent.style.zIndex = '10001';
         
-        // Modal'ı ekran ortasına hizala
-        setTimeout(() => {
-            const modalContent = modal.querySelector('.modal-content');
-            modalContent.style.position = 'fixed';
-            modalContent.style.top = '50%';
-            modalContent.style.left = '50%';
-            modalContent.style.transform = 'translate(-50%, -50%)';
-            modalContent.style.margin = '0';
-        }, 10);
 
     
         }else if (modalId === 'terminationModal') {
@@ -2202,7 +2203,27 @@
 
    
     document.addEventListener('click', function(e) {
-        // Aylık dropdown
+        // Checkbox'a direkt tıklama - EN ÖNCELİKLİ
+        if (e.target.type === 'checkbox' && (e.target.classList.contains('business-checkbox') || e.target.classList.contains('daily-business-checkbox'))) {
+            setTimeout(() => {
+                updateDropdownText();
+            }, 10);
+            return;
+        }
+        
+        // Label'a tıklama
+        if (e.target.tagName === 'LABEL') {
+            const checkbox = document.getElementById(e.target.getAttribute('for'));
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                setTimeout(() => {
+                    updateDropdownText();
+                }, 10);
+            }
+            return;
+        }
+        
+        // Aylık dropdown açma/kapama
         if (e.target.closest('#business-dropdown-header')) {
             const content = document.getElementById('business-dropdown-content');
             const header = document.getElementById('business-dropdown-header');
@@ -2214,9 +2235,10 @@
                 content.style.display = 'block';
                 header.classList.add('open');
             }
+            return;
         }
         
-        // ⭐ BURAYI EKLE - Günlük dropdown
+        // Günlük dropdown açma/kapama
         if (e.target.closest('#daily-business-dropdown-header')) {
             const content = document.getElementById('daily-business-dropdown-content');
             const header = document.getElementById('daily-business-dropdown-header');
@@ -2228,18 +2250,22 @@
                 content.style.display = 'block';
                 header.classList.add('open');
             }
+            return;
         }
         
-        // Checkbox seçimi (her iki form için)
-        if (e.target.closest('.dropdown-item')) {
+        // Dropdown item'a tıklama (yedek sistem)
+        if (e.target.closest('.dropdown-item') && !e.target.closest('button')) {
             const item = e.target.closest('.dropdown-item');
             const checkbox = item.querySelector('input[type="checkbox"]');
             if (checkbox) {
                 checkbox.checked = !checkbox.checked;
+                setTimeout(() => {
+                    updateDropdownText();
+                }, 10);
             }
         }
     });
-        
+            
     dom.dailyBusinessDropdownHeader.addEventListener('click', () => {
         dom.dailyBusinessDropdownHeader.classList.toggle('open');
         dom.dailyBusinessDropdownContent.classList.toggle('open');
