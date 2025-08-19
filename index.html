@@ -683,21 +683,6 @@
             background-color: rgba(11, 29, 58, 0.9); 
         }
 
-       .modal-content {
-            position: fixed !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            width: 90% !important;
-            max-width: 800px !important;
-            background-color: var(--light-bg) !important;
-            padding: 30px !important;
-            border: 2px solid var(--accent-gold) !important;
-            border-radius: 10px !important;
-            z-index: 10001 !important;
-            margin: 0 !important;
-        }
-
 
 
         /* =================================== */
@@ -2359,12 +2344,6 @@
 
     // Mobil klavye fix
     document.addEventListener('focusin', function(e) {
-        // Modal açık olduğunda input ortalama yapma
-        const openModal = document.querySelector('.modal[style*="display: block"]');
-        if (openModal) {
-            return; // Modal açıksa ortalama yapma
-        }
-        
         if (e.target.matches('input, textarea, select')) {
             setTimeout(() => {
                 e.target.scrollIntoView({ 
@@ -2386,28 +2365,8 @@
         
         dom.generateSheetBtn.addEventListener('click', () => { /* ... Mevcut kodunuzdaki gibi ... */ });
         dom.formTypeSelect.addEventListener('change', (e) => { /* ... Mevcut kodunuzdaki gibi ... */ });
-      document.addEventListener('click', function(e) {
-            // Checkbox'a direkt tıklama - EN ÖNCELİKLİ
-            if (e.target.type === 'checkbox' && (e.target.classList.contains('business-checkbox') || e.target.classList.contains('daily-business-checkbox'))) {
-                setTimeout(() => {
-                    updateDropdownText();
-                }, 10);
-                return;
-            }
-            
-            // Label'a tıklama
-            if (e.target.tagName === 'LABEL') {
-                const checkbox = document.getElementById(e.target.getAttribute('for'));
-                if (checkbox) {
-                    checkbox.checked = !checkbox.checked;
-                    setTimeout(() => {
-                        updateDropdownText();
-                    }, 10);
-                }
-                return;
-            }
-            
-            // Aylık dropdown açma/kapama
+       document.addEventListener('click', function(e) {
+            // Dropdown açma/kapama
             if (e.target.closest('#business-dropdown-header')) {
                 const content = document.getElementById('business-dropdown-content');
                 const header = document.getElementById('business-dropdown-header');
@@ -2419,33 +2378,25 @@
                     content.style.display = 'block';
                     header.classList.add('open');
                 }
-                return;
+                return; // Önemli! Diğer eventleri engelle
             }
             
-            // Günlük dropdown açma/kapama
-            if (e.target.closest('#daily-business-dropdown-header')) {
-                const content = document.getElementById('daily-business-dropdown-content');
-                const header = document.getElementById('daily-business-dropdown-header');
-                
-                if (content.style.display === 'block') {
-                    content.style.display = 'none';
-                    header.classList.remove('open');
-                } else {
-                    content.style.display = 'block';
-                    header.classList.add('open');
-                }
-                return;
-            }
-            
-            // Dropdown item'a tıklama (yedek sistem)
+            // İşletme checkbox seçimi
             if (e.target.closest('.dropdown-item') && !e.target.closest('button')) {
+                e.preventDefault();
                 const item = e.target.closest('.dropdown-item');
                 const checkbox = item.querySelector('input[type="checkbox"]');
                 if (checkbox) {
                     checkbox.checked = !checkbox.checked;
-                    setTimeout(() => {
-                        updateDropdownText();
-                    }, 10);
+                    
+                    // Seçili işletme sayısını güncelle
+                    const selectedCount = document.querySelectorAll('.business-checkbox:checked').length;
+                    const textElement = document.getElementById('business-selected-text');
+                    if (selectedCount === 0) {
+                        textElement.textContent = 'İşletme seçin...';
+                    } else {
+                        textElement.textContent = `${selectedCount} işletme seçildi`;
+                    }
                 }
             }
         });
