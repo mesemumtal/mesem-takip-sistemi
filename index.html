@@ -1110,7 +1110,7 @@
     // 1. Firebase Kütüphanelerini import et
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
     // 2. Firebase ayarlarını yap ve başlat
     const firebaseConfig = {
@@ -1125,6 +1125,7 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const YONETICI_EMAIL = "mesemumtal@gmail.com";
   
     // 3. TÜM UYGULAMA MANTIĞI HTML YÜKLENDİKTEN SONRA ÇALIŞACAK ŞEKİLDE DÜZENLENDİ
     document.addEventListener('DOMContentLoaded', () => {
@@ -1254,19 +1255,78 @@
     
         async function saveData() {
             if (!currentUser) return;
-            dom.settingsInputs.forEach(input => { 
+
+            // Ayarları al
+            dom.settingsInputs.forEach(input => {
                 if(input.id && appData.settings) {
-                    appData.settings[input.id] = input.value; 
+                    appData.settings[input.id] = input.value;
                 }
             });
+
             try {
-                await setDoc(doc(db, 'users', currentUser.uid), appData);
-                console.log('Veri başarıyla buluta kaydedildi.');
+                // 1. Veriyi her zaman kullanıcının kendi kişisel alanına kaydet
+                const userDocRef = doc(db, 'users', currentUser.uid);
+                await setDoc(userDocRef, appData);
+
+                // 2. Verinin bir kopyasını AYRICA yöneticinin görebilmesi için 'koordinatorler' koleksiyonuna kaydet
+                const coordinatorDocRef = doc(db, 'koordinatorler', currentUser.uid);
+                
+                // Belgeye, verinin kime ait olduğunu belirtmek için ek bilgi ekleyelim
+                const dataForAdmin = {
+                    ...appData,
+                    teacherName: currentUser.displayName,
+                    teacherEmail: currentUser.email
+                };
+                await setDoc(coordinatorDocRef, dataForAdmin);
+
+                console.log('Veri başarıyla iki yere de kaydedildi.');
             } catch (error) {
                 console.error('Buluta kaydetme hatası:', error);
                 showNotification('Veri kaydedilirken bir hata oluştu.', 'error');
             }
         }
+
+    // YÖNETİCİ GİRİŞ YAPTIĞINDA ÇALIŞACAK YENİ FONKSİYON
+    async function loadAndRenderAdminData() {
+        const adminDashboard = document.getElementById('admin-dashboard');
+        adminDashboard.innerHTML = '<h2>Yönetici Paneli - Tüm Koordinatörler</h2><p>Veriler yükleniyor...</p>';
+
+        try {
+            const querySnapshot = await getDocs(collection(db, "koordinatorler"));
+            let allTeachersHTML = '';
+            
+            if (querySnapshot.empty) {
+                adminDashboard.innerHTML = '<h2>Yönetici Paneli - Tüm Koordinatörler</h2><p>Henüz hiçbir koordinatör verisi kaydedilmemiş.</p>';
+                return;
+            }
+
+            querySnapshot.forEach((doc) => {
+                const teacherData = doc.data();
+                const teacherName = teacherData.teacherName || 'İsimsiz Öğretmen';
+                const totalBusinesses = teacherData.businesses?.length || 0;
+                const totalStudents = teacherData.businesses?.reduce((sum, b) => sum + (b.students?.length || 0), 0) || 0;
+
+                let businessesHTML = '<ul>';
+                (teacherData.businesses || []).forEach(business => {
+                    businessesHTML += `<li><strong>${business.name}</strong> (${business.students?.length || 0} öğrenci)</li>`;
+                });
+                businessesHTML += '</ul>';
+
+                allTeachersHTML += `
+                    <div class="panel">
+                        <h3>${teacherName} <small>(${teacherData.teacherEmail})</small></h3>
+                        <p style="margin:10px 0;">Toplam İşletme: ${totalBusinesses} | Toplam Öğrenci: ${totalStudents}</p>
+                        ${businessesHTML}
+                    </div>
+                `;
+            });
+
+            adminDashboard.innerHTML = '<h2>Yönetici Paneli - Tüm Koordinatörler</h2>' + allTeachersHTML;
+        } catch (error) {
+            console.error("Yönetici verileri yüklenirken hata:", error);
+            adminDashboard.innerHTML = '<h2>Yönetici Paneli</h2><p style="color:red;">Veriler yüklenirken bir hata oluştu.</p>';
+        }
+    }
 
     const monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 
@@ -2635,23 +2695,40 @@
         
         // --- UYGULAMAYI BAŞLATAN TETİKLEYİCİ ---
         onAuthStateChanged(auth, (user) => {
+            const adminDashboard = document.getElementById('admin-dashboard');
+
             if (user) {
                 currentUser = user;
                 dom.loginSection.style.display = 'none';
                 dom.userInfo.style.display = 'block';
                 dom.userName.textContent = user.displayName || user.email;
-                dom.container.style.display = 'block';
-                loadUserData(); // Kullanıcı giriş yapınca verileri yükle
+
+                // KULLANICI YÖNETİCİ Mİ KONTROLÜ
+                if (user.email === YONETICI_EMAIL) {
+                    // Evet, Yönetici
+                    dom.container.style.display = 'none'; // Normal arayüzü gizle
+                    adminDashboard.style.display = 'block'; // Yönetici panelini göster
+                    loadAndRenderAdminData(); // Yönetici verilerini yükle
+                } else {
+                    // Hayır, Normal Koordinatör
+                    adminDashboard.style.display = 'none'; // Yönetici panelini gizle
+                    dom.container.style.display = 'block'; // Normal arayüzü göster
+                    loadUserData(); // Normal kullanıcının kendi verilerini yükle
+                }
+
             } else {
+                // Kullanıcı Çıkış Yaptı
                 currentUser = null;
                 dom.loginSection.style.display = 'block';
                 dom.userInfo.style.display = 'none';
                 dom.container.style.display = 'none';
+                adminDashboard.style.display = 'none';
                 appData = {}; // Verileri temizle
             }
         });
     });
 
 </script>
+<div id="admin-dashboard" class="container" style="display: none; padding-top: 30px;"></div>
 </body>
 </html>
