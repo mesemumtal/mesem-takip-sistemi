@@ -2698,6 +2698,8 @@
             const adminDashboard = document.getElementById('admin-dashboard');
 
             if (user) {
+                console.log("Giriş yapan kullanıcı e-postası:", user.email);
+                console.log("Tanımlanan yönetici e-postası:", YONETICI_EMAIL);
                 currentUser = user;
                 dom.loginSection.style.display = 'none';
                 dom.userInfo.style.display = 'block';
