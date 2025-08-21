@@ -980,9 +980,7 @@
         <div id="login-section" style="text-align: center;">
             <h2 style="color: var(--accent-gold); margin-bottom: 10px;">🎓 MESEM Takip Sistemi</h2>
             <button id="google-login-btn" class="btn btn-primary">🔐 Google Hesabımla Giriş</button>
-            <button id="github-login-btn" class="btn btn-primary" style="margin-left:8px;">
-            🔐 GitHub Hesabımla Giriş
-            </button>
+            <button id="github-login-btn" class="btn btn-primary" style="margin-left:8px;">🔐 GitHub Hesabımla Giriş</button>
         </div>
         <div id="user-info" style="display: none; text-align: right;">
             <span id="user-name" style="color: var(--text-light); margin-right: 15px;"></span>
@@ -2700,70 +2698,38 @@
             const businessId = e.target.dataset.businessId;
             
             switch (action) {
-                case 'add-student':
-                    if (isAdminViewer) { 
-                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
-                        break; 
-                    }
-                    openModal('studentModal', { businessId: id });
+                case 'add-student': 
+                    openModal('studentModal', { businessId: id }); 
                     break;
 
-                case 'edit-business':
-                    if (isAdminViewer) { 
-                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
-                        break; 
-                    }
-                    openModal('businessModal', { id: id });
+                case 'edit-business': 
+                    openModal('businessModal', { id: id }); 
                     break;
 
-                case 'delete-business':
-                    if (isAdminViewer) { 
-                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
-                        break; 
-                    }
-                    deleteBusiness(id);
+                case 'delete-business': 
+                    deleteBusiness(id); 
                     break;
 
-                case 'edit-student':
-                    if (isAdminViewer) { 
-                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
-                        break; 
-                    }
-                    openModal('studentModal', { id: id, businessId: businessId });
+                case 'edit-student': 
+                    openModal('studentModal', { id: id, businessId: businessId }); 
                     break;
 
-                case 'delete-student':
-                    if (isAdminViewer) { 
-                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
-                        break; 
-                    }
-                    deleteStudent(id, businessId);
+                case 'delete-student': 
+                    deleteStudent(id, businessId); 
                     break;
 
-                case 'open-termination-modal':
-                    if (isAdminViewer) { 
-                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
-                        break; 
-                    }
-                    openModal('terminationModal', { studentId: id, businessId: businessId });
+                case 'open-termination-modal': 
+                    openModal('terminationModal', { studentId: id, businessId: businessId }); 
                     break;
 
-                case 'cancel-termination':
-                    if (isAdminViewer) { 
-                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
-                        break; 
-                    }
-                    cancelTermination(e.target.dataset.studentId, businessId);
+                case 'cancel-termination': 
+                    cancelTermination(e.target.dataset.studentId, businessId); 
                     break;
 
-                case 'open-absence-modal':
-                    if (isAdminViewer) { 
-                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
-                        break; 
-                    }
-                    openModal('absenceModal', { studentId: id, businessId: businessId });
+                case 'open-absence-modal': 
+                    openModal('absenceModal', { studentId: id, businessId: businessId }); 
                     break;
-            }
+             }
 
         });
         dom.absenceModal.addEventListener('click', e => { const dayEl = e.target.closest('.calendar-day.workday'); if (!dayEl) return; const statusEl = dayEl.querySelector('.calendar-day-status'); let currentStatus = statusEl.textContent.replace(/\s/g, ''); let newStatus = ''; if (currentStatus === '') newStatus = 'S'; else if (currentStatus === 'S') newStatus = 'Ö'; else if (currentStatus === 'Ö') newStatus = 'SÖ'; else newStatus = ''; statusEl.innerHTML = newStatus.replace('SÖ', 'S<br>Ö'); statusEl.classList.toggle('f-gold', newStatus !== ''); });
