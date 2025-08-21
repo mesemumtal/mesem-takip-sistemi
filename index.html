@@ -980,7 +980,6 @@
         <div id="login-section" style="text-align: center;">
             <h2 style="color: var(--accent-gold); margin-bottom: 10px;">🎓 MESEM Takip Sistemi</h2>
             <button id="google-login-btn" class="btn btn-primary">🔐 Google Hesabımla Giriş</button>
-            <button id="github-login-btn" class="btn" style="background-color: #333; margin-left: 10px;">🐈 GitHub Hesabımla Giriş (Yönetici)</button>
         </div>
         <div id="user-info" style="display: none; text-align: right;">
             <span id="user-name" style="color: var(--text-light); margin-right: 15px;"></span>
@@ -989,7 +988,7 @@
     </div>
 
 
-    <div id="app-container" class="container no-print" style="display: none;">
+    <div class="container no-print" style="display: none;">
         <div class="tabs">
             <button class="tab active" data-tab="management-panel">🏢 Yönetim Paneli</button>
             <button class="tab" data-tab="generator-panel">📋 Form Oluştur</button>
@@ -1104,16 +1103,15 @@
         <div id="processingSpinner" style="display: flex; justify-content: center; align-items: center; height: 100px; color: var(--accent-gold);">
             <svg width="60" height="60" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_ajPY{transform-origin:center;animation:spinner_AtaB .75s infinite linear}@keyframes spinner_AtaB{100%{transform:rotate(360deg)}}</style><path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" fill="currentColor"/><path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" class="spinner_ajPY" fill="currentColor"/></svg>
         </div>
-    </div>    
+    </div>
 </div>
     
 <script type="module">
     // 1. Firebase Kütüphanelerini import et
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-    import * as firebaseAuth from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-   
     // 2. Firebase ayarlarını yap ve başlat
     const firebaseConfig = {
         apiKey: "AIzaSyB8H41-2uK39kWSRhLJOBmnzdlaxzVyGC0",
@@ -1125,7 +1123,7 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = firebaseAuth.getAuth(app);
+    const auth = getAuth(app);
     const db = getFirestore(app);
   
     // 3. TÜM UYGULAMA MANTIĞI HTML YÜKLENDİKTEN SONRA ÇALIŞACAK ŞEKİLDE DÜZENLENDİ
@@ -1215,61 +1213,13 @@
         // --- Firebase Fonksiyonları ---
         async function signInWithGoogle() {
             try {
-                const provider = new firebaseAuth.GoogleAuthProvider();
+                const provider = new GoogleAuthProvider();
+                // YENİ EKLENEN SATIR: Her seferinde hesap seçme ekranını göstermeye zorla
                 provider.setCustomParameters({ prompt: 'select_account' });
-                await firebaseAuth.signInWithPopup(auth, provider);
+                await signInWithPopup(auth, provider);
             } catch (error) {
-                if (error.code === 'auth/account-exists-with-different-credential') {
-                    // Bu e-posta ile daha önce başka bir yöntemle (örn: GitHub) giriş yapılmış.
-                    // Şimdi bu yeni Google hesabını eskisyle birleştireceğiz.
-                    const pendingCred = firebaseAuth.GoogleAuthProvider.credentialFromError(error);
-                    
-                    // Kullanıcının bu e-posta için hangi yöntemleri kullandığını al
-                    const methods = await firebaseAuth.fetchSignInMethodsForEmail(auth, error.customData.email);
-                    
-                    // Önce mevcut yöntemle (ilk sağlayıcı) giriş yapmasını sağla
-                    if (methods[0] === "github.com") {
-                        const githubProvider = new firebaseAuth.GithubAuthProvider();
-                        const result = await firebaseAuth.signInWithPopup(auth, githubProvider);
-                        
-                        // Giriş başarılı olduktan sonra yeni hesabı (Google) eskiye bağla
-                        await firebaseAuth.linkWithCredential(result.user, pendingCred);
-                        console.log("Google hesabı mevcut GitHub hesabına başarıyla bağlandı!");
-                    }
-                } else {
-                    console.error('Google ile giriş hatası:', error);
-                    showNotification('Google ile giriş yapılamadı: ' + error.message, 'error');
-                }
-            }
-        }
-
-       async function signInWithGitHub() {
-            try {
-                const provider = new firebaseAuth.GithubAuthProvider();
-                await firebaseAuth.signInWithPopup(auth, provider);
-            } catch (error) {
-                if (error.code === 'auth/account-exists-with-different-credential') {
-                    // Bu e-posta ile daha önce başka bir yöntemle (örn: Google) giriş yapılmış.
-                    // Şimdi bu yeni GitHub hesabını eskisyle birleştireceğiz.
-                    const pendingCred = firebaseAuth.GithubAuthProvider.credentialFromError(error);
-                    
-                    // Kullanıcının bu e-posta için hangi yöntemleri kullandığını al
-                    const methods = await firebaseAuth.fetchSignInMethodsForEmail(auth, error.customData.email);
-
-                    // Önce mevcut yöntemle (ilk sağlayıcı) giriş yapmasını sağla
-                    if (methods[0] === "google.com") {
-                        const googleProvider = new firebaseAuth.GoogleAuthProvider();
-                        googleProvider.setCustomParameters({ prompt: 'select_account' });
-                        const result = await firebaseAuth.signInWithPopup(auth, googleProvider);
-                        
-                        // Giriş başarılı olduktan sonra yeni hesabı (GitHub) eskiye bağla
-                        await firebaseAuth.linkWithCredential(result.user, pendingCred);
-                        console.log("GitHub hesabı mevcut Google hesabına başarıyla bağlandı!");
-                    }
-                } else {
-                    console.error('GitHub ile giriş hatası:', error);
-                    showNotification('GitHub ile giriş yapılamadı: ' + error.message, 'error');
-                }
+                console.error('Giriş hatası:', error);
+                showNotification('Giriş yapılamadı: ' + error.message, 'error');
             }
         }
 
@@ -2563,7 +2513,6 @@
     }
    // --- OLAY DİNLEYİCİLERİ (EVENT LISTENERS) ---
         dom.googleLoginBtn.onclick = signInWithGoogle;
-        document.getElementById('github-login-btn').onclick = signInWithGitHub;
         dom.logoutBtn.onclick = () => signOut(auth);
         
         dom.generateSheetBtn.addEventListener('click', () => { /* ... Mevcut kodunuzdaki gibi ... */ });
@@ -2684,43 +2633,21 @@
         window.addEventListener('resize', setVhProperty);
         window.addEventListener('orientationchange', setVhProperty);
         
-       // --- UYGULAMAYI BAŞLATAN TETİKLEYİCİ (NİHAİ VE TAM HALİ) ---
-        firebaseAuth.onAuthStateChanged(auth, (user) => {
-            const appContainer = document.getElementById('app-container');
-            const adminDashboard = document.getElementById('admin-dashboard');
-            const loginSection = document.getElementById('login-section');
-            const userInfo = document.getElementById('user-info');
-            const userName = document.getElementById('user-name');
-
+        // --- UYGULAMAYI BAŞLATAN TETİKLEYİCİ ---
+        onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
-                // Giriş yapıldı bilgisi (isim ve çıkış butonu) gösterilir
-                loginSection.style.display = 'none';
-                userInfo.style.display = 'block';
-                userName.textContent = user.displayName || user.email;
-
-                const providerId = user.providerData[0].providerId;
-
-                if (providerId === 'github.com') {
-                    // Yönetici ise: Normal arayüzü gizle, yönetici arayüzünü göster
-                    appContainer.style.display = 'none';
-                    adminDashboard.style.display = 'block';
-                    loadAndRenderAdminData(); 
-                } else {
-                    // Normal kullanıcı ise: Yönetici arayüzünü gizle, normal arayüzü göster
-                    adminDashboard.style.display = 'none';
-                    appContainer.style.display = 'block';
-                    loadUserData(); // Bu fonksiyonun normal arayüzü appContainer içine çizmesi gerekir.
-                }
-
+                dom.loginSection.style.display = 'none';
+                dom.userInfo.style.display = 'block';
+                dom.userName.textContent = user.displayName || user.email;
+                dom.container.style.display = 'block';
+                loadUserData(); // Kullanıcı giriş yapınca verileri yükle
             } else {
-                // Kullanıcı çıkış yaptı
                 currentUser = null;
-                loginSection.style.display = 'block';
-                userInfo.style.display = 'none';
-                appContainer.style.display = 'none';
-                adminDashboard.style.display = 'none';
-                appData = {};
+                dom.loginSection.style.display = 'block';
+                dom.userInfo.style.display = 'none';
+                dom.container.style.display = 'none';
+                appData = {}; // Verileri temizle
             }
         });
     });
