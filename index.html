@@ -2724,11 +2724,6 @@
                 appData = {};
             }
         });
-
-        // --- OLAY DİNLEYİCİLERİ ---
-        dom.googleLoginBtn.onclick = signInWithGoogle;
-        document.getElementById('github-login-btn').onclick = signInWithGitHub; // github-login-btn ID'li butonunuz olduğunu varsayarak
-        dom.logoutBtn.onclick = () => firebaseAuth.signOut(auth);
     });
 
 </script>
