@@ -1219,18 +1219,57 @@
                 provider.setCustomParameters({ prompt: 'select_account' });
                 await firebaseAuth.signInWithPopup(auth, provider);
             } catch (error) {
-                console.error('Giriş hatası:', error);
-                showNotification('Giriş yapılamadı: ' + error.message, 'error');
+                if (error.code === 'auth/account-exists-with-different-credential') {
+                    // Bu e-posta ile daha önce başka bir yöntemle (örn: GitHub) giriş yapılmış.
+                    // Şimdi bu yeni Google hesabını eskisyle birleştireceğiz.
+                    const pendingCred = firebaseAuth.GoogleAuthProvider.credentialFromError(error);
+                    
+                    // Kullanıcının bu e-posta için hangi yöntemleri kullandığını al
+                    const methods = await firebaseAuth.fetchSignInMethodsForEmail(auth, error.customData.email);
+                    
+                    // Önce mevcut yöntemle (ilk sağlayıcı) giriş yapmasını sağla
+                    if (methods[0] === "github.com") {
+                        const githubProvider = new firebaseAuth.GithubAuthProvider();
+                        const result = await firebaseAuth.signInWithPopup(auth, githubProvider);
+                        
+                        // Giriş başarılı olduktan sonra yeni hesabı (Google) eskiye bağla
+                        await firebaseAuth.linkWithCredential(result.user, pendingCred);
+                        console.log("Google hesabı mevcut GitHub hesabına başarıyla bağlandı!");
+                    }
+                } else {
+                    console.error('Google ile giriş hatası:', error);
+                    showNotification('Google ile giriş yapılamadı: ' + error.message, 'error');
+                }
             }
         }
 
-        async function signInWithGitHub() {
+       async function signInWithGitHub() {
             try {
                 const provider = new firebaseAuth.GithubAuthProvider();
                 await firebaseAuth.signInWithPopup(auth, provider);
             } catch (error) {
-                console.error('GitHub ile giriş hatası:', error);
-                showNotification('GitHub ile giriş yapılamadı: ' + error.message, 'error');
+                if (error.code === 'auth/account-exists-with-different-credential') {
+                    // Bu e-posta ile daha önce başka bir yöntemle (örn: Google) giriş yapılmış.
+                    // Şimdi bu yeni GitHub hesabını eskisyle birleştireceğiz.
+                    const pendingCred = firebaseAuth.GithubAuthProvider.credentialFromError(error);
+                    
+                    // Kullanıcının bu e-posta için hangi yöntemleri kullandığını al
+                    const methods = await firebaseAuth.fetchSignInMethodsForEmail(auth, error.customData.email);
+
+                    // Önce mevcut yöntemle (ilk sağlayıcı) giriş yapmasını sağla
+                    if (methods[0] === "google.com") {
+                        const googleProvider = new firebaseAuth.GoogleAuthProvider();
+                        googleProvider.setCustomParameters({ prompt: 'select_account' });
+                        const result = await firebaseAuth.signInWithPopup(auth, googleProvider);
+                        
+                        // Giriş başarılı olduktan sonra yeni hesabı (GitHub) eskiye bağla
+                        await firebaseAuth.linkWithCredential(result.user, pendingCred);
+                        console.log("GitHub hesabı mevcut Google hesabına başarıyla bağlandı!");
+                    }
+                } else {
+                    console.error('GitHub ile giriş hatası:', error);
+                    showNotification('GitHub ile giriş yapılamadı: ' + error.message, 'error');
+                }
             }
         }
 
