@@ -10,7 +10,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>MESEM GÃ¼nlÃ¼k ve AylÄ±k Rehberlik- DevamsÄ±zlÄ±k- Fesih FormlarÄ±</title>
+    <title>MESEM Günlük ve Aylık Rehberlik- Devamsızlık- Fesih Formları</title>
     <style>
         :root { 
             --dark-bg: #0f172a; 
@@ -196,10 +196,10 @@
         .summary-item .label { font-size: 1rem; color: var(--text-light); }
         .print-list-btn { margin-top: 20px; }
 
-        /* ---- SAYFA TANIMLARI (Ã¼st seviye) - Global kenar boÅŸluklarÄ± artÄ±rÄ±ldÄ± ---- */
-        @page attendance  { size: A4 portrait;  margin: 15mm; }   /* DevamsÄ±zlÄ±k: Dikey */
+        /* ---- SAYFA TANIMLARI (üst seviye) - Global kenar boşlukları artırıldı ---- */
+        @page attendance  { size: A4 portrait;  margin: 15mm; }   /* Devamsızlık: Dikey */
         @page termination { size: A4 portrait;  margin: 15mm; }   /* Fesih: Dikey */
-        @page guidance    { size: A4 landscape; margin: 10mm;  }   /* GÃ¼nlÃ¼k & AylÄ±k Rehberlik: Yatay */
+        @page guidance    { size: A4 landscape; margin: 10mm;  }   /* Günlük & Aylık Rehberlik: Yatay */
         @page list        { size: A4 landscape; margin: 12mm; }   /* Liste: Yatay (varsa) */
 
         @media print {
@@ -213,37 +213,37 @@
 
             .print-page-attendance, .print-page-termination {
                 @page { size: A4 portrait; margin: 15mm; }
-                height: 267mm; width: 180mm; /* Kenar boÅŸluÄŸu artÄ±rÄ±ldÄ±ÄŸÄ± iÃ§in boyutlar kÃ¼Ã§Ã¼ltÃ¼ldÃ¼ */
+                height: 267mm; width: 180mm; /* Kenar boşluğu artırıldığı için boyutlar küçültüldü */
             }
             .print-page-monthly-guidance, .print-page-daily-guidance {
                 @page { size: A4 landscape; margin: 10mm; }
-                height: 190mm; width: 277mm; /* Kenar boÅŸluÄŸu artÄ±rÄ±ldÄ±ÄŸÄ± iÃ§in boyutlar kÃ¼Ã§Ã¼ltÃ¼ldÃ¼ */
+                height: 190mm; width: 277mm; /* Kenar boşluğu artırıldığı için boyutlar küçültüldü */
             }
             .print-page-list {
                 @page { size: A4 landscape; margin: 12mm; }
-                height: 186mm; width: 273mm; /* Kenar boÅŸluÄŸu artÄ±rÄ±ldÄ±ÄŸÄ± iÃ§in boyutlar kÃ¼Ã§Ã¼ltÃ¼ldÃ¼ */
+                height: 186mm; width: 273mm; /* Kenar boşluğu artırıldığı için boyutlar küçültüldü */
             }
             
-            /* AYLIK REHBERLÄ°K - Kenar boÅŸluklarÄ± artÄ±rÄ±ldÄ±, tablo satÄ±rlarÄ± kÃ¼Ã§Ã¼ltÃ¼ldÃ¼ */
+            /* AYLIK REHBERLİK - Kenar boşlukları artırıldı, tablo satırları küçültüldü */
             .print-page-monthly-guidance .print-page { 
                 display: flex !important; 
                 justify-content: space-between; 
                 width: 100%; 
                 height: 100%; 
-                gap: 10mm !important; /* Kenar boÅŸluÄŸu artÄ±rÄ±ldÄ± */
-                padding: 0 8mm !important; /* Global kenar boÅŸluÄŸu */
+                gap: 10mm !important; /* Kenar boşluğu artırıldı */
+                padding: 0 8mm !important; /* Global kenar boşluğu */
             }
             .print-page-monthly-guidance .print-form-half { 
-                width: 125mm !important; /* Biraz daha daraltÄ±ldÄ± */
+                width: 125mm !important; /* Biraz daha daraltıldı */
                 border: 2px solid #000 !important; 
-                padding: 2mm !important; /* Kenar boÅŸluÄŸu artÄ±rÄ±ldÄ± */
+                padding: 2mm !important; /* Kenar boşluğu artırıldı */
                 display: flex; 
                 flex-direction: column; 
                 height: 100%; 
             }
             .print-page-monthly-guidance .editable-textarea { 
                 min-height: 18px !important; /* Daha az alan */
-                font-size: 5.5pt !important; /* Daha kÃ¼Ã§Ã¼k font */
+                font-size: 5.5pt !important; /* Daha küçük font */
                 font-weight: bold;
                 line-height: 1.0 !important;
                 padding: 1px !important;
@@ -258,15 +258,15 @@
                 background-color: #f000 !important; 
             }
             .print-page-monthly-guidance table td {
-                padding: 0.3px !important; /* Ã‡ok az padding */
+                padding: 0.3px !important; /* Çok az padding */
                 font-size: 4.5pt !important;
                 line-height: 1.0 !important;
-                height: 18px !important; /* Sabit dÃ¼ÅŸÃ¼k satÄ±r yÃ¼ksekliÄŸi */
+                height: 18px !important; /* Sabit düşük satır yüksekliği */
                 vertical-align: top !important;
             }
         
           
-         /* GÃœNLÃœK REHBERLÄ°K FORMU - NÄ°HAÄ° DIÅž Ã‡ERÃ‡EVE YAZILI DÃœZEN â–¼ */
+         /* GÜNLÜK REHBERLİK FORMU - NİHAİ DIŞ ÇERÇEVE YAZILI DÜZEN ▼ */
 
             .print-page-daily-guidance {
                 page: guidance;
@@ -277,16 +277,16 @@
                 gap: 8mm;
                 height: 100%;
             }
-            /* YENÄ°: Her bir form sÃ¼tununu konumlandÄ±rma iÃ§in temel alÄ±r */
+            /* YENİ: Her bir form sütununu konumlandırma için temel alır */
             .print-page-daily-guidance .daily-guidance-column {
                 width: 48%;
-                position: relative; /* KÃ¶ÅŸe yazÄ±larÄ±nÄ± buna gÃ¶re hizalar */
-                padding-top: 3mm;   /* Ãœst yazÄ± iÃ§in boÅŸluk */
-                padding-bottom: 3mm;/* Alt yazÄ± iÃ§in boÅŸluk */
+                position: relative; /* Köşe yazılarını buna göre hizalar */
+                padding-top: 3mm;   /* Üst yazı için boşluk */
+                padding-bottom: 3mm;/* Alt yazı için boşluk */
                 box-sizing: border-box;
                 display: flex;
             }
-            /* Ã‡erÃ§eveli form kutusu artÄ±k sÃ¼tunun tamamÄ±nÄ± kaplar */
+            /* Çerçeveli form kutusu artık sütunun tamamını kaplar */
             .print-page-daily-guidance .daily-guidance-form {
                 border: 2px solid #000;
                 padding: 3mm;
@@ -294,10 +294,10 @@
                 width: 100%;
                 height: 100%;
             }
-            /* YENÄ°: KÃ¶ÅŸe yazÄ±larÄ±nÄ±n stilleri. ArtÄ±k Ã§erÃ§evenin dÄ±ÅŸÄ±nda konumlanacaklar. */
+            /* YENİ: Köşe yazılarının stilleri. Artık çerçevenin dışında konumlanacaklar. */
             .print-page-daily-guidance .top-right-text,
             .print-page-daily-guidance .bottom-left-text {
-                position: absolute; /* Ana sÃ¼tuna gÃ¶re konumlanÄ±r */
+                position: absolute; /* Ana sütuna göre konumlanır */
                 font-size: 6pt;
                 font-weight: bold;
             }
@@ -365,7 +365,7 @@
                 border-top: none;
             }
 
-            /* DEVAMSIZLIK FORMLARI - Footer 5 bÃ¶lÃ¼mlÃ¼ yapÄ± */
+            /* DEVAMSIZLIK FORMLARI - Footer 5 bölümlü yapı */
             .print-page-attendance .print-sheet-wrapper { 
                 width: 100%; 
                 height: 100%; 
@@ -374,14 +374,14 @@
             }
             .print-page-attendance .print-sheet.first-half,
             .print-page-attendance .print-sheet.second-half {
-                min-height: 49%; /* Sabit yÃ¼kseklik yerine minimum yÃ¼kseklik veriyoruz */
-                flex-shrink: 0;  /* KutularÄ±n kÃ¼Ã§Ã¼lmesini engelliyoruz */
+                min-height: 49%; /* Sabit yükseklik yerine minimum yükseklik veriyoruz */
+                flex-shrink: 0;  /* Kutuların küçülmesini engelliyoruz */
             }
             .print-page-attendance .print-sheet.second-half {
-                margin-top: 2%; /* Aradaki boÅŸluk kalsÄ±n */
+                margin-top: 2%; /* Aradaki boşluk kalsın */
             }
             .print-page-attendance .sheet-content {
-                break-inside: avoid; /* Sayfa ortasÄ±nda bÃ¶lÃ¼nmeyi engeller */
+                break-inside: avoid; /* Sayfa ortasında bölünmeyi engeller */
             }
             .print-page-attendance .sheet-content { 
                 display: flex; 
@@ -431,8 +431,8 @@
             .print-page-attendance .print-main-table .student-info-cell { 
                 text-align: left; 
                 padding: 1px 2px; 
-                white-space: normal; /* Metnin alt satÄ±ra geÃ§mesini saÄŸlar */
-                word-break: break-word; /* SatÄ±ra sÄ±ÄŸmayan Ã§ok uzun kelimeleri bÃ¶ler */
+                white-space: normal; /* Metnin alt satıra geçmesini sağlar */
+                word-break: break-word; /* Satıra sığmayan çok uzun kelimeleri böler */
                 vertical-align: middle;
             }
             .print-page-attendance .print-main-table .header-cell-name { 
@@ -467,26 +467,26 @@
 
             .print-page-attendance .print-main-table .day-cell {
                 width: 2.5%;
-                min-width: 12px; /* Ã‡ok daralmasÄ±nÄ± Ã¶nlemek iÃ§in */
-                box-sizing: border-box; /* GeniÅŸlik hesaplamasÄ±nÄ± dÃ¼zeltmek iÃ§in */
+                min-width: 12px; /* Çok daralmasını önlemek için */
+                box-sizing: border-box; /* Genişlik hesaplamasını düzeltmek için */
             }
 
-            /* YENÄ° 5 BÃ–LÃœMLÃœ FOOTER DÃœZENÄ° (SON HALÄ°) */
+            /* YENİ 5 BÖLÜMLÜ FOOTER DÜZENİ (SON HALİ) */
             .print-page-attendance .print-footer {
                 width: 100%;
                 margin-top: auto;
                 padding-top: 5px;
                 display: flex;
                 justify-content: space-between;
-                align-items: stretch; /* KutularÄ±n yÃ¼ksekliklerini eÅŸitler */
+                align-items: stretch; /* Kutuların yüksekliklerini eşitler */
                 font-size: 6pt !important;
                 gap: 2px;
-                /* Sabit yÃ¼kseklik kaldÄ±rÄ±ldÄ±, artÄ±k otomatik ayarlanacak */
+                /* Sabit yükseklik kaldırıldı, artık otomatik ayarlanacak */
             }
 
             .print-page-attendance .signature-section {
                 text-align: center;
-                width: 19% !important; /* DÃœZELTÄ°LDÄ° */
+                width: 19% !important; /* DÜZELTİLDİ */
                 line-height: 1.2;
                 border: 1px solid #000;
                 padding: 2px !important;
@@ -496,7 +496,7 @@
             }
 
             .print-page-attendance .explanation-section {
-                width: 21% !important; /* DÃœZELTÄ°LDÄ° */
+                width: 21% !important; /* DÜZELTİLDİ */
                 text-align: center;
                 font-size: 6.0pt !important;
                 line-height: 1.2;
@@ -508,7 +508,7 @@
             }
 
             .print-page-attendance .legend-section {
-                width: 22% !important; /* Bu doÄŸru, deÄŸiÅŸtirilmedi */
+                width: 22% !important; /* Bu doğru, değiştirilmedi */
                 text-align: left;
                 display: flex;
                 align-items: center;
@@ -520,13 +520,13 @@
                 padding: 2px !important;
                 line-height: 1.2;
                 width: 100%;
-                height: 100%;                 /* YENÄ°: KapsayÄ±cÄ±sÄ±nÄ± dikeyde doldurur */
-                display: flex;                 /* YENÄ°: Ä°Ã§indeki yazÄ±yÄ± ortalamak iÃ§in */
-                flex-direction: column;        /* YENÄ°: Ä°Ã§indeki yazÄ±yÄ± ortalamak iÃ§in */
-                justify-content: center;       /* YENÄ°: Ä°Ã§indeki yazÄ±yÄ± dikeyde ortalar */
+                height: 100%;                 /* YENİ: Kapsayıcısını dikeyde doldurur */
+                display: flex;                 /* YENİ: İçindeki yazıyı ortalamak için */
+                flex-direction: column;        /* YENİ: İçindeki yazıyı ortalamak için */
+                justify-content: center;       /* YENİ: İçindeki yazıyı dikeyde ortalar */
             }
 
-            /* Renk ve font kurallarÄ± aynÄ± kalabilir */
+            /* Renk ve font kuralları aynı kalabilir */
             .print-page-attendance .f-bold {
                 font-weight: bold;
             }
@@ -546,7 +546,7 @@
 
 
                         
-            /* FESÄ°H FORMLARI */
+            /* FESİH FORMLARI */
             .print-page-termination .termination-container { 
                 padding: 5mm; 
                 border: 2px solid #000; 
@@ -613,7 +613,7 @@
                 font-size: 12pt; 
             }
 
-            /* LÄ°STE FORMLARI */
+            /* LİSTE FORMLARI */
             .print-page-list .list-container { 
                 padding: 10mm; 
             }
@@ -651,14 +651,14 @@
             .print-page-monthly-guidance table td:first-child {
                 font-size: 5pt !important;
                 font-weight: bold !important;
-                line-height: 1.0 !important; /* EKLENDÄ°: SatÄ±r aralÄ±ÄŸÄ±nÄ± artÄ±rÄ±r */
+                line-height: 1.0 !important; /* EKLENDİ: Satır aralığını artırır */
             }
 
             .print-page-monthly-guidance table:first-of-type .dynamic-text {
                 font-size: 5.5pt !important;
                 font-weight: bold !important;
-                font-style: italic !important; /* Ä°steÄŸiniz olan italik stilini ekler */
-                line-height: 1.2 !important;   /* Okunurluk iÃ§in satÄ±r aralÄ±ÄŸÄ±nÄ± biraz artÄ±rdÄ±m */
+                font-style: italic !important; /* İsteğiniz olan italik stilini ekler */
+                line-height: 1.2 !important;   /* Okunurluk için satır aralığını biraz artırdım */
             }           
         }
         
@@ -693,7 +693,7 @@
             scroll-margin-block-start: 99vh;
         }
 
-        /* MasaÃ¼stÃ¼nde modal kendi yerinde kalsÄ±n; sÃ¼rÃ¼kleyince pozisyonu korunur */
+        /* Masaüstünde modal kendi yerinde kalsın; sürükleyince pozisyonu korunur */
         .modal-content{
             position: fixed;
             top: 50%;        /* tekrar ekle */
@@ -704,7 +704,7 @@
             will-change: auto;
         }
 
-        /* SADECE mobil/tabletâ€™te ortala (dokunmatik iÃ§in) */
+        /* SADECE mobil/tablet’te ortala (dokunmatik için) */
         @media (max-width: 768px) {
         .modal-content{
             top: 50%;
@@ -712,43 +712,15 @@
             transform: translate(-50%, -50%);
         }        
 
-        /* Sadece 'Ã–ÄŸrenciyi DÃ¼zenle' penceresini (studentModal) aÃ§Ä±lÄ±ÅŸta ekranÄ±n tam ortasÄ±na al */
+        /* Sadece 'Öğrenciyi Düzenle' penceresini (studentModal) açılışta ekranın tam ortasına al */
             #studentModal .modal-content{
                 position: fixed;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                margin: 0;         /* varsa margin:5% autoâ€™yu geÃ§ersiz kÄ±lar */
-                max-height: 90vh;  /* taÅŸmayÄ± Ã¶nler */
-                overflow: auto;    /* iÃ§erik uzun olursa kaydÄ±r */
-            }
-        }
-
-        /* SADECE MOBİL İÇİN - Desktop'a dokunmuyoruz */
-        @media (max-width: 768px) {
-            /* Veri Yönetimi butonları - sadece mobilde flex-wrap */
-            .panel > div:last-child > div {
-                flex-wrap: wrap !important;
-                justify-content: center !important;
-            }
-            
-            /* İşletmeler başlık hizası - mobilde alt alta */
-            div[style*="display:flex"][style*="justify-content: space-between"] {
-                flex-direction: column !important;
-                text-align: center !important;
-                gap: 15px !important;
-            }
-        }
-
-        @media (max-width: 480px) {
-            /* Küçük ekranlarda butonlar tam genişlik */
-            .panel > div:last-child > div {
-                flex-direction: column !important;
-            }
-            
-            .panel > div:last-child > div .btn {
-                width: 100% !important;
-                margin-bottom: 10px !important;
+                margin: 0;         /* varsa margin:5% auto’yu geçersiz kılar */
+                max-height: 90vh;  /* taşmayı önler */
+                overflow: auto;    /* içerik uzun olursa kaydır */
             }
         }
 
@@ -757,7 +729,7 @@
 
 
         /* =================================== */
-        /* MOBÄ°L UYUMLULUK Ä°YÄ°LEÅžTÄ°RMELERÄ°     */
+        /* MOBİL UYUMLULUK İYİLEŞTİRMELERİ     */
         /* =================================== */
 
         /* Temel mobil ayarlar */
@@ -766,7 +738,7 @@
             -webkit-touch-callout: none;
         }
 
-        /* Tablet iÃ§in - 768px ve altÄ± */
+        /* Tablet için - 768px ve altı */
         @media (max-width: 768px) {
             .container { padding: 10px; }
             
@@ -799,7 +771,7 @@
             }
         }
 
-        /* Telefon iÃ§in - 480px ve altÄ± */
+        /* Telefon için - 480px ve altı */
         @media (max-width: 480px) {
             .container { 
                 padding: 5px; 
@@ -834,7 +806,7 @@
                 gap: 15px; 
             }
             
-            /* Grid dÃ¼zeni tek sÃ¼tun */
+            /* Grid düzeni tek sütun */
             .grid[style*="grid-template-columns: 1fr 1fr"] {
                 grid-template-columns: 1fr !important;
             }
@@ -843,15 +815,15 @@
                 grid-template-columns: 1fr !important;
             }
             
-            /* Dropdown daha bÃ¼yÃ¼k */
+            /* Dropdown daha büyük */
             .dropdown-content {
                 max-height: 250px;
             }
             
-            /* Form inputlarÄ± daha bÃ¼yÃ¼k */
+            /* Form inputları daha büyük */
             .form-input, .form-select {
                 padding: 15px;
-                font-size: 16px; /* iOS zoom Ã¶nleme */
+                font-size: 16px; /* iOS zoom önleme */
             }
             
             /* Modal tam ekran benzeri */
@@ -862,7 +834,7 @@
             }
         }
 
-        /* Ã‡ok kÃ¼Ã§Ã¼k ekranlar - 320px */
+        /* Çok küçük ekranlar - 320px */
         @media (max-width: 320px) {
             .tab {
                 padding: 10px 5px;
@@ -909,50 +881,50 @@
             }
 
 
-            /* --- MOBÄ°L YAMASI (sadece mobilde Ã§alÄ±ÅŸÄ±r) --- */
+            /* --- MOBİL YAMASI (sadece mobilde çalışır) --- */
             @media (max-width: 768px), (pointer: coarse) {
 
-            /* Modal iÃ§erik: iOS/Android'de akÄ±cÄ± kaydÄ±rma, taÅŸmadan gÃ¶rÃ¼nÃ¼m */
+            /* Modal içerik: iOS/Android'de akıcı kaydırma, taşmadan görünüm */
             .modal .modal-content,
             #studentModal .modal-content{
-                max-height: 90dvh;              /* iOS barlarÄ±nÄ± hesaba katar */
-                width: 96vw;                     /* ekrandan taÅŸmayÄ± engeller */
-                overflow: auto;                  /* iÃ§erik kayar */
+                max-height: 90dvh;              /* iOS barlarını hesaba katar */
+                width: 96vw;                     /* ekrandan taşmayı engeller */
+                overflow: auto;                  /* içerik kayar */
                 -webkit-overflow-scrolling: touch;
             }
 
-            /* Varsa modal gÃ¶vdesini kaydÄ±rÄ±labilir yap (tercih edilir) */
+            /* Varsa modal gövdesini kaydırılabilir yap (tercih edilir) */
             .modal .modal-body{
                 max-height: 70dvh;
                 overflow: auto;
                 -webkit-overflow-scrolling: touch;
             }
 
-            /* YalnÄ±zca mobil */
+            /* Yalnızca mobil */
             @media (max-width: 768px){
-            /* Konteyner: yan yana sÄ±ÄŸmayan butonlar otomatik bir alt satÄ±ra iner, ortalanÄ±r */
+            /* Konteyner: yan yana sığmayan butonlar otomatik bir alt satıra iner, ortalanır */
             .modal .modal-footer,
             .button-bar, .actions, .toolbar{
                 display: flex;
-                flex-wrap: wrap;          /* ALT SATIRA Ä°NSÄ°N */
+                flex-wrap: wrap;          /* ALT SATIRA İNSİN */
                 justify-content: center;  /* ORTALA */
                 gap: 8px;
             }
 
-            /* Butonlar: metin KIRILMAZ; sÄ±ÄŸmazsa buton komple alta geÃ§er */
+            /* Butonlar: metin KIRILMAZ; sığmazsa buton komple alta geçer */
             .modal .modal-footer > *,
             .button-bar > *, .actions > *, .toolbar > *{
-                flex: 0 0 auto;           /* iÃ§eriÄŸe gÃ¶re geniÅŸlik */
-                white-space: nowrap;      /* buton iÃ§i metin tek satÄ±r */
+                flex: 0 0 auto;           /* içeriğe göre genişlik */
+                white-space: nowrap;      /* buton içi metin tek satır */
                 min-height: 44px;
                 padding: 10px 12px;
-                font-size: clamp(12px, 3.2vw, 14px);  /* mobilde biraz kÃ¼Ã§Ã¼lt */
-                max-width: 100%;          /* gÃ¼venlik: taÅŸma engeli */
+                font-size: clamp(12px, 3.2vw, 14px);  /* mobilde biraz küçült */
+                max-width: 100%;          /* güvenlik: taşma engeli */
             }
             }
 
 
-            /* Ã‡ok dar telefonlarda tek sÃ¼tun */
+            /* Çok dar telefonlarda tek sütun */
             @media (max-width: 360px){
                 .modal .modal-footer,
                 .button-bar, .actions, .toolbar{
@@ -960,12 +932,40 @@
                 }
             }
 
-            /* Buton metni kÄ±rÄ±labilsin; Ã¼st Ã¼ste binmeyi kes */
+            /* Buton metni kırılabilsin; üst üste binmeyi kes */
             .btn, button{
                 max-width: 100%;
                 white-space: normal;
                 line-height: 1.2;
             }
+            }
+
+            /* SADECE MOBİL İÇİN - Desktop'a dokunmuyoruz */
+            @media (max-width: 768px) {
+                /* Veri Yönetimi butonları - sadece mobilde flex-wrap */
+                .panel > div:last-child > div {
+                    flex-wrap: wrap !important;
+                    justify-content: center !important;
+                }
+                
+                /* İşletmeler başlık hizası - mobilde alt alta */
+                div[style*="display:flex"][style*="justify-content: space-between"] {
+                    flex-direction: column !important;
+                    text-align: center !important;
+                    gap: 15px !important;
+                }
+            }
+
+            @media (max-width: 480px) {
+                /* Küçük ekranlarda butonlar tam genişlik */
+                .panel > div:last-child > div {
+                    flex-direction: column !important;
+                }
+                
+                .panel > div:last-child > div .btn {
+                    width: 100% !important;
+                    margin-bottom: 10px !important;
+                }
             }
 
 
@@ -978,37 +978,37 @@
 
     <div id="auth-container" class="no-print" style="background: var(--dark-bg); padding: 15px; border-bottom: 2px solid var(--accent-gold);">
         <div id="login-section" style="text-align: center;">
-            <h2 style="color: var(--accent-gold); margin-bottom: 10px;">ðŸŽ“ MESEM Takip Sistemi</h2>
-            <button id="google-login-btn" class="btn btn-primary">ðŸ” Google HesabÄ±mla GiriÅŸ</button>
+            <h2 style="color: var(--accent-gold); margin-bottom: 10px;">🎓 MESEM Takip Sistemi</h2>
+            <button id="google-login-btn" class="btn btn-primary">🔐 Google Hesabımla Giriş</button>
         </div>
         <div id="user-info" style="display: none; text-align: right;">
             <span id="user-name" style="color: var(--text-light); margin-right: 15px;"></span>
-            <button id="logout-btn" class="btn btn-danger">Ã‡Ä±kÄ±ÅŸ</button>
+            <button id="logout-btn" class="btn btn-danger">Çıkış</button>
         </div>
     </div>
 
 
     <div class="container no-print" style="display: none;">
         <div class="tabs">
-            <button class="tab active" data-tab="management-panel">ðŸ¢ YÃ¶netim Paneli</button>
-            <button class="tab" data-tab="generator-panel">ðŸ“‹ Form OluÅŸtur</button>
+            <button class="tab active" data-tab="management-panel">🏢 Yönetim Paneli</button>
+            <button class="tab" data-tab="generator-panel">📋 Form Oluştur</button>
         </div>
         <div class="content">
             <div id="management-panel" class="tab-content active">
                 <div class="panel">
                     <h2>Genel Ayarlar</h2>
                     <div class="grid" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
-                         <div class="form-group"><label for="schoolName">Okul/Kurumun AdÄ±</label><input type="text" id="schoolName" class="form-input"></div>
-                         <div class="form-group"><label for="coordinatorName">KoordinatÃ¶r Ã–ÄŸretmen</label><input type="text" id="coordinatorName" class="form-input"></div>
-                         <div class="form-group"><label for="asstPrincipalName">KoordinatÃ¶r MÃ¼dÃ¼r YardÄ±mcÄ±sÄ±</label><input type="text" id="asstPrincipalName" class="form-input"></div>
-                         <div class="form-group"><label for="principalName">Okul MÃ¼dÃ¼rÃ¼</label><input type="text" id="principalName" class="form-input"></div>
+                         <div class="form-group"><label for="schoolName">Okul/Kurumun Adı</label><input type="text" id="schoolName" class="form-input"></div>
+                         <div class="form-group"><label for="coordinatorName">Koordinatör Öğretmen</label><input type="text" id="coordinatorName" class="form-input"></div>
+                         <div class="form-group"><label for="asstPrincipalName">Koordinatör Müdür Yardımcısı</label><input type="text" id="asstPrincipalName" class="form-input"></div>
+                         <div class="form-group"><label for="principalName">Okul Müdürü</label><input type="text" id="principalName" class="form-input"></div>
                     </div>
                     <div class="data-management-section">
                         <h3 style="color: var(--white); font-size: 1.2rem; margin-bottom: 15px;">Veri Yönetimi</h3>
                         <div class="data-management-buttons">
-                            <button class="btn btn-primary" id="download-data-btn">Verileri Ä°ndir</button>
-                            <button class="btn" id="upload-data-btn">Verileri YÃ¼kle</button>
-                            <button class="btn" id="print-list-btn">Liste YazdÄ±r</button>
+                            <button class="btn btn-primary" id="download-data-btn">Verileri İndir</button>
+                            <button class="btn" id="upload-data-btn">Verileri Yükle</button>
+                            <button class="btn" id="print-list-btn">Liste Yazdır</button>
                             <input type="file" id="upload-input" accept=".json" style="display: none;">
                         </div>
                     </div>
@@ -1021,37 +1021,37 @@
                 <div class="summary-panel" id="summary-panel">
                     <div class="summary-item">
                         <div id="totalBusinesses" class="count">0</div>
-                        <div class="label">Toplam Ä°ÅŸletme</div>
+                        <div class="label">Toplam İşletme</div>
                     </div>
                     <div class="summary-item">
                         <div id="totalStudents" class="count">0</div>
-                        <div class="label">Toplam Ã–ÄŸrenci</div>
+                        <div class="label">Toplam Öğrenci</div>
                     </div>
                 </div>
             </div>
             
             <div id="generator-panel" class="tab-content">
-                 <h2>Form OluÅŸtur</h2>
+                 <h2>Form Oluştur</h2>
                  <div class="form-group">
-                     <label>1. Form TÃ¼rÃ¼nÃ¼ SeÃ§in</label>
+                     <label>1. Form Türünü Seçin</label>
                      <select id="formTypeSelect" class="form-select">
-                        <option value="attendance">DevamsÄ±zlÄ±k Ã‡izelgesi</option>
-                        <option value="monthly_guidance">AylÄ±k Rehberlik Formu</option>
-                        <option value="daily_guidance">GÃ¼nlÃ¼k Rehberlik Formu</option>
+                        <option value="attendance">Devamsızlık Çizelgesi</option>
+                        <option value="monthly_guidance">Aylık Rehberlik Formu</option>
+                        <option value="daily_guidance">Günlük Rehberlik Formu</option>
                      </select>
                  </div>
 
                 <div id="controls-monthly" class="form-controls-container active">
                     <div class="form-group" style="grid-column: 1 / -1;">
-                        <label for="business-select-dropdown">2. Ä°ÅŸletme(ler)i SeÃ§in</label>
+                        <label for="business-select-dropdown">2. İşletme(ler)i Seçin</label>
                         <div class="dropdown-container">
                             <div class="dropdown-header" id="business-dropdown-header">
-                                <span id="business-selected-text">Ä°ÅŸletme seÃ§in...</span>
-                                <span class="dropdown-arrow">â–¼</span>
+                                <span id="business-selected-text">İşletme seçin...</span>
+                                <span class="dropdown-arrow">▼</span>
                             </div>
                             <div class="dropdown-content" id="business-dropdown-content">
                                 <div class="dropdown-controls">
-                                    <button type="button" class="dropdown-btn" id="select-all-businesses">TÃ¼mÃ¼nÃ¼ SeÃ§</button>
+                                    <button type="button" class="dropdown-btn" id="select-all-businesses">Tümünü Seç</button>
                                     <button type="button" class="dropdown-btn" id="deselect-all-businesses">Temizle</button>
                                 </div>
                                 <div id="business-dropdown-list"></div>
@@ -1059,46 +1059,46 @@
                         </div>
                     </div>
                     <div class="form-group"><label for="genMonthSelect">3. Ay</label><select id="genMonthSelect" class="form-select"></select></div>
-                    <div class="form-group"><label for="genYearSelect">4. YÄ±l</label><input type="number" id="genYearSelect" class="form-input"></div>
+                    <div class="form-group"><label for="genYearSelect">4. Yıl</label><input type="number" id="genYearSelect" class="form-input"></div>
                 </div>
 
                 <div id="controls-daily" class="form-controls-container">
-                     <div class="form-group" style="grid-column: 1 / -1;"><label>2. Ay ve YÄ±l SeÃ§in</label></div>
+                     <div class="form-group" style="grid-column: 1 / -1;"><label>2. Ay ve Yıl Seçin</label></div>
                      <div class="form-group"><label for="dailyMonthSelect">Ay</label><select id="dailyMonthSelect" class="form-select"></select></div>
-                     <div class="form-group"><label for="dailyYearSelect">YÄ±l</label><input type="number" id="dailyYearSelect" class="form-input"></div>
+                     <div class="form-group"><label for="dailyYearSelect">Yıl</label><input type="number" id="dailyYearSelect" class="form-input"></div>
                     <div class="form-group" style="grid-column: 1 / -1;">
-                        <label for="daily-business-select-dropdown">3. Ä°ÅŸletme(ler)i SeÃ§in</label>
+                        <label for="daily-business-select-dropdown">3. İşletme(ler)i Seçin</label>
                         <div class="dropdown-container">
                             <div class="dropdown-header" id="daily-business-dropdown-header">
-                                <span id="daily-business-selected-text">Ä°ÅŸletme seÃ§in...</span>
-                                <span class="dropdown-arrow">â–¼</span>
+                                <span id="daily-business-selected-text">İşletme seçin...</span>
+                                <span class="dropdown-arrow">▼</span>
                             </div>
                             <div class="dropdown-content" id="daily-business-dropdown-content">
                                 <div class="dropdown-controls">
-                                    <button type="button" class="dropdown-btn" id="select-all-daily-businesses">TÃ¼mÃ¼nÃ¼ SeÃ§</button>
+                                    <button type="button" class="dropdown-btn" id="select-all-daily-businesses">Tümünü Seç</button>
                                     <button type="button" class="dropdown-btn" id="deselect-all-daily-businesses">Temizle</button>
                                 </div>
                                 <div id="daily-business-dropdown-list"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group"><label for="genWeekSelect1">4. Hafta SeÃ§in</label><select id="genWeekSelect1" class="form-select"></select></div>
+                    <div class="form-group"><label for="genWeekSelect1">4. Hafta Seçin</label><select id="genWeekSelect1" class="form-select"></select></div>
                 </div>
-                 <button class="btn btn-primary" id="generate-sheet-btn" style="margin-top:20px; width: 100%; padding: 15px;">FormlarÄ± OluÅŸtur ve YazdÄ±r</button>
+                 <button class="btn btn-primary" id="generate-sheet-btn" style="margin-top:20px; width: 100%; padding: 15px;">Formları Oluştur ve Yazdır</button>
             </div>
         </div>
     </div>
     <div id="print-container"></div>
-    <div class="modal" id="businessModal"><div class="modal-content"><h2 id="businessModalTitle"></h2><form id="businessForm" novalidate><input type="hidden" id="businessId"><div class="grid" style="grid-template-columns: 1fr 1fr;"><div class="form-group"><label for="businessName">Ä°ÅŸletme AdÄ±<span class="required-star">*</span></label><input required class="form-input" id="businessName" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessAddress">Ä°ÅŸletme Adresi</label><input class="form-input" id="businessAddress" type="text"></div><div class="form-group"><label for="businessPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="businessPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessOfficial">Ä°ÅŸletme Yetkilisi<span class="required-star">*</span></label><input required class="form-input" id="businessOfficial" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessVisitDay">KoordinatÃ¶r Ziyaret GÃ¼nÃ¼<span class="required-star">*</span></label><select required class="form-select" id="businessVisitDay"><option disabled selected value="">GÃ¼nÃ¼ SeÃ§in</option><option value="1">Pazartesi</option><option value="2">SalÄ±</option><option value="3">Ã‡arÅŸamba</option><option value="4">PerÅŸembe</option><option value="5">Cuma</option></select><span class="error-message"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">Ä°ptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
-   <div class="modal" id="studentModal"><div class="modal-content"><h2 id="studentModalTitle"></h2><form id="studentForm" novalidate><input id="studentBusinessId" type="hidden"><input id="studentId" type="hidden"><div class="grid" style="grid-template-columns: 1fr 1fr;"><div class="form-group"><label for="studentClass">SÄ±nÄ±fÄ±</label><select class="form-select" id="studentClass"><option value="9">9. SÄ±nÄ±f</option><option value="10">10. SÄ±nÄ±f</option><option value="11">11. SÄ±nÄ±f</option><option value="12">12. SÄ±nÄ±f</option></select></div><div class="form-group"><label for="studentNo">Okul No <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentNo" inputmode="numeric" pattern="[0-9]*" placeholder="1234" type="text"></div><div class="form-group"><label for="studentName">AdÄ± SoyadÄ±<span class="required-star">*</span></label><input required class="form-input" id="studentName" type="text"><span class="error-message"></span></div><div class="form-group"><label for="studentField">Alan/DalÄ±</label><input class="form-input" id="studentField" type="text" placeholder="Ã–rn: BiliÅŸim Teknolojileri"></div><div class="form-group"><label for="studentSchoolDay">Okul GÃ¼nÃ¼</label><select class="form-select" id="studentSchoolDay"><option value="1">Pazartesi</option><option value="2">SalÄ±</option><option value="3">Ã‡arÅŸamba</option><option value="4">PerÅŸembe</option><option value="5">Cuma</option></select></div><div class="form-group"><label for="studentPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"></div><div class="form-group"><label for="studentStartDate">Ä°ÅŸe BaÅŸlama Tarihi (SÃ¶zleÅŸme)<span class="required-star">*</span></label><input required class="form-input" id="studentStartDate" type="date"><span class="error-message"></span></div><div class="form-group"><label for="studentEndDate">Ä°ÅŸten AyrÄ±lma Tarihi (Fesih)</label><input class="form-input" id="studentEndDate" type="date"><span class="error-message" id="studentEndDateError"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">Ä°ptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
-    <div class="modal" id="terminationModal"><div class="modal-content"><h2>SÃ¶zleÅŸme Fesih Bilgileri</h2><form id="terminationForm"><input id="terminationStudentId" type="hidden"><input id="terminationBusinessId" type="hidden"><div class="form-group"><label for="terminationDate">Fesih Tarihi<span class="required-star">*</span></label><input required class="form-input" id="terminationDate" type="date"></div><div class="form-group" style="margin-top:15px;"><label for="terminationReason">Fesih Nedenleri<span class="required-star">*</span></label><textarea required class="form-input" id="terminationReason" rows="5"></textarea></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">Ä°ptal</button><button class="btn btn-primary" type="submit">Fesih TutanaÄŸÄ±nÄ± OluÅŸtur ve YazdÄ±r</button></div></form></div></div>
-    <div id="absenceModal" class="modal"><div class="modal-content"><h2></h2><div class="grid" style="grid-template-columns: 1fr 1fr; align-items:end;"><div class="form-group"><label for="absenceMonthSelect">Ay</label><select id="absenceMonthSelect" class="form-select"></select></div><div class="form-group"><label for="absenceYearSelect">YÄ±l</label><input type="number" id="absenceYearSelect" class="form-input"></div></div><div class="grid calendar-grid-header" style="grid-template-columns: repeat(7, 1fr); margin-top: 15px;"><div class="calendar-header">Pzt</div><div class="calendar-header">Sal</div><div class="calendar-header">Ã‡ar</div><div class="calendar-header">Per</div><div class="calendar-header">Cum</div><div class="calendar-header">Cmt</div><div class="calendar-header">Paz</div></div><div id="absenceCalendarGrid" class="calendar-grid"></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button type="button" class="btn btn-danger" data-action="cancel-modal">Kapat</button><button type="button" class="btn btn-primary" id="saveAbsenceBtn">DevamsÄ±zlÄ±ÄŸÄ± Kaydet</button></div></div>
+    <div class="modal" id="businessModal"><div class="modal-content"><h2 id="businessModalTitle"></h2><form id="businessForm" novalidate><input type="hidden" id="businessId"><div class="grid" style="grid-template-columns: 1fr 1fr;"><div class="form-group"><label for="businessName">İşletme Adı<span class="required-star">*</span></label><input required class="form-input" id="businessName" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessAddress">İşletme Adresi</label><input class="form-input" id="businessAddress" type="text"></div><div class="form-group"><label for="businessPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="businessPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessOfficial">İşletme Yetkilisi<span class="required-star">*</span></label><input required class="form-input" id="businessOfficial" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessVisitDay">Koordinatör Ziyaret Günü<span class="required-star">*</span></label><select required class="form-select" id="businessVisitDay"><option disabled selected value="">Günü Seçin</option><option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option></select><span class="error-message"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
+   <div class="modal" id="studentModal"><div class="modal-content"><h2 id="studentModalTitle"></h2><form id="studentForm" novalidate><input id="studentBusinessId" type="hidden"><input id="studentId" type="hidden"><div class="grid" style="grid-template-columns: 1fr 1fr;"><div class="form-group"><label for="studentClass">Sınıfı</label><select class="form-select" id="studentClass"><option value="9">9. Sınıf</option><option value="10">10. Sınıf</option><option value="11">11. Sınıf</option><option value="12">12. Sınıf</option></select></div><div class="form-group"><label for="studentNo">Okul No <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentNo" inputmode="numeric" pattern="[0-9]*" placeholder="1234" type="text"></div><div class="form-group"><label for="studentName">Adı Soyadı<span class="required-star">*</span></label><input required class="form-input" id="studentName" type="text"><span class="error-message"></span></div><div class="form-group"><label for="studentField">Alan/Dalı</label><input class="form-input" id="studentField" type="text" placeholder="Örn: Bilişim Teknolojileri"></div><div class="form-group"><label for="studentSchoolDay">Okul Günü</label><select class="form-select" id="studentSchoolDay"><option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option></select></div><div class="form-group"><label for="studentPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"></div><div class="form-group"><label for="studentStartDate">İşe Başlama Tarihi (Sözleşme)<span class="required-star">*</span></label><input required class="form-input" id="studentStartDate" type="date"><span class="error-message"></span></div><div class="form-group"><label for="studentEndDate">İşten Ayrılma Tarihi (Fesih)</label><input class="form-input" id="studentEndDate" type="date"><span class="error-message" id="studentEndDateError"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
+    <div class="modal" id="terminationModal"><div class="modal-content"><h2>Sözleşme Fesih Bilgileri</h2><form id="terminationForm"><input id="terminationStudentId" type="hidden"><input id="terminationBusinessId" type="hidden"><div class="form-group"><label for="terminationDate">Fesih Tarihi<span class="required-star">*</span></label><input required class="form-input" id="terminationDate" type="date"></div><div class="form-group" style="margin-top:15px;"><label for="terminationReason">Fesih Nedenleri<span class="required-star">*</span></label><textarea required class="form-input" id="terminationReason" rows="5"></textarea></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Fesih Tutanağını Oluştur ve Yazdır</button></div></form></div></div>
+    <div id="absenceModal" class="modal"><div class="modal-content"><h2></h2><div class="grid" style="grid-template-columns: 1fr 1fr; align-items:end;"><div class="form-group"><label for="absenceMonthSelect">Ay</label><select id="absenceMonthSelect" class="form-select"></select></div><div class="form-group"><label for="absenceYearSelect">Yıl</label><input type="number" id="absenceYearSelect" class="form-input"></div></div><div class="grid calendar-grid-header" style="grid-template-columns: repeat(7, 1fr); margin-top: 15px;"><div class="calendar-header">Pzt</div><div class="calendar-header">Sal</div><div class="calendar-header">Çar</div><div class="calendar-header">Per</div><div class="calendar-header">Cum</div><div class="calendar-header">Cmt</div><div class="calendar-header">Paz</div></div><div id="absenceCalendarGrid" class="calendar-grid"></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button type="button" class="btn btn-danger" data-action="cancel-modal">Kapat</button><button type="button" class="btn btn-primary" id="saveAbsenceBtn">Devamsızlığı Kaydet</button></div></div>
     
     <div class="modal" id="qrPrePrintModal" style="cursor: pointer;">
     <div class="modal-content" style="max-width: 500px; text-align: center; background: var(--card-bg); border: 2px solid var(--accent-gold); border-radius: 10px; padding: 30px; margin: 10% auto; cursor: default;">
-        <h2 style="color: var(--accent-gold); margin-bottom: 20px;">Formlar HazÄ±rlanÄ±yor</h2>
+        <h2 style="color: var(--accent-gold); margin-bottom: 20px;">Formlar Hazırlanıyor</h2>
         <p style="color: var(--text-light); font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px;">
-            Belgeleriniz oluÅŸturuluyor. LÃ¼tfen bekleyin. Bu pencereyi kapatmak iÃ§in dÄ±ÅŸarÄ±daki herhangi bir alana tÄ±klayabilirsiniz.
+            Belgeleriniz oluşturuluyor. Lütfen bekleyin. Bu pencereyi kapatmak için dışarıdaki herhangi bir alana tıklayabilirsiniz.
         </p>
         <div id="processingSpinner" style="display: flex; justify-content: center; align-items: center; height: 100px; color: var(--accent-gold);">
             <svg width="60" height="60" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_ajPY{transform-origin:center;animation:spinner_AtaB .75s infinite linear}@keyframes spinner_AtaB{100%{transform:rotate(360deg)}}</style><path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" fill="currentColor"/><path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" class="spinner_ajPY" fill="currentColor"/></svg>
@@ -1107,12 +1107,12 @@
 </div>
     
 <script type="module">
-    // 1. Firebase KÃ¼tÃ¼phanelerini import et
+    // 1. Firebase Kütüphanelerini import et
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-    // 2. Firebase ayarlarÄ±nÄ± yap ve baÅŸlat
+    // 2. Firebase ayarlarını yap ve başlat
     const firebaseConfig = {
         apiKey: "AIzaSyB8H41-2uK39kWSRhLJOBmnzdlaxzVyGC0",
         authDomain: "mesem-takip-sistemi-408d8.firebaseapp.com",
@@ -1126,14 +1126,14 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
   
-    // 3. TÃœM UYGULAMA MANTIÄžI HTML YÃœKLENDÄ°KTEN SONRA Ã‡ALIÅžACAK ÅžEKÄ°LDE DÃœZENLENDÄ°
+    // 3. TÜM UYGULAMA MANTIĞI HTML YÜKLENDİKTEN SONRA ÇALIŞACAK ŞEKİLDE DÜZENLENDİ
     document.addEventListener('DOMContentLoaded', () => {
         
         let currentUser = null;
         let appData = {};
         let currentAbsence = { studentId: null, businessId: null };
 
-        // DOM elementleri tek bir yerde, en baÅŸta tanÄ±mlanÄ±yor.
+        // DOM elementleri tek bir yerde, en başta tanımlanıyor.
         const dom = {
             loginSection: document.getElementById('login-section'),
             userInfo: document.getElementById('user-info'),
@@ -1183,7 +1183,7 @@
         }
 
             setTimeout(() => {
-                // Ä°ÅŸletme dropdown'Ä± dÃ¼zelt
+                // İşletme dropdown'ı düzelt
                 const businessDropdown = document.getElementById('business-dropdown-header');
                 const businessContent = document.getElementById('business-dropdown-content');
                 
@@ -1195,7 +1195,7 @@
                     });
                 }
                 
-                // GÃ¼nlÃ¼k dropdown'Ä± dÃ¼zelt  
+                // Günlük dropdown'ı düzelt  
                 const dailyDropdown = document.getElementById('daily-business-dropdown-header');
                 const dailyContent = document.getElementById('daily-business-dropdown-content');
                 
@@ -1210,14 +1210,16 @@
 
         
 
-        // --- Firebase FonksiyonlarÄ± ---
+        // --- Firebase Fonksiyonları ---
         async function signInWithGoogle() {
             try {
                 const provider = new GoogleAuthProvider();
+                // YENİ EKLENEN SATIR: Her seferinde hesap seçme ekranını göstermeye zorla
+                provider.setCustomParameters({ prompt: 'select_account' });
                 await signInWithPopup(auth, provider);
             } catch (error) {
-                console.error('GiriÅŸ hatasÄ±:', error);
-                showNotification('GiriÅŸ yapÄ±lamadÄ±: ' + error.message, 'error');
+                console.error('Giriş hatası:', error);
+                showNotification('Giriş yapılamadı: ' + error.message, 'error');
             }
         }
 
@@ -1231,10 +1233,10 @@
                 } else {
                     appData = { 
                         settings: { 
-                            schoolName: 'UÅžAK MESLEKÄ° VE TEKNÄ°K ANADOLU LÄ°SESÄ°', 
+                            schoolName: 'UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ', 
                             coordinatorName: '', 
-                            asstPrincipalName: 'Salih SEVÄ°M', 
-                            principalName: 'SeÃ§kin ÅžENTÃœRK' 
+                            asstPrincipalName: 'Salih SEVİM', 
+                            principalName: 'Seçkin ŞENTÜRK' 
                         }, 
                         businesses: [] 
                     };
@@ -1245,8 +1247,8 @@
                 checkAndUpgradeClasses();
                 renderAll();
             } catch (error) {
-                console.error('Veri yÃ¼kleme hatasÄ±:', error);
-                showNotification('Veri yÃ¼klenirken bir hata oluÅŸtu.', 'error');
+                console.error('Veri yükleme hatası:', error);
+                showNotification('Veri yüklenirken bir hata oluştu.', 'error');
             }
         }
     
@@ -1259,76 +1261,76 @@
             });
             try {
                 await setDoc(doc(db, 'users', currentUser.uid), appData);
-                console.log('Veri baÅŸarÄ±yla buluta kaydedildi.');
+                console.log('Veri başarıyla buluta kaydedildi.');
             } catch (error) {
-                console.error('Buluta kaydetme hatasÄ±:', error);
-                showNotification('Veri kaydedilirken bir hata oluÅŸtu.', 'error');
+                console.error('Buluta kaydetme hatası:', error);
+                showNotification('Veri kaydedilirken bir hata oluştu.', 'error');
             }
         }
 
-    const monthNames = ["Ocak", "Åžubat", "Mart", "Nisan", "MayÄ±s", "Haziran", "Temmuz", "AÄŸustos", "EylÃ¼l", "Ekim", "KasÄ±m", "AralÄ±k"];
+    const monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 
-       // 2024-2025-2026 YÄ±lÄ± Resmi Tatil GÃ¼nleri (Ay 0'dan baÅŸlar: Ocak=0, Åžubat=1...)
+       // 2024-2025-2026 Yılı Resmi Tatil Günleri (Ay 0'dan başlar: Ocak=0, Şubat=1...)
     const publicHolidays = {
         '2024': [
-            { month: 9, day: 29, halfDay: false }, // Cumhuriyet BayramÄ±
+            { month: 9, day: 29, halfDay: false }, // Cumhuriyet Bayramı
         ],
         '2025': [
-            { month: 0, day: 1, halfDay: false },  // YÄ±lbaÅŸÄ±
-            { month: 2, day: 29, halfDay: true }, // Ramazan BayramÄ± Arifesi
-            { month: 2, day: 30, halfDay: false },// Ramazan BayramÄ± 1. GÃ¼n
-            { month: 2, day: 31, halfDay: false },// Ramazan BayramÄ± 2. GÃ¼n
-            { month: 3, day: 1, halfDay: false }, // Ramazan BayramÄ± 3. GÃ¼n
-            { month: 3, day: 23, halfDay: false },// Ulusal Egemenlik ve Ã‡ocuk BayramÄ±
-            { month: 4, day: 1, halfDay: false }, // Emek ve DayanÄ±ÅŸma GÃ¼nÃ¼
-            { month: 4, day: 19, halfDay: false },// AtatÃ¼rk'Ã¼ Anma, GenÃ§lik ve Spor BayramÄ±
-            { month: 5, day: 5, halfDay: true }, // Kurban BayramÄ± Arifesi
-            { month: 5, day: 6, halfDay: false }, // Kurban BayramÄ± 1. GÃ¼n
-            { month: 5, day: 7, halfDay: false }, // Kurban BayramÄ± 2. GÃ¼n
-            { month: 5, day: 8, halfDay: false }, // Kurban BayramÄ± 3. GÃ¼n
-            { month: 5, day: 9, halfDay: false }, // Kurban BayramÄ± 4. GÃ¼n
-            { month: 6, day: 15, halfDay: false },// Demokrasi ve Milli Birlik GÃ¼nÃ¼
-            { month: 7, day: 30, halfDay: false },// Zafer BayramÄ±
-            { month: 9, day: 28, halfDay: true }, // Cumhuriyet BayramÄ± Arifesi
-            { month: 9, day: 29, halfDay: false } // Cumhuriyet BayramÄ±
+            { month: 0, day: 1, halfDay: false },  // Yılbaşı
+            { month: 2, day: 29, halfDay: true }, // Ramazan Bayramı Arifesi
+            { month: 2, day: 30, halfDay: false },// Ramazan Bayramı 1. Gün
+            { month: 2, day: 31, halfDay: false },// Ramazan Bayramı 2. Gün
+            { month: 3, day: 1, halfDay: false }, // Ramazan Bayramı 3. Gün
+            { month: 3, day: 23, halfDay: false },// Ulusal Egemenlik ve Çocuk Bayramı
+            { month: 4, day: 1, halfDay: false }, // Emek ve Dayanışma Günü
+            { month: 4, day: 19, halfDay: false },// Atatürk'ü Anma, Gençlik ve Spor Bayramı
+            { month: 5, day: 5, halfDay: true }, // Kurban Bayramı Arifesi
+            { month: 5, day: 6, halfDay: false }, // Kurban Bayramı 1. Gün
+            { month: 5, day: 7, halfDay: false }, // Kurban Bayramı 2. Gün
+            { month: 5, day: 8, halfDay: false }, // Kurban Bayramı 3. Gün
+            { month: 5, day: 9, halfDay: false }, // Kurban Bayramı 4. Gün
+            { month: 6, day: 15, halfDay: false },// Demokrasi ve Milli Birlik Günü
+            { month: 7, day: 30, halfDay: false },// Zafer Bayramı
+            { month: 9, day: 28, halfDay: true }, // Cumhuriyet Bayramı Arifesi
+            { month: 9, day: 29, halfDay: false } // Cumhuriyet Bayramı
         ],
         '2026': [
-            { month: 0, day: 1, halfDay: false },   // YÄ±lbaÅŸÄ±
-            { month: 2, day: 19, halfDay: true },  // Ramazan BayramÄ± Arifesi
-            { month: 2, day: 20, halfDay: false }, // Ramazan BayramÄ± 1. GÃ¼n
-            { month: 2, day: 21, halfDay: false }, // Ramazan BayramÄ± 2. GÃ¼n
-            { month: 2, day: 22, halfDay: false }, // Ramazan BayramÄ± 3. GÃ¼n
-            { month: 3, day: 23, halfDay: false }, // Ulusal Egemenlik ve Ã‡ocuk BayramÄ±
-            { month: 4, day: 1, halfDay: false },  // Emek ve DayanÄ±ÅŸma GÃ¼nÃ¼
-            { month: 4, day: 19, halfDay: false }, // AtatÃ¼rk'Ã¼ Anma, GenÃ§lik ve Spor BayramÄ±
-            { month: 5, day: 26, halfDay: true },  // Kurban BayramÄ± Arifesi
-            { month: 5, day: 27, halfDay: false }, // Kurban BayramÄ± 1. GÃ¼n
-            { month: 5, day: 28, halfDay: false }, // Kurban BayramÄ± 2. GÃ¼n
-            { month: 5, day: 29, halfDay: false }, // Kurban BayramÄ± 3. GÃ¼n
-            { month: 5, day: 30, halfDay: false }, // Kurban BayramÄ± 4. GÃ¼n
-            { month: 6, day: 15, halfDay: false }, // Demokrasi ve Milli Birlik GÃ¼nÃ¼
-            { month: 7, day: 30, halfDay: false }, // Zafer BayramÄ±
-            { month: 9, day: 28, halfDay: true },  // Cumhuriyet BayramÄ± Arifesi
-            { month: 9, day: 29, halfDay: false }  // Cumhuriyet BayramÄ±
+            { month: 0, day: 1, halfDay: false },   // Yılbaşı
+            { month: 2, day: 19, halfDay: true },  // Ramazan Bayramı Arifesi
+            { month: 2, day: 20, halfDay: false }, // Ramazan Bayramı 1. Gün
+            { month: 2, day: 21, halfDay: false }, // Ramazan Bayramı 2. Gün
+            { month: 2, day: 22, halfDay: false }, // Ramazan Bayramı 3. Gün
+            { month: 3, day: 23, halfDay: false }, // Ulusal Egemenlik ve Çocuk Bayramı
+            { month: 4, day: 1, halfDay: false },  // Emek ve Dayanışma Günü
+            { month: 4, day: 19, halfDay: false }, // Atatürk'ü Anma, Gençlik ve Spor Bayramı
+            { month: 5, day: 26, halfDay: true },  // Kurban Bayramı Arifesi
+            { month: 5, day: 27, halfDay: false }, // Kurban Bayramı 1. Gün
+            { month: 5, day: 28, halfDay: false }, // Kurban Bayramı 2. Gün
+            { month: 5, day: 29, halfDay: false }, // Kurban Bayramı 3. Gün
+            { month: 5, day: 30, halfDay: false }, // Kurban Bayramı 4. Gün
+            { month: 6, day: 15, halfDay: false }, // Demokrasi ve Milli Birlik Günü
+            { month: 7, day: 30, halfDay: false }, // Zafer Bayramı
+            { month: 9, day: 28, halfDay: true },  // Cumhuriyet Bayramı Arifesi
+            { month: 9, day: 29, halfDay: false }  // Cumhuriyet Bayramı
         ]
     };
 
-    // MEB Ã‡alÄ±ÅŸma Takvimine GÃ¶re Okul Tatil DÃ¶nemleri
+    // MEB Çalışma Takvimine Göre Okul Tatil Dönemleri
     const schoolHolidays = [
         // 2024-2025
         { start: new Date(2024, 10, 11), end: new Date(2024, 10, 15) }, // 1. Ara Tatil
-        { start: new Date(2025, 0, 20), end: new Date(2025, 1, 2) },   // YarÄ±yÄ±l Tatili
+        { start: new Date(2025, 0, 20), end: new Date(2025, 1, 2) },   // Yarıyıl Tatili
         { start: new Date(2025, 3, 7), end: new Date(2025, 3, 11) },  // 2. Ara Tatil
-        { start: new Date(2025, 5, 14), end: new Date(2025, 8, 7) },   // Yaz Tatili baÅŸlangÄ±cÄ±
+        { start: new Date(2025, 5, 14), end: new Date(2025, 8, 7) },   // Yaz Tatili başlangıcı
 
         // 2025-2026
         { start: new Date(2025, 10, 10), end: new Date(2025, 10, 14) }, // 1. Ara Tatil
-        { start: new Date(2026, 0, 19), end: new Date(2026, 0, 30) },   // YarÄ±yÄ±l Tatili
+        { start: new Date(2026, 0, 19), end: new Date(2026, 0, 30) },   // Yarıyıl Tatili
         { start: new Date(2026, 2, 16), end: new Date(2026, 2, 20) },   // 2. Ara Tatil
-        { start: new Date(2026, 5, 27), end: new Date(2026, 8, 6) }    // Yaz Tatili baÅŸlangÄ±cÄ±
+        { start: new Date(2026, 5, 27), end: new Date(2026, 8, 6) }    // Yaz Tatili başlangıcı
     ];
 
-    // YENÄ° EKLENECEK YARDIMCI FONKSÄ°YONLAR â–¼
+    // YENİ EKLENECEK YARDIMCI FONKSİYONLAR ▼
     function isPublicHoliday(date) {
         const year = date.getFullYear().toString();
         const month = date.getMonth();
@@ -1338,30 +1340,30 @@
     }
 
     function isSchoolHoliday(date) {
-        // Saat, dakika vs. sÄ±fÄ±rlayarak sadece tarih bazlÄ± karÅŸÄ±laÅŸtÄ±rma yap
+        // Saat, dakika vs. sıfırlayarak sadece tarih bazlı karşılaştırma yap
         const checkDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
         return schoolHolidays.some(period => checkDate >= period.start && checkDate <= period.end);
     }
 
 
     function getFormHeightInPixels(businessId, month, year) {
-        // Gizli bir Ã¶lÃ§Ã¼m alanÄ± oluÅŸtur
+        // Gizli bir ölçüm alanı oluştur
         const measuringDiv = document.createElement('div');
         measuringDiv.style.position = 'absolute';
         measuringDiv.style.visibility = 'hidden';
         measuringDiv.style.left = '-9999px';
-        measuringDiv.style.width = '190mm'; // A4 portre sayfa geniÅŸliÄŸi (kenar boÅŸluklarÄ± hariÃ§)
+        measuringDiv.style.width = '190mm'; // A4 portre sayfa genişliği (kenar boşlukları hariç)
 
-        // Formun HTML'ini oluÅŸtur ve Ã¶lÃ§Ã¼m alanÄ±na ekle
+        // Formun HTML'ini oluştur ve ölçüm alanına ekle
         const formHTML = generateAttendanceSheet(businessId, month, year);
         measuringDiv.innerHTML = `<div class="print-page-attendance"><div class="sheet-content">${formHTML}</div></div>`;
 
         document.body.appendChild(measuringDiv);
 
-        // YÃ¼ksekliÄŸi Ã¶lÃ§
+        // Yüksekliği ölç
         const height = measuringDiv.offsetHeight;
 
-        // Ã–lÃ§Ã¼m alanÄ±nÄ± temizle
+        // Ölçüm alanını temizle
         document.body.removeChild(measuringDiv);
 
         return height;
@@ -1371,16 +1373,16 @@
     function getVisitDatesForMonth(year, month, dayOfWeek) { const dates = []; const targetDay = parseInt(dayOfWeek); if (isNaN(targetDay)) return []; const date = new Date(year, month, 1); while (date.getMonth() === month) { if (date.getDay() === targetDay) { dates.push(new Date(date.getTime())); } date.setDate(date.getDate() + 1); } return dates; }
     function getWeeksInMonth(year, month, dayOfWeek) { const visitDates = getVisitDatesForMonth(year, month, dayOfWeek); return visitDates.map((date, index) => ({ week: index + 1, date: date, label: `${index + 1}. Hafta (${date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })})` })); }
     
-    // Bir tarihin, yÄ±lÄ±n kaÃ§Ä±ncÄ± haftasÄ±nda olduÄŸunu (ISO 8601 standardÄ±na gÃ¶re) hesaplar
+    // Bir tarihin, yılın kaçıncı haftasında olduğunu (ISO 8601 standardına göre) hesaplar
     function getWeekOfYear(d) {
-        // Tarihin bir kopyasÄ±nÄ± oluÅŸturarak orijinalini bozmuyoruz
+        // Tarihin bir kopyasını oluşturarak orijinalini bozmuyoruz
         d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-        // HaftanÄ±n PerÅŸembe gÃ¼nÃ¼nÃ¼ bul (ISO standardÄ± PerÅŸembe gÃ¼nÃ¼nÃ¼ baz alÄ±r)
-        // Pazar gÃ¼nÃ¼nÃ¼ 7. gÃ¼n olarak ayarla
+        // Haftanın Perşembe gününü bul (ISO standardı Perşembe gününü baz alır)
+        // Pazar gününü 7. gün olarak ayarla
         d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-        // YÄ±lÄ±n ilk gÃ¼nÃ¼nÃ¼ bul
+        // Yılın ilk gününü bul
         var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-        // YÄ±lÄ±n baÅŸÄ±ndan bu PerÅŸembe'ye kadar geÃ§en hafta sayÄ±sÄ±nÄ± hesapla
+        // Yılın başından bu Perşembe'ye kadar geçen hafta sayısını hesapla
         var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
         return weekNo;
     }
@@ -1396,10 +1398,10 @@
         } else {
             appData = { 
                 settings: { 
-                    schoolName: 'UÅžAK MESLEKÄ° VE TEKNÄ°K ANADOLU LÄ°SESÄ°', 
+                    schoolName: 'UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ', 
                     coordinatorName: '', 
-                    asstPrincipalName: 'Salih SEVÄ°M', 
-                    principalName: 'SeÃ§kin ÅžENTÃœRK' 
+                    asstPrincipalName: 'Salih SEVİM', 
+                    principalName: 'Seçkin ŞENTÜRK' 
                 }, 
                 businesses: [] 
             };
@@ -1444,8 +1446,8 @@
         try {
             await setDoc(doc(db, 'users', currentUser.uid), appData);
         } catch (error) {
-            console.error('Buluta kaydetme hatasÄ±:', error);
-            showNotification('Veri kaydedilirken bir hata oluÅŸtu.', 'error');
+            console.error('Buluta kaydetme hatası:', error);
+            showNotification('Veri kaydedilirken bir hata oluştu.', 'error');
         }
     }
 
@@ -1464,11 +1466,11 @@
         if (type === 'confirm') {
             modal.innerHTML = `
                 <div style="background:var(--card-bg);padding:30px;width:400px;text-align:center;border:2px solid var(--accent-gold);border-radius:10px;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);">
-                    <h2 style="color:var(--accent-gold);">âš ï¸ Onay</h2>
+                    <h2 style="color:var(--accent-gold);">⚠️ Onay</h2>
                     <p style="color:var(--text-light);">${message}</p>
                     <div style="display:flex;gap:15px;justify-content:center;margin-top:20px;">
                         <button id="confirmYes" class="btn btn-danger">Evet</button>
-                        <button id="confirmNo" class="btn">HayÄ±r</button>
+                        <button id="confirmNo" class="btn">Hayır</button>
                     </div>
                 </div>
             `;
@@ -1485,7 +1487,7 @@
                 if (callback) callback(false);
             };
         } else {
-            modal.innerHTML = '<div style="background:var(--card-bg);padding:30px;width:400px;text-align:center;border:2px solid var(--accent-gold);border-radius:10px;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);"><h2 style="color:var(--accent-gold);">âš ï¸ UyarÄ±</h2><p style="color:var(--text-light);">' + message + '</p></div>';
+            modal.innerHTML = '<div style="background:var(--card-bg);padding:30px;width:400px;text-align:center;border:2px solid var(--accent-gold);border-radius:10px;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);"><h2 style="color:var(--accent-gold);">⚠️ Uyarı</h2><p style="color:var(--text-light);">' + message + '</p></div>';
             modal.style.display = 'block';
             
             modal.onclick = function(e) {
@@ -1496,7 +1498,7 @@
         console.log(type.toUpperCase() + ': ' + message);
     }
 
-    // Modal kapatma - boÅŸ alana tÄ±klayÄ±nca kapanÄ±r
+    // Modal kapatma - boş alana tıklayınca kapanır
     document.addEventListener('click', (event) => {
         const alertModal = document.getElementById('alertModal');
         if (event.target === alertModal) {
@@ -1508,7 +1510,7 @@
     function renderAll() { renderBusinessesAccordion(); renderGeneratorUI(); updateSummaryPanel(); }
 
     function renderBusinessesAccordion() {
-        dom.businessesAccordion.innerHTML = appData.businesses.map(b => `<div><div class="accordion-header" data-id="${b.id}"><h3>${b.name}</h3><span>${b.students?.length||0} Ã–ÄŸrenci</span></div><div class="accordion-content" id="content-${b.id}">${renderBusinessContent(b)}</div></div>`).join('') || '<p style="text-align:center; margin-top:20px;">KayÄ±tlÄ± iÅŸletme bulunmuyor.</p>';
+        dom.businessesAccordion.innerHTML = appData.businesses.map(b => `<div><div class="accordion-header" data-id="${b.id}"><h3>${b.name}</h3><span>${b.students?.length||0} Öğrenci</span></div><div class="accordion-content" id="content-${b.id}">${renderBusinessContent(b)}</div></div>`).join('') || '<p style="text-align:center; margin-top:20px;">Kayıtlı işletme bulunmuyor.</p>';
     }
 
     function renderBusinessContent(business) {
@@ -1516,14 +1518,14 @@
             const isTerminated = s.endDate;
             let actionButtons = '';
             if (isTerminated) {
-                actionButtons = `<button class="btn" style="padding:5px 10px;" data-action="edit-student" data-business-id="${business.id}" data-id="${s.id}">DÃ¼zenle</button> <button class="btn" style="padding:5px 10px; border-color: #8ab4f8; color: #8ab4f8;" data-action="cancel-termination" data-business-id="${business.id}" data-student-id="${s.id}">Feshi Ä°ptal Et</button> <button class="btn btn-danger" style="padding:5px 10px;" data-action="delete-student" data-business-id="${business.id}" data-id="${s.id}">Sil</button>`;
+                actionButtons = `<button class="btn" style="padding:5px 10px;" data-action="edit-student" data-business-id="${business.id}" data-id="${s.id}">Düzenle</button> <button class="btn" style="padding:5px 10px; border-color: #8ab4f8; color: #8ab4f8;" data-action="cancel-termination" data-business-id="${business.id}" data-student-id="${s.id}">Feshi İptal Et</button> <button class="btn btn-danger" style="padding:5px 10px;" data-action="delete-student" data-business-id="${business.id}" data-id="${s.id}">Sil</button>`;
             } else {
-                actionButtons = `<button class="btn" style="padding:5px 10px;" data-action="open-absence-modal" data-business-id="${business.id}" data-id="${s.id}">DevamsÄ±zlÄ±k</button> <button class="btn" style="padding:5px 10px;" data-action="edit-student" data-business-id="${business.id}" data-id="${s.id}">DÃ¼zenle</button> <button class="btn btn-danger" style="padding:5px 10px;" data-action="open-termination-modal" data-business-id="${business.id}" data-id="${s.id}">Feshet</button> <button class="btn btn-danger" style="padding:5px 10px;" data-action="delete-student" data-business-id="${business.id}" data-id="${s.id}">Sil</button>`;
+                actionButtons = `<button class="btn" style="padding:5px 10px;" data-action="open-absence-modal" data-business-id="${business.id}" data-id="${s.id}">Devamsızlık</button> <button class="btn" style="padding:5px 10px;" data-action="edit-student" data-business-id="${business.id}" data-id="${s.id}">Düzenle</button> <button class="btn btn-danger" style="padding:5px 10px;" data-action="open-termination-modal" data-business-id="${business.id}" data-id="${s.id}">Feshet</button> <button class="btn btn-danger" style="padding:5px 10px;" data-action="delete-student" data-business-id="${business.id}" data-id="${s.id}">Sil</button>`;
             }
             return `<div class="student-item"> <div class="student-info"> <strong style="${isTerminated ? 'text-decoration: line-through; color: var(--slate);' : ''}">${s.name}</strong> <small>${s.field || 'Alan belirtilmedi'} ${s.phone ? `- Tel: ${s.phone}` : ''} ${isTerminated ? `(Fesih: ${parseDateString(s.endDate).toLocaleDateString('tr-TR')})` : ''}</small> </div> <div class="student-actions">${actionButtons}</div> </div>`;
-        }).join('') : '<p>Bu iÅŸletmeye kayÄ±tlÄ± Ã¶ÄŸrenci bulunmamaktadÄ±r.</p>';
+        }).join('') : '<p>Bu işletmeye kayıtlı öğrenci bulunmamaktadır.</p>';
 
-        return `<div style="display:flex; gap:10px; margin-bottom:20px;"> <button class="btn btn-primary" data-action="add-student" data-id="${business.id}">Ã–ÄŸrenci Ekle</button> <button class="btn" data-action="edit-business" data-id="${business.id}">Ä°ÅŸletmeyi DÃ¼zenle</button> <button class="btn btn-danger" data-action="delete-business" data-id="${business.id}">Ä°ÅŸletmeyi Sil</button> </div>${studentList}`;
+        return `<div style="display:flex; gap:10px; margin-bottom:20px;"> <button class="btn btn-primary" data-action="add-student" data-id="${business.id}">Öğrenci Ekle</button> <button class="btn" data-action="edit-business" data-id="${business.id}">İşletmeyi Düzenle</button> <button class="btn btn-danger" data-action="delete-business" data-id="${business.id}">İşletmeyi Sil</button> </div>${studentList}`;
     }
     
     function renderGeneratorUI() {
@@ -1555,8 +1557,8 @@
             </div>`
         ).join('');
         
-        dom.businessDropdownList.innerHTML = businessItems || '<div style="padding: 15px; text-align: center; color: var(--text-light);">Ä°ÅŸletme bulunamadÄ±</div>';
-        dom.dailyBusinessDropdownList.innerHTML = dailyBusinessItems || '<div style="padding: 15px; text-align: center; color: var(--text-light);">Ä°ÅŸletme bulunamadÄ±</div>';
+        dom.businessDropdownList.innerHTML = businessItems || '<div style="padding: 15px; text-align: center; color: var(--text-light);">İşletme bulunamadı</div>';
+        dom.dailyBusinessDropdownList.innerHTML = dailyBusinessItems || '<div style="padding: 15px; text-align: center; color: var(--text-light);">İşletme bulunamadı</div>';
         
         updateDropdownText();
     }
@@ -1566,25 +1568,25 @@
         const selectedDaily = Array.from(document.querySelectorAll('.daily-business-checkbox:checked'));
         
         if (selectedBusinesses.length === 0) {
-            dom.businessSelectedText.textContent = 'Ä°ÅŸletme seÃ§in...';
+            dom.businessSelectedText.textContent = 'İşletme seçin...';
         } else if (selectedBusinesses.length === 1) {
             const businessName = selectedBusinesses[0].nextElementSibling.textContent;
             dom.businessSelectedText.textContent = businessName;
         } else {
-            dom.businessSelectedText.textContent = `${selectedBusinesses.length} iÅŸletme seÃ§ildi`;
+            dom.businessSelectedText.textContent = `${selectedBusinesses.length} işletme seçildi`;
         }
         
         if (selectedDaily.length === 0) {
-            dom.dailyBusinessSelectedText.textContent = 'Ä°ÅŸletme seÃ§in...';
+            dom.dailyBusinessSelectedText.textContent = 'İşletme seçin...';
         } else if (selectedDaily.length === 1) {
             const businessName = selectedDaily[0].nextElementSibling.textContent;
             dom.dailyBusinessSelectedText.textContent = businessName;
         } else {
-            dom.dailyBusinessSelectedText.textContent = `${selectedDaily.length} iÅŸletme seÃ§ildi`;
+            dom.dailyBusinessSelectedText.textContent = `${selectedDaily.length} işletme seçildi`;
         }
     }
 
-    // YENÄ° HAFTA HESAPLAMA FONKSÄ°YONU - Pazartesi baÅŸlangÄ±Ã§lÄ±
+    // YENİ HAFTA HESAPLAMA FONKSİYONU - Pazartesi başlangıçlı
     function populateWeeksForDailyForm() {
         const month = parseInt(dom.dailyMonthSelect.value);
         const year = parseInt(dom.dailyYearSelect.value);
@@ -1598,7 +1600,7 @@
         const daysToSubtract = firstDayWeekday === 0 ? 6 : firstDayWeekday - 1;
         firstMonday.setDate(firstDayOfMonth.getDate() - daysToSubtract);
 
-        let monthWeekNumber = 1; // Bu, formun value'su iÃ§in kullanÄ±lacak (1, 2, 3, 4, 5)
+        let monthWeekNumber = 1; // Bu, formun value'su için kullanılacak (1, 2, 3, 4, 5)
         let currentMonday = new Date(firstMonday);
 
         while (currentMonday <= lastDayOfMonth) {
@@ -1607,14 +1609,14 @@
             weekEnd.setDate(weekEnd.getDate() + 6);
 
             if (weekEnd >= firstDayOfMonth && weekStart <= lastDayOfMonth) {
-                // YENÄ° EKLENEN KISIM: YÄ±lÄ±n haftasÄ±nÄ± hesapla
+                // YENİ EKLENEN KISIM: Yılın haftasını hesapla
                 const yearWeekNumber = getWeekOfYear(weekStart);
 
-                // DEÄžÄ°ÅžEN KISIM: Etiketi (label) yÄ±lÄ±n haftasÄ±na gÃ¶re oluÅŸtur
+                // DEĞİŞEN KISIM: Etiketi (label) yılın haftasına göre oluştur
                 const label = `${yearWeekNumber}. Hafta (${weekStart.toLocaleDateString('tr-TR')} - ${weekEnd.toLocaleDateString('tr-TR')})`;
 
                 weeks.push({ 
-                    week: monthWeekNumber, // DeÄŸer olarak ayÄ±n haftasÄ±nÄ± (1-5) koruyoruz ki form mantÄ±ÄŸÄ± bozulmasÄ±n
+                    week: monthWeekNumber, // Değer olarak ayın haftasını (1-5) koruyoruz ki form mantığı bozulmasın
                     label: label, 
                     startDate: weekStart,
                     endDate: weekEnd 
@@ -1627,7 +1629,7 @@
 
         dom.genWeekSelect1.innerHTML = weeks.map(w => `<option value="${w.week}">${w.label}</option>`).join('');
 
-         // EÄŸer gÃ¶rÃ¼ntÃ¼lenen ay ve yÄ±l, bugÃ¼nÃ¼n ay ve yÄ±lÄ± ile aynÄ±ysa, mevcut haftayÄ± seÃ§ili yap
+         // Eğer görüntülenen ay ve yıl, bugünün ay ve yılı ile aynıysa, mevcut haftayı seçili yap
         const today = new Date();
         if (year === today.getFullYear() && month === today.getMonth()) {
             const currentWeekObject = weeks.find(w => today >= w.startDate && today <= w.endDate);
@@ -1656,7 +1658,7 @@
         if (modalId === 'businessModal') {
             if (data && data.id) { 
                 const b = appData.businesses.find(b => b.id === data.id); 
-                title.textContent = 'Ä°ÅŸletmeyi DÃ¼zenle'; 
+                title.textContent = 'İşletmeyi Düzenle'; 
                 form.querySelector('#businessId').value = b.id; 
                 form.querySelector('#businessName').value = b.name; 
                 form.querySelector('#businessAddress').value = b.address; 
@@ -1664,14 +1666,14 @@
                 form.querySelector('#businessOfficial').value = b.official; 
                 form.querySelector('#businessVisitDay').value = b.visitDay; 
             } else { 
-                title.textContent = 'Yeni Ä°ÅŸletme Ekle'; 
+                title.textContent = 'Yeni İşletme Ekle'; 
                 form.querySelector('#businessId').value = ''; 
             }
         } else if (modalId === 'studentModal') {
             form.querySelector('#studentBusinessId').value = data.businessId;
             if (data && data.id) { 
                 const s = appData.businesses.find(b => b.id === data.businessId).students.find(s => s.id === data.id); 
-                title.textContent = 'Ã–ÄŸrenciyi DÃ¼zenle'; 
+                title.textContent = 'Öğrenciyi Düzenle'; 
                 form.querySelector('#studentId').value = s.id; 
                 form.querySelector('#studentClass').value = s.class || '9';
                 form.querySelector('#studentNo').value = s.no; 
@@ -1682,7 +1684,7 @@
                 form.querySelector('#studentStartDate').value = s.startDate; 
                 form.querySelector('#studentEndDate').value = s.endDate; 
             } else { 
-                title.textContent = 'Yeni Ã–ÄŸrenci Ekle'; 
+                title.textContent = 'Yeni Öğrenci Ekle'; 
                 form.querySelector('#studentId').value = ''; 
             }
         } else if (modalId === 'terminationModal') {
@@ -1692,7 +1694,7 @@
         } else if (modalId === 'absenceModal') {
             currentAbsence = { studentId: data.studentId, businessId: data.businessId };
             const student = appData.businesses.find(b=>b.id===data.businessId).students.find(s=>s.id===data.studentId);
-            modal.querySelector('h2').textContent = `${student.name} - DevamsÄ±zlÄ±k GiriÅŸi`;
+            modal.querySelector('h2').textContent = `${student.name} - Devamsızlık Girişi`;
             const monthSelect = modal.querySelector('#absenceMonthSelect');
             const yearSelect = modal.querySelector('#absenceYearSelect');
             if (monthSelect.innerHTML === '') { 
@@ -1726,7 +1728,7 @@
                 isValid = false;
             }
         });
-        // Telefon numarasÄ± validasyonu
+        // Telefon numarası validasyonu
         const phoneFields = form.querySelectorAll('input[inputmode="numeric"]');
         phoneFields.forEach(input => {
             const errorSpan = input.parentElement.querySelector('.error-message');
@@ -1747,7 +1749,7 @@
         const endDateInput = dom.studentForm.querySelector('#studentEndDate');
 
         if (startDate && endDate && parseDateString(endDate) < parseDateString(startDate)) {
-            errorSpan.textContent = 'Fesih tarihi, baÅŸlama tarihinden Ã¶nce olamaz.';
+            errorSpan.textContent = 'Fesih tarihi, başlama tarihinden önce olamaz.';
             errorSpan.style.display = 'block';
             endDateInput.classList.add('invalid');
             return false;
@@ -1760,15 +1762,15 @@
 
     function saveBusiness(e) { e.preventDefault(); if (!validateForm(dom.businessForm)) return; const form = dom.businessForm; const id = form.querySelector('#businessId').value; const businessData = { id: id || Date.now().toString(), name: form.querySelector('#businessName').value, address: form.querySelector('#businessAddress').value, phone: form.querySelector('#businessPhone').value, official: form.querySelector('#businessOfficial').value, visitDay: form.querySelector('#businessVisitDay').value, students: id ? appData.businesses.find(b => b.id === id).students : [] }; if (id) appData.businesses = appData.businesses.map(b => b.id === id ? businessData : b); else { if(!appData.businesses) appData.businesses = []; appData.businesses.push(businessData); } saveData(); renderAll(); closeModal('businessModal'); 
     setTimeout(() => {
-        showNotification('Ä°ÅŸletme baÅŸarÄ±yla kaydedildi.', 'success');
+        showNotification('İşletme başarıyla kaydedildi.', 'success');
     }, 100);
 
-    showNotification('Ä°ÅŸletme baÅŸarÄ±yla kaydedildi.', 'success'); }
+    showNotification('İşletme başarıyla kaydedildi.', 'success'); }
     function saveStudent(e) { e.preventDefault(); if (!validateStudentForm()) return; const form = dom.studentForm; const businessId = form.querySelector('#studentBusinessId').value; const id = form.querySelector('#studentId').value; const business = appData.businesses.find(b => b.id === businessId); const existingStudent = id ? business.students.find(s => s.id === id) : {}; const studentData = { id: id || Date.now().toString(), no: form.querySelector('#studentNo').value, name: form.querySelector('#studentName').value, class: form.querySelector('#studentClass').value, field: form.querySelector('#studentField').value, schoolDay: form.querySelector('#studentSchoolDay').value, phone: form.querySelector('#studentPhone').value, startDate: form.querySelector('#studentStartDate').value, endDate: form.querySelector('#studentEndDate').value, terminationReason: existingStudent.terminationReason || '', absences: existingStudent.absences || {} }; 
     if (id) {
         business.students = business.students.map(s => s.id === id ? studentData : s);
     } else {
-        if(!business.students) business.students = []; // BU SATIRI EKLEYÄ°N
+        if(!business.students) business.students = []; // BU SATIRI EKLEYİN
         business.students.push(studentData);
     }
 
@@ -1777,34 +1779,34 @@
     closeModal('studentModal');
     
     setTimeout(() => {
-        showNotification('Ã–ÄŸrenci baÅŸarÄ±yla kaydedildi.', 'success');
+        showNotification('Öğrenci başarıyla kaydedildi.', 'success');
     }, 100);
     
-    showNotification('Ã–ÄŸrenci baÅŸarÄ±yla kaydedildi.', 'success'); }
+    showNotification('Öğrenci başarıyla kaydedildi.', 'success'); }
        
     function deleteBusiness(id) {
-        showNotification('Ä°ÅŸletmeyi ve iÃ§indeki tÃ¼m Ã¶ÄŸrencileri silmek istediÄŸinizden emin misiniz?', 'confirm', (result) => {
+        showNotification('İşletmeyi ve içindeki tüm öğrencileri silmek istediğinizden emin misiniz?', 'confirm', (result) => {
             if (result) {
                 appData.businesses = appData.businesses.filter(b => b.id !== id);
                 saveData();
                 renderAll();
-                showNotification('Ä°ÅŸletme baÅŸarÄ±yla silindi.', 'success');
+                showNotification('İşletme başarıyla silindi.', 'success');
             }
         });
     }
     function deleteStudent(id, businessId) {
-        showNotification('Ã–ÄŸrenciyi kalÄ±cÄ± olarak silmek istediÄŸinizden emin misiniz?', 'confirm', (result) => {
+        showNotification('Öğrenciyi kalıcı olarak silmek istediğinizden emin misiniz?', 'confirm', (result) => {
             if (result) {
                 const business = appData.businesses.find(b => b.id === businessId);
                 business.students = business.students.filter(s => s.id !== id);
                 saveData();
                 renderAll();
-                showNotification('Ã–ÄŸrenci baÅŸarÄ±yla silindi.', 'success');
+                showNotification('Öğrenci başarıyla silindi.', 'success');
             }
         });
     }
     function cancelTermination(id, businessId) {
-        showNotification('Ã–ÄŸrencinin sÃ¶zleÅŸme feshini iptal etmek istediÄŸinizden emin misiniz?', 'confirm', (result) => {
+        showNotification('Öğrencinin sözleşme feshini iptal etmek istediğinizden emin misiniz?', 'confirm', (result) => {
             if (result) {
                 const business = appData.businesses.find(b => b.id === businessId);
                 const student = business.students.find(s => s.id === id);
@@ -1812,7 +1814,7 @@
                 student.terminationReason = '';
                 saveData();
                 renderAll();
-                showNotification('SÃ¶zleÅŸme feshi iptal edildi.', 'success');
+                showNotification('Sözleşme feshi iptal edildi.', 'success');
             }
         });
     }    
@@ -1844,8 +1846,8 @@
                     dayEl.classList.add('workday'); dayEl.dataset.day = day;
                     let statusText = '';
                     if (studentAbsences.includes('S')) statusText += 'S';
-                    if (studentAbsences.includes('Ã–')) statusText += 'Ã–';
-                    statusEl.innerHTML = statusText.replace('SÃ–', 'S<br>Ã–');
+                    if (studentAbsences.includes('Ö')) statusText += 'Ö';
+                    statusEl.innerHTML = statusText.replace('SÖ', 'S<br>Ö');
                     if(statusText !== '') statusEl.classList.add('f-gold');
                 }
             } else { dayEl.classList.add('empty'); }
@@ -1863,17 +1865,17 @@
             const day = parseInt(dayEl.dataset.day); const status = dayEl.querySelector('.calendar-day-status').textContent;
             let absenceData = [];
             if(status.includes('S')) absenceData.push('S');
-            if(status.includes('Ã–')) absenceData.push('Ã–');
+            if(status.includes('Ö')) absenceData.push('Ö');
             if (absenceData.length > 0) student.absences[monthYearKey][day] = absenceData;
             else if (student.absences[monthYearKey][day]) delete student.absences[monthYearKey][day];
         });
-        saveData(); closeModal('absenceModal'); showNotification('DevamsÄ±zlÄ±k kayÄ±tlarÄ± gÃ¼ncellendi.', 'success');
+        saveData(); closeModal('absenceModal'); showNotification('Devamsızlık kayıtları güncellendi.', 'success');
     }
 
     function generateListPrint() {
-        let listHTML = `<div class="print-page-container print-page-list"><div class="list-container"><h2 style="margin-bottom: 8px;">${appData.settings.schoolName || 'OKUL ADI'}<br>Ä°ÅžLETME VE Ã–ÄžRENCÄ° LÄ°STESÄ°</h2>`;
+        let listHTML = `<div class="print-page-container print-page-list"><div class="list-container"><h2 style="margin-bottom: 8px;">${appData.settings.schoolName || 'OKUL ADI'}<br>İŞLETME VE ÖĞRENCİ LİSTESİ</h2>`;
         
-        // YazdÄ±rma tarih-saati
+        // Yazdırma tarih-saati
         const currentDateTime = new Date().toLocaleString('tr-TR', {
             year: 'numeric',
             month: '2-digit', 
@@ -1883,16 +1885,16 @@
         });
 
         listHTML += `<div style="text-align: right; margin: 3px 0 8px 0; font-size: 8pt; color: #666;">
-            YazdÄ±rma: ${currentDateTime}
+            Yazdırma: ${currentDateTime}
         </div>`;
 
-        // KoordinatÃ¶r bilgileri
+        // Koordinatör bilgileri
         listHTML += `<div style="display: flex; margin: 0 0 8px 0; padding: 5px 0;">
             <div style="width: 50%; text-align: left;">
-                <strong>KoordinatÃ¶r Ã–ÄŸretmen:</strong> ${appData.settings.coordinatorName || '................................'}
+                <strong>Koordinatör Öğretmen:</strong> ${appData.settings.coordinatorName || '................................'}
             </div>
             <div style="width: 50%; text-align: left;">
-                <strong>KoordinatÃ¶r MÃ¼dÃ¼r YardÄ±mcÄ±sÄ±:</strong> ${appData.settings.asstPrincipalName || '................................'}
+                <strong>Koordinatör Müdür Yardımcısı:</strong> ${appData.settings.asstPrincipalName || '................................'}
             </div>
         </div>`;    
     
@@ -1903,11 +1905,11 @@
                     <thead>
                         <tr>
                             <th style="width: 8%;">No</th>
-                            <th style="width: 8%;">SÄ±nÄ±f</th>
-                            <th style="width: 30%;">AdÄ± SoyadÄ±</th>
-                            <th style="width: 25%;">Alan/DalÄ±</th>
+                            <th style="width: 8%;">Sınıf</th>
+                            <th style="width: 30%;">Adı Soyadı</th>
+                            <th style="width: 25%;">Alan/Dalı</th>
                             <th style="width: 15%;">Telefon</th>
-                            <th style="width: 14%;">Okul GÃ¼nÃ¼</th>
+                            <th style="width: 14%;">Okul Günü</th>
                         </tr>
                     </thead>
                     <tbody>`;
@@ -1917,9 +1919,9 @@
                 
                 if (activeStudents.length > 0) {
                     activeStudents.forEach(student => {
-                        const schoolDays = ['', 'Pazartesi', 'SalÄ±', 'Ã‡arÅŸamba', 'PerÅŸembe', 'Cuma'];
+                        const schoolDays = ['', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma'];
                         const schoolDay = schoolDays[student.schoolDay] || '';
-                        const studentClass = student.class ? `${student.class}. SÄ±nÄ±f` : '';
+                        const studentClass = student.class ? `${student.class}. Sınıf` : '';
                         
                         listHTML += `<tr>
                             <td>${student.no || ''}</td>
@@ -1931,10 +1933,10 @@
                         </tr>`;
                     });
                 } else {
-                    listHTML += `<tr><td colspan="6" style="text-align: center; font-style: italic;">Bu iÅŸletmeye kayÄ±tlÄ± aktif Ã¶ÄŸrenci bulunmamaktadÄ±r.</td></tr>`;
+                    listHTML += `<tr><td colspan="6" style="text-align: center; font-style: italic;">Bu işletmeye kayıtlı aktif öğrenci bulunmamaktadır.</td></tr>`;
                 }
             } else {
-                listHTML += `<tr><td colspan="6" style="text-align: center; font-style: italic;">Bu iÅŸletmeye kayÄ±tlÄ± Ã¶ÄŸrenci bulunmamaktadÄ±r.</td></tr>`;
+                listHTML += `<tr><td colspan="6" style="text-align: center; font-style: italic;">Bu işletmeye kayıtlı öğrenci bulunmamaktadır.</td></tr>`;
             }
             
             listHTML += `</tbody></table></div>`;
@@ -1944,7 +1946,7 @@
         return listHTML;
     }
 
-    // ESKÄ° generateAttendanceSheet FONKSÄ°YONUNU SÄ°LÄ°P BUNU YAPIÅžTIRIN â–¼
+    // ESKİ generateAttendanceSheet FONKSİYONUNU SİLİP BUNU YAPIŞTIRIN ▼
     function generateAttendanceSheet(businessId, month, year) {
         const business = appData.businesses.find(b => b.id === businessId); 
         const lastDayOfMonth = new Date(year, month + 1, 0); 
@@ -1972,26 +1974,26 @@
                     morningRowCells += `<td></td>`; 
                     afternoonRowCells += `<td></td>`; 
                 }
-                // YENÄ° KURAL: Resmi tatil mi kontrol et
+                // YENİ KURAL: Resmi tatil mi kontrol et
                 else if(isPublicHoliday(currentDate)) {
                     fullDayContent = `<td rowspan="2" class="f-bold f-green">T</td>`;
                 }
-                // YENÄ° KURAL: Okul gÃ¼nÃ¼ mÃ¼ ve okul tatil deÄŸil mi kontrol et
+                // YENİ KURAL: Okul günü mü ve okul tatil değil mi kontrol et
                 else if(dayOfWeek == student.schoolDay && !isSchoolHoliday(currentDate)) { 
                     fullDayContent = `<td rowspan="2" class="f-bold f-blue">O</td>`; 
                 }
-                else if(dayOfWeek === 0) { // Pazar gÃ¼nÃ¼
+                else if(dayOfWeek === 0) { // Pazar günü
                     fullDayContent = `<td rowspan="2" class="f-bold f-green">T</td>`; 
                 }
-                else { // Ä°ÅŸletme gÃ¼nÃ¼ (Okul tatilindeki okul gÃ¼nleri de buraya dahil olur)
+                else { // İşletme günü (Okul tatilindeki okul günleri de buraya dahil olur)
                     const monthYearKey = `${year}-${month}`; 
                     const studentAbsences = student.absences?.[monthYearKey]?.[day] || [];
                     const s_absent = studentAbsences.includes('S'); 
-                    const o_absent = studentAbsences.includes('Ã–');
+                    const o_absent = studentAbsences.includes('Ö');
                     if(s_absent) unexcusedTotal += 0.5; 
                     if(o_absent) unexcusedTotal += 0.5;
                     morningRowCells += `<td class="${s_absent ? 'f-teal f-bold': ''}">${s_absent ? 'S' : '+'}</td>`;
-                    afternoonRowCells += `<td class="${o_absent ? 'f-teal f-bold': ''}">${o_absent ? 'Ã–' : '+'}</td>`;
+                    afternoonRowCells += `<td class="${o_absent ? 'f-teal f-bold': ''}">${o_absent ? 'Ö' : '+'}</td>`;
                 }
                 if (fullDayContent) { 
                     morningRowCells += fullDayContent; 
@@ -1999,19 +2001,19 @@
             }
             const studentInfo = `<td class="student-info-cell" rowspan="2">${student.name}</td><td class="student-info-cell" rowspan="2">${student.no||''}</td><td class="student-info-cell" rowspan="2">${student.field||''}</td>`;
             const totals = `<td rowspan="2"></td><td rowspan="2">${unexcusedTotal > 0 ? unexcusedTotal : ''}</td>`;
-            studentRowsHTML += `<tr>${studentInfo}<td class="f-bold">S</td>${morningRowCells}${totals}</tr><tr><td class="f-bold">Ã–</td>${afternoonRowCells}</tr>`;
+            studentRowsHTML += `<tr>${studentInfo}<td class="f-bold">S</td>${morningRowCells}${totals}</tr><tr><td class="f-bold">Ö</td>${afternoonRowCells}</tr>`;
         });
         
-        const legendHTML = `<div class="legend-box"><strong>DevamsÄ±zlÄ±ÄŸÄ±n gÃ¶sterileceÄŸi semboller:</strong><br>(Ä°) Ä°zinli<br>(H) Hasta Sevkli<br>(R) Raporlu<br>(T) Resmi Tatil<br>(O) Okul GÃ¼nÃ¼<br>(S) Sabah DevamsÄ±z<br>(Ã–) Ã–ÄŸleden Sonra DevamsÄ±z</div>`;
-        const explanationHTML = `<div class="explanation-section"><strong>Bu Ã§izelge, iÅŸletme tarafÄ±ndan tutulacak, Ã¶ÄŸrencinin iÅŸletmede bulunmasÄ± gereken gÃ¼nlere ait devamsÄ±zlÄ±k durumlarÄ± ilgili sÃ¼tunda, yanda gÃ¶sterilen uygun sembolle belirlenecektir.</strong></div>`;
-        const mainTitle = `<div class="print-main-title">Ä°ÅŸletmelerde Meslek EÄŸitimi GÃ¶ren Ã–ÄŸrencilerin AylÄ±k Devam - DevamsÄ±zlÄ±k Bildirim Ã‡izelgesi</div>`;
-        const headerTable = `<table class="print-header-table"><tr><td style="width: 25%;" rowspan="2"><strong>Okul/Kurumun AdÄ±:</strong><br><span class="dynamic-text">${appData.settings.schoolName || ''}</span></td><td style="width: 50%;"><strong>Ä°ÅŸletmenin:</strong> AdÄ±: <span class="dynamic-text">${business.name || ''}</span></td><td style="width: 25%;"><strong>Ait OlduÄŸu Ay:</strong> <span class="dynamic-text">${monthNames[month]} ${year}</span></td></tr><tr><td>Telefonu ve faksÄ±: <span class="dynamic-text">${business.phone || ''}</span></td><td><strong>Belgenin DÃ¼zenlendiÄŸi Tarih:</strong> <span class="dynamic-text">${lastDayOfMonth.toLocaleDateString('tr-TR')}</span></td></tr></table>`;
-        const mainTable = `<table class="print-main-table"><thead><tr><th colspan="3" rowspan="2">Ã–ÄžRENCÄ°NÄ°N</th><th rowspan="3" class="header-cell-days">GÃœNLER</th><th colspan="31"></th><th colspan="2" rowspan="2">TOPLAM<br>DEVAMSIZLIK</th></tr><tr>${Array.from({length: 31}, (_, i) => `<th class="day-cell">${i+1}</th>`).join('')}</tr><tr><th class="header-cell-name">AdÄ± SoyadÄ±</th><th class="header-cell-no">No</th><th class="header-cell-field">Alan/DalÄ±</th><th colspan="31" style="border-top: 1px solid #000;"></th><th class="header-cell-total">Ã–zÃ¼rlÃ¼</th><th class="header-cell-total">Ã–zÃ¼rsÃ¼z</th></tr></thead><tbody>${studentRowsHTML}</tbody></table>`;
+        const legendHTML = `<div class="legend-box"><strong>Devamsızlığın gösterileceği semboller:</strong><br>(İ) İzinli<br>(H) Hasta Sevkli<br>(R) Raporlu<br>(T) Resmi Tatil<br>(O) Okul Günü<br>(S) Sabah Devamsız<br>(Ö) Öğleden Sonra Devamsız</div>`;
+        const explanationHTML = `<div class="explanation-section"><strong>Bu çizelge, işletme tarafından tutulacak, öğrencinin işletmede bulunması gereken günlere ait devamsızlık durumları ilgili sütunda, yanda gösterilen uygun sembolle belirlenecektir.</strong></div>`;
+        const mainTitle = `<div class="print-main-title">İşletmelerde Meslek Eğitimi Gören Öğrencilerin Aylık Devam - Devamsızlık Bildirim Çizelgesi</div>`;
+        const headerTable = `<table class="print-header-table"><tr><td style="width: 25%;" rowspan="2"><strong>Okul/Kurumun Adı:</strong><br><span class="dynamic-text">${appData.settings.schoolName || ''}</span></td><td style="width: 50%;"><strong>İşletmenin:</strong> Adı: <span class="dynamic-text">${business.name || ''}</span></td><td style="width: 25%;"><strong>Ait Olduğu Ay:</strong> <span class="dynamic-text">${monthNames[month]} ${year}</span></td></tr><tr><td>Telefonu ve faksı: <span class="dynamic-text">${business.phone || ''}</span></td><td><strong>Belgenin Düzenlendiği Tarih:</strong> <span class="dynamic-text">${lastDayOfMonth.toLocaleDateString('tr-TR')}</span></td></tr></table>`;
+        const mainTable = `<table class="print-main-table"><thead><tr><th colspan="3" rowspan="2">ÖĞRENCİNİN</th><th rowspan="3" class="header-cell-days">GÜNLER</th><th colspan="31"></th><th colspan="2" rowspan="2">TOPLAM<br>DEVAMSIZLIK</th></tr><tr>${Array.from({length: 31}, (_, i) => `<th class="day-cell">${i+1}</th>`).join('')}</tr><tr><th class="header-cell-name">Adı Soyadı</th><th class="header-cell-no">No</th><th class="header-cell-field">Alan/Dalı</th><th colspan="31" style="border-top: 1px solid #000;"></th><th class="header-cell-total">Özürlü</th><th class="header-cell-total">Özürsüz</th></tr></thead><tbody>${studentRowsHTML}</tbody></table>`;
         
         const printFooter = `<div class="print-footer">
-            <div class="signature-section"><strong>Ä°ÅŸletme Yetkilisi</strong><br><span class="dynamic-text">${business.official || ''}</span><br><br>KaÅŸe - Ä°mza</div>
-            <div class="signature-section"><strong>KoordinatÃ¶r Ã–ÄŸretmen</strong><br><span class="dynamic-text">${appData.settings.coordinatorName || ''}</span><br><span class="dynamic-text">${lastDayOfMonth.toLocaleDateString('tr-TR')}</span><br>Ä°mza</div>
-            <div class="signature-section"><strong>KoordinatÃ¶r MÃ¼dÃ¼r Yrd.</strong><br><span class="dynamic-text">${appData.settings.asstPrincipalName || ''}</span><br><span class="dynamic-text">${lastDayOfMonth.toLocaleDateString('tr-TR')}</span><br>Ä°mza</div>
+            <div class="signature-section"><strong>İşletme Yetkilisi</strong><br><span class="dynamic-text">${business.official || ''}</span><br><br>Kaşe - İmza</div>
+            <div class="signature-section"><strong>Koordinatör Öğretmen</strong><br><span class="dynamic-text">${appData.settings.coordinatorName || ''}</span><br><span class="dynamic-text">${lastDayOfMonth.toLocaleDateString('tr-TR')}</span><br>İmza</div>
+            <div class="signature-section"><strong>Koordinatör Müdür Yrd.</strong><br><span class="dynamic-text">${appData.settings.asstPrincipalName || ''}</span><br><span class="dynamic-text">${lastDayOfMonth.toLocaleDateString('tr-TR')}</span><br>İmza</div>
             ${explanationHTML}
             <div class="legend-section">${legendHTML}</div>
         </div>`;
@@ -2022,18 +2024,18 @@
     function generateMonthlyGuidanceForm(company, month, year) {
         function calculateVisitDates(year, month, dayOfWeek) { 
             const visitDates = getVisitDatesForMonth(year, month, dayOfWeek);
-            if(visitDates.length === 0) return 'Bu ayda belirtilen gÃ¼n yok.';
+            if(visitDates.length === 0) return 'Bu ayda belirtilen gün yok.';
             return visitDates.map(date => `${date.toLocaleDateString('tr-TR')} - ${date.toLocaleDateString('tr-TR', { weekday: 'long' })}`).join('<br>');
         }
-        function getFormQuestionsHTML() { const questions = [ { s: 'A', q: '1. Usta Ã¶ÄŸretici/eÄŸitici personelin yÄ±llÄ±k eÄŸitim planÄ± var mÄ±? Uyguluyor mu? Ã–ÄŸrencilere sÃ¼rekli aynÄ± iÅŸlem mi, rotasyona gÃ¶re mi eÄŸitim yaptÄ±rÄ±lÄ±yor?', a: 'Var, uyguluyor, rotasyona gÃ¶re eÄŸitim' }, { s: 'A', q: '2. Ã–ÄŸrencilerin gÃ¼nlÃ¼k Ã§alÄ±ÅŸmalarÄ± yÄ±llÄ±k eÄŸitim planÄ±na uygun olarak plÃ¢nlanmÄ±ÅŸ mÄ±?', a: 'Evet' }, { s: 'A', q: '3. Ã–ÄŸrenci devam durumu gÃ¼nlÃ¼k olarak takip ediliyor mu?', a: 'Evet' }, { s: 'A', q: '4. Meslek eÄŸitimi Ã§alÄ±ÅŸmalarÄ± puanla deÄŸerlendiriliyor mu?', a: 'Evet' }, { s: 'A', q: '5. YapÄ±lan iÅŸlerle ilgili olarak her Ã¶ÄŸrenciye iÅŸ dosyasÄ± tutturuluyor mu?', a: 'Evet' }, { s: 'A', q: '6. Ã–ÄŸrencilere 3308 sayÄ±lÄ± Kanunun 25 inci maddesine gÃ¶re aylÄ±k Ã¼cret Ã¶deniyor mu?', a: 'Evet' }, { s: 'A', q: '7. Meslek eÄŸitimi, Ã§alÄ±ÅŸma saatlerinde yapÄ±lÄ±yor mu?', a: 'Evet' }, { s: 'A', q: '8. Ä°ÅŸ gÃ¼venliÄŸi konusunda Ã¶ÄŸrencilere yeterli bilgi veriliyor ve gerekli tedbirler alÄ±nÄ±yor mu?', a: 'Evet' }, { s: 'A', q: '9. Ã–ÄŸrenciler disiplin, kÄ±lÄ±k-kÄ±yafet ve iÅŸletmenin kurallarÄ±na uyuyor mu?', a: 'Evet' }, { s: 'A', q: '10. Ã–ÄŸrencilerin telafi eÄŸitimine alÄ±nmasÄ± gerekiyor mu? Gerekiyorsa hangi konularda telafi eÄŸitimi uygulanmalÄ±?', a: 'HayÄ±r' }, { s: 'B', q: '1. Ä°ÅŸletmenin meslek eÄŸitimi ile gÃ¶revli personelinin usta Ã¶ÄŸreticilik belgesi var mÄ±?', a: 'Evet' }, { s: 'B', q: '2. EÄŸitici personelin sorumlu olduÄŸu Ã¶ÄŸrenci grubu sayÄ±sÄ± Mesleki ve Teknik EÄŸitim YÃ¶netmeliÄŸinin 192 nci maddesine uygun mu?', a: 'Evet' }, { s: 'B', q: '3. Meslek eÄŸitimi konusunda koordinatÃ¶r tarafÄ±ndan eÄŸitici personele yapÄ±lan rehberlik ve konusu.', a: 'GeliÅŸim tablolarÄ±nÄ±n kontrol edilmesi, Ã¶ÄŸrencilere ve eÄŸiticilere gÃ¼venli iÅŸ ortamÄ±nÄ±n geliÅŸtirilmesi.', tall: true }, { s: 'B', q: '4. EÄŸitici personelin geliÅŸtirme ve uyum kursuna ihtiyacÄ± var mÄ±?', a: 'HayÄ±r' }, { s: 'C', q: '1. Ä°ÅŸletmelerde meslek eÄŸitimi, yÄ±llÄ±k Ã§alÄ±ÅŸma takvimine uygun olarak sÃ¼rdÃ¼rÃ¼lÃ¼yor mu?', a: 'Evet' }, { s: 'C', q: '2. Ä°ÅŸletmede meslek eÄŸitiminin mevzuata gÃ¶re sÃ¼rdÃ¼rÃ¼lmesi ile ilgili gerekli tedbirler alÄ±nÄ±yor mu? (Mesleki ve Teknik EÄŸitim YÃ¶netmeliÄŸi madde 196.)', a: 'Evet' }, { s: 'C', q: '4. Ã–ÄŸrenciler iÃ§in geliÅŸim tablosu uygulanÄ±yor mu?', a: 'Evet' }, { s: 'C', q: '5. Ä°ÅŸletme yetkililerinin meslek eÄŸitiminin uygulanÄ±ÅŸÄ± ve Ã¶ÄŸretim programlarÄ± konusundaki gÃ¶rÃ¼ÅŸ ve Ã¶nerileri', a: '', tall: true }, { s: 'D', q: 'AÃ§Ä±klanmasÄ± gereken diÄŸer hususlar:', a: '', tall: true }, ]; let currentSection = ''; const rows = questions.map(item => { let sectionHeader = ''; if (item.s !== currentSection) { currentSection = item.s; const sectionNames = {A: 'A. Mesleki ve Teknik EÄŸitim YÃ¶netmeliÄŸi ile ilgili konular:', B: 'B. EÄŸitici Personelle ilgili konular:', C: 'C. Ä°ÅŸletme ile ilgili konular', D: 'D. AÃ§Ä±klanmasÄ± gereken diÄŸer hususlar:'}; sectionHeader = `<tr style="background:#f0f0f0 !important;"><td colspan="2" style="border:1px solid #000; padding:1px; font-weight:bold; text-align:center; font-size:5.5pt;">${sectionNames[item.s]}</td></tr>`; } const tallClass = item.tall ? 'expandable-area' : ''; const answerCell = `<textarea class="editable-textarea ${tallClass}">${item.a}</textarea>`; return `${sectionHeader}<tr><td style="border:1px solid #000; padding:1px; font-size:6pt; font-weight:bold; line-height:1.1;">${item.q}</td><td style="border:1px solid #000; padding:1px; vertical-align:middle; font-size:5.5pt;">${answerCell}</td></tr>`; }).join(''); return `<table style="width:100%; border-collapse:collapse;"><thead><tr style="background:#f0f0f0 !important;"><th style="border:1px solid #000; padding:1px; width:60%; font-size:6pt;">KoordinatÃ¶rÃ¼n Rehberlik Ziyaret KonularÄ±</th><th style="border:1px solid #000; padding:1px; width:40%; font-size:6pt;">DeÄŸerlendirme ve Ã–neriler</th></tr></thead><tbody>${rows}</tbody></table>`;
+        function getFormQuestionsHTML() { const questions = [ { s: 'A', q: '1. Usta öğretici/eğitici personelin yıllık eğitim planı var mı? Uyguluyor mu? Öğrencilere sürekli aynı işlem mi, rotasyona göre mi eğitim yaptırılıyor?', a: 'Var, uyguluyor, rotasyona göre eğitim' }, { s: 'A', q: '2. Öğrencilerin günlük çalışmaları yıllık eğitim planına uygun olarak plânlanmış mı?', a: 'Evet' }, { s: 'A', q: '3. Öğrenci devam durumu günlük olarak takip ediliyor mu?', a: 'Evet' }, { s: 'A', q: '4. Meslek eğitimi çalışmaları puanla değerlendiriliyor mu?', a: 'Evet' }, { s: 'A', q: '5. Yapılan işlerle ilgili olarak her öğrenciye iş dosyası tutturuluyor mu?', a: 'Evet' }, { s: 'A', q: '6. Öğrencilere 3308 sayılı Kanunun 25 inci maddesine göre aylık ücret ödeniyor mu?', a: 'Evet' }, { s: 'A', q: '7. Meslek eğitimi, çalışma saatlerinde yapılıyor mu?', a: 'Evet' }, { s: 'A', q: '8. İş güvenliği konusunda öğrencilere yeterli bilgi veriliyor ve gerekli tedbirler alınıyor mu?', a: 'Evet' }, { s: 'A', q: '9. Öğrenciler disiplin, kılık-kıyafet ve işletmenin kurallarına uyuyor mu?', a: 'Evet' }, { s: 'A', q: '10. Öğrencilerin telafi eğitimine alınması gerekiyor mu? Gerekiyorsa hangi konularda telafi eğitimi uygulanmalı?', a: 'Hayır' }, { s: 'B', q: '1. İşletmenin meslek eğitimi ile görevli personelinin usta öğreticilik belgesi var mı?', a: 'Evet' }, { s: 'B', q: '2. Eğitici personelin sorumlu olduğu öğrenci grubu sayısı Mesleki ve Teknik Eğitim Yönetmeliğinin 192 nci maddesine uygun mu?', a: 'Evet' }, { s: 'B', q: '3. Meslek eğitimi konusunda koordinatör tarafından eğitici personele yapılan rehberlik ve konusu.', a: 'Gelişim tablolarının kontrol edilmesi, öğrencilere ve eğiticilere güvenli iş ortamının geliştirilmesi.', tall: true }, { s: 'B', q: '4. Eğitici personelin geliştirme ve uyum kursuna ihtiyacı var mı?', a: 'Hayır' }, { s: 'C', q: '1. İşletmelerde meslek eğitimi, yıllık çalışma takvimine uygun olarak sürdürülüyor mu?', a: 'Evet' }, { s: 'C', q: '2. İşletmede meslek eğitiminin mevzuata göre sürdürülmesi ile ilgili gerekli tedbirler alınıyor mu? (Mesleki ve Teknik Eğitim Yönetmeliği madde 196.)', a: 'Evet' }, { s: 'C', q: '4. Öğrenciler için gelişim tablosu uygulanıyor mu?', a: 'Evet' }, { s: 'C', q: '5. İşletme yetkililerinin meslek eğitiminin uygulanışı ve öğretim programları konusundaki görüş ve önerileri', a: '', tall: true }, { s: 'D', q: 'Açıklanması gereken diğer hususlar:', a: '', tall: true }, ]; let currentSection = ''; const rows = questions.map(item => { let sectionHeader = ''; if (item.s !== currentSection) { currentSection = item.s; const sectionNames = {A: 'A. Mesleki ve Teknik Eğitim Yönetmeliği ile ilgili konular:', B: 'B. Eğitici Personelle ilgili konular:', C: 'C. İşletme ile ilgili konular', D: 'D. Açıklanması gereken diğer hususlar:'}; sectionHeader = `<tr style="background:#f0f0f0 !important;"><td colspan="2" style="border:1px solid #000; padding:1px; font-weight:bold; text-align:center; font-size:5.5pt;">${sectionNames[item.s]}</td></tr>`; } const tallClass = item.tall ? 'expandable-area' : ''; const answerCell = `<textarea class="editable-textarea ${tallClass}">${item.a}</textarea>`; return `${sectionHeader}<tr><td style="border:1px solid #000; padding:1px; font-size:6pt; font-weight:bold; line-height:1.1;">${item.q}</td><td style="border:1px solid #000; padding:1px; vertical-align:middle; font-size:5.5pt;">${answerCell}</td></tr>`; }).join(''); return `<table style="width:100%; border-collapse:collapse;"><thead><tr style="background:#f0f0f0 !important;"><th style="border:1px solid #000; padding:1px; width:60%; font-size:6pt;">Koordinatörün Rehberlik Ziyaret Konuları</th><th style="border:1px solid #000; padding:1px; width:40%; font-size:6pt;">Değerlendirme ve Öneriler</th></tr></thead><tbody>${rows}</tbody></table>`;
         }
         const visitDatesText = calculateVisitDates(year, month, company.visitDay); 
         const uniqueStudentFields = [...new Set(company.students.map(s => s.field).filter(Boolean))].join(', ');
-        return `<div style="text-align: center; font-weight: bold; font-size: 7.5pt; line-height:1.1;">Ä°ÅžLETMELERDE MESLEK EÄžÄ°TÄ°MÄ° KOORDÄ°NATÃ–RLERÄ°NÄ°N Ä°ÅžLETMEYE YAPACAÄžI AYLIK REHBERLÄ°K RAPOR FORMU</div><div style="text-align: center; font-weight: bold; font-size: 7.5pt; margin-top: 2px;">UÅžAK MESLEKÄ° VE TEKNÄ°K ANADOLU LÄ°SESÄ° MÃœDÃœRLÃœÄžÃœ'NE</div><div style="text-align: center; font-weight: bold; font-size: 7.5pt;">UÅžAK</div><p style="font-size: 7pt; line-height: 1.1; margin: 2px 0; text-indent:10px;">Okul/Kurumumuz <b><i>${uniqueStudentFields || '................................'}</i></b> alan/dalÄ± Ã¶ÄŸrencilerinin meslek eÄŸitimi gÃ¶rdÃ¼ÄŸÃ¼ iÅŸletmede yapmÄ±ÅŸ olduÄŸum bir aylÄ±k koordinatÃ¶rlÃ¼k gÃ¶revlerim sÄ±rasÄ±nda tespit ettiÄŸim hususlar aÅŸaÄŸÄ±da belirtilmiÅŸtir.<br>Bilgilerinizi ve gereÄŸini arz ederim.</p>
-        <table style="width:100%; border-collapse:collapse; font-size:7pt; margin: 2px 0;"><tr><td style="border:1px solid #000; padding:1px; width:50%; vertical-align:top;"><b>Ä°ÅŸletmenin AdÄ± ve Adresi:</b><br><span class="dynamic-text">${company.name}, ${company.address}</span></td><td style="border:1px solid #000; padding:1px; width:50%; vertical-align:top;"><b>GÃ–REV TARÄ°HLERÄ°:</b><br><span class="dynamic-text">${visitDatesText}</span></td></tr><tr><td style="border:1px solid #000; padding:1px; line-height:1.1;"><b>Ä°ÅŸletme EÄŸitim Yetkilisinin</b><br>AdÄ± SoyadÄ±: <span class="dynamic-text">${company.official}</span><br><br>Ä°mza:</td><td style="border:1px solid #000; padding:1px; line-height:1.1;"><b>KoordinatÃ¶r Ã–ÄŸretmenin</b><br>AdÄ± SoyadÄ±: <span class="dynamic-text">${appData.settings.coordinatorName}</span><br><br>Ä°mza:</td></tr></table><div class="form-content-wrapper">${getFormQuestionsHTML()}</div><div style="text-align: center; margin-top: auto; font-size: 6pt; border-top: 1px solid #000; padding-top: 1px;"><strong>AÃ‡IKLAMA:</strong> Bu form her iÅŸletme iÃ§in her ay ayrÄ± ayrÄ± doldurulacak, kurum idaresine verilecektir. FORM A</div>`;
+        return `<div style="text-align: center; font-weight: bold; font-size: 7.5pt; line-height:1.1;">İŞLETMELERDE MESLEK EĞİTİMİ KOORDİNATÖRLERİNİN İŞLETMEYE YAPACAĞI AYLIK REHBERLİK RAPOR FORMU</div><div style="text-align: center; font-weight: bold; font-size: 7.5pt; margin-top: 2px;">UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ MÜDÜRLÜĞÜ'NE</div><div style="text-align: center; font-weight: bold; font-size: 7.5pt;">UŞAK</div><p style="font-size: 7pt; line-height: 1.1; margin: 2px 0; text-indent:10px;">Okul/Kurumumuz <b><i>${uniqueStudentFields || '................................'}</i></b> alan/dalı öğrencilerinin meslek eğitimi gördüğü işletmede yapmış olduğum bir aylık koordinatörlük görevlerim sırasında tespit ettiğim hususlar aşağıda belirtilmiştir.<br>Bilgilerinizi ve gereğini arz ederim.</p>
+        <table style="width:100%; border-collapse:collapse; font-size:7pt; margin: 2px 0;"><tr><td style="border:1px solid #000; padding:1px; width:50%; vertical-align:top;"><b>İşletmenin Adı ve Adresi:</b><br><span class="dynamic-text">${company.name}, ${company.address}</span></td><td style="border:1px solid #000; padding:1px; width:50%; vertical-align:top;"><b>GÖREV TARİHLERİ:</b><br><span class="dynamic-text">${visitDatesText}</span></td></tr><tr><td style="border:1px solid #000; padding:1px; line-height:1.1;"><b>İşletme Eğitim Yetkilisinin</b><br>Adı Soyadı: <span class="dynamic-text">${company.official}</span><br><br>İmza:</td><td style="border:1px solid #000; padding:1px; line-height:1.1;"><b>Koordinatör Öğretmenin</b><br>Adı Soyadı: <span class="dynamic-text">${appData.settings.coordinatorName}</span><br><br>İmza:</td></tr></table><div class="form-content-wrapper">${getFormQuestionsHTML()}</div><div style="text-align: center; margin-top: auto; font-size: 6pt; border-top: 1px solid #000; padding-top: 1px;"><strong>AÇIKLAMA:</strong> Bu form her işletme için her ay ayrı ayrı doldurulacak, kurum idaresine verilecektir. FORM A</div>`;
     }
     
-    // ESKÄ° generateDailyGuidanceForm FONKSÄ°YONUNU SÄ°LÄ°P BUNU YAPIÅžTIRIN â–¼
+    // ESKİ generateDailyGuidanceForm FONKSİYONUNU SİLİP BUNU YAPIŞTIRIN ▼
     function generateDailyGuidanceForm(business, visitDate) {
         if (!business || !visitDate) return `<div class="daily-guidance-form"></div>`;
         let activeStudents = [];
@@ -2050,57 +2052,57 @@
         const uniqueStudentFields = [...new Set(activeStudents.map(s => s.field).filter(Boolean))].join(', ');
 
         return `<div class="daily-guidance-form">
-            <h3>Ä°ÅžLETMELERDE MESLEK EÄžÄ°TÄ°MÄ°<br>GÃœNLÄ°K REHBERLÄ°K GÃ–REV FORMU</h3>
+            <h3>İŞLETMELERDE MESLEK EĞİTİMİ<br>GÜNLİK REHBERLİK GÖREV FORMU</h3>
             <table class="main-table">
                 <tbody>
                     <tr>
-                        <td class="label-cell">Ä°ÅŸletmenin AdÄ±</td>
+                        <td class="label-cell">İşletmenin Adı</td>
                         <td class="data-cell"><span class="dynamic-text">${business.name}</span></td>
                     </tr>
                     <tr>
-                        <td class="label-cell">Ä°zlemede Sorumlu olduÄŸu Ã–ÄŸrenci SayÄ±sÄ±</td>
+                        <td class="label-cell">İzlemede Sorumlu olduğu Öğrenci Sayısı</td>
                         <td class="data-cell"><span class="dynamic-text">${activeStudentCount}</span></td>
                     </tr>
                     <tr>
-                        <td class="label-cell">Meslek Alan/DalÄ±</td>
+                        <td class="label-cell">Meslek Alan/Dalı</td>
                         <td class="data-cell"><span class="dynamic-text">${uniqueStudentFields}</span></td>
                     </tr>
                     <tr>
-                        <td class="label-cell">GÃ¶rev Tarihi</td>
+                        <td class="label-cell">Görev Tarihi</td>
                         <td class="data-cell"><span class="dynamic-text">${visitDate.toLocaleDateString('tr-TR')}</span></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="section-cell">
-                            <p>1- Ä°ÅŸletmede Ã¶ÄŸrenim gÃ¶ren Ã¶ÄŸrencilerin eÄŸitimini olumsuz yÃ¶nde etkileyen hususlar. (varsa yazÄ±nÄ±z.)</p>
+                            <p>1- İşletmede öğrenim gören öğrencilerin eğitimini olumsuz yönde etkileyen hususlar. (varsa yazınız.)</p>
                             <textarea class="editable-textarea"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" class="section-cell">
-                            <p>2- Belirlenen aksaklÄ±klarla ilgili yapÄ±lan rehberlik ve alÄ±nan Ã¶nlemler:</p>
+                            <p>2- Belirlenen aksaklıklarla ilgili yapılan rehberlik ve alınan önlemler:</p>
                             <textarea class="editable-textarea"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" class="section-cell">
-                            <p>3- AylÄ±k Rehberlik formunda belirtilmesinde yarar gÃ¶rÃ¼len hususlar:</p>
+                            <p>3- Aylık Rehberlik formunda belirtilmesinde yarar görülen hususlar:</p>
                             <textarea class="editable-textarea"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" class="signature-cell">
                             <div class="footer">
-                                <div><span class="dynamic-text">${business.official}</span><br>Ä°ÅŸletme EÄŸitim Yetkilisi<br><br>Ä°mza</div>
-                                <div><span class="dynamic-text">${appData.settings.coordinatorName}</span><br>Koor. Ã–ÄŸretmen<br><br>Ä°mza</div>
-                                <div><span class="dynamic-text">${appData.settings.asstPrincipalName}</span><br>Koor. Md. Yrd.<br><br>Ä°mza</div>
+                                <div><span class="dynamic-text">${business.official}</span><br>İşletme Eğitim Yetkilisi<br><br>İmza</div>
+                                <div><span class="dynamic-text">${appData.settings.coordinatorName}</span><br>Koor. Öğretmen<br><br>İmza</div>
+                                <div><span class="dynamic-text">${appData.settings.asstPrincipalName}</span><br>Koor. Md. Yrd.<br><br>İmza</div>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" class="notes-cell">
                             <div class="notes">
-                                AÃ§Ä±klamalar: Bu form koordinatÃ¶r Ã¶ÄŸretmen tarafÄ±ndan her gÃ¶rev iÃ§in gÃ¶rev haftasÄ± baÅŸÄ±nda koordinatÃ¶r Md. Yrd.'ndan alÄ±nÄ±r. GÃ¶rev sonrasÄ±nda okula geldiÄŸi gÃ¼n iÃ§inde imzalarÄ± tamamlanmÄ±ÅŸ olarak KoordinatÃ¶r Md. Yrd.'na teslim edilir.<br>
-                                <b>Not: HaftalÄ±k devamsÄ±zlÄ±klarÄ± 3 nolu alanda belirtiniz. (No, isim, tarih)</b>
+                                Açıklamalar: Bu form koordinatör öğretmen tarafından her görev için görev haftası başında koordinatör Md. Yrd.'ndan alınır. Görev sonrasında okula geldiği gün içinde imzaları tamamlanmış olarak Koordinatör Md. Yrd.'na teslim edilir.<br>
+                                <b>Not: Haftalık devamsızlıkları 3 nolu alanda belirtiniz. (No, isim, tarih)</b>
                             </div>
                         </td>
                     </tr>
@@ -2118,9 +2120,9 @@
         const business = appData.businesses.find(b => b.id === businessId); 
         const student = business.students.find(s => s.id === studentId);
         
-        student.endDate = terminationDate;  // Bu lazÄ±m - fesih tarihi iÃ§in
+        student.endDate = terminationDate;  // Bu lazım - fesih tarihi için
         
-        // Ã–ÄŸrenciyi tamamen sil
+        // Öğrenciyi tamamen sil
         business.students = business.students.filter(s => s.id !== studentId);
         saveData(); 
         renderAll(); 
@@ -2134,18 +2136,18 @@
             <div class="termination-container" style="padding-bottom: 25px;">
                 <h1 style="font-size: 14pt;">${appData.settings.schoolName}</h1>
                 <h2 style="font-size: 14pt; margin: 15px 0;">
-                    Ä°ÅžLETMELERDE BECERÄ° EÄžÄ°TÄ°MÄ° GÃ–REN Ã–ÄžRENCÄ°LERE AÄ°T<br>SÃ–ZLEÅžME FESÄ°H TUTANAÄžI
+                    İŞLETMELERDE BECERİ EĞİTİMİ GÖREN ÖĞRENCİLERE AİT<br>SÖZLEŞME FESİH TUTANAĞI
                 </h2>
                 <table>
-                    <tr><td class="label-col">Ä°ÅžLETMENÄ°N ADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${business.name}</em></strong></td></tr>
-                    <tr><td class="label-col">Ã–ÄžRENCÄ°NÄ°N ADI SOYADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.name}</em></strong></td></tr>
+                    <tr><td class="label-col">İŞLETMENİN ADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${business.name}</em></strong></td></tr>
+                    <tr><td class="label-col">ÖĞRENCİNİN ADI SOYADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.name}</em></strong></td></tr>
                     <tr><td class="label-col">ALANI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.field}</em></strong></td></tr>
-                    <tr><td class="label-col">SINIFI / NUMARASI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.class ? student.class + '. SÄ±nÄ±f' : ''} / ${student.no || ''}</em></strong></td></tr>
-                    <tr><td class="label-col">SÃ–ZLEÅžMELÄ° TARÄ°HÄ°</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedStartDate}</em></strong></td></tr>
-                    <tr><td class="label-col">SÃ–ZLEÅžMENÄ°N FESÄ°H TARÄ°HÄ°</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedTerminationDate}</em></strong></td></tr>
+                    <tr><td class="label-col">SINIFI / NUMARASI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.class ? student.class + '. Sınıf' : ''} / ${student.no || ''}</em></strong></td></tr>
+                    <tr><td class="label-col">SÖZLEŞMELİ TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedStartDate}</em></strong></td></tr>
+                    <tr><td class="label-col">SÖZLEŞMENİN FESİH TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedTerminationDate}</em></strong></td></tr>
                 </table>
                 <div class="reasons">
-                    <div class="label-col" style="border-bottom: 1px solid black; padding-bottom: 2px; margin-bottom: 5px;">FESÄ°H NEDENLERÄ°:</div>
+                    <div class="label-col" style="border-bottom: 1px solid black; padding-bottom: 2px; margin-bottom: 5px;">FESİH NEDENLERİ:</div>
                     <div class="value-box" style="border: 1px solid transparent; padding: 5px;">
                         <strong><em>${terminationReason.replace(/\n/g, '<br>')}</em></strong>
                     </div>
@@ -2154,27 +2156,27 @@
                     <div style="width: 32%; height: 1px;"></div>
                     <div style="width: 32%; height: 1px;"></div>
                     <div style="width: 32%; margin-bottom: 20px;">..... / ..... / 2025</div>
-                    <div style="width: 32%;"><strong><em>${business.official}</em></strong><br>Ä°ÅŸletme Yetkilisi</div>
-                    <div style="width: 32%;"><strong><em>${appData.settings.coordinatorName}</em></strong><br>KoordinatÃ¶r Ã–ÄŸretmen</div>
-                    <div style="width: 32%;"><strong><em>${appData.settings.principalName}</em></strong><br>Okul MÃ¼dÃ¼rÃ¼</div>
+                    <div style="width: 32%;"><strong><em>${business.official}</em></strong><br>İşletme Yetkilisi</div>
+                    <div style="width: 32%;"><strong><em>${appData.settings.coordinatorName}</em></strong><br>Koordinatör Öğretmen</div>
+                    <div style="width: 32%;"><strong><em>${appData.settings.principalName}</em></strong><br>Okul Müdürü</div>
                 </div>
             </div>
         </div>`;
         dom.printContainer.innerHTML = formHTML; 
         window.print();
-        showNotification('SÃ¶zleÅŸme feshi gerÃ§ekleÅŸtirildi.', 'success');
+        showNotification('Sözleşme feshi gerçekleştirildi.', 'success');
     }
 
     dom.generateSheetBtn.addEventListener('click', () => {
         const formType = dom.formTypeSelect.value;
         let allFormsHTML = '';
         if (formType === 'attendance' || formType === 'monthly_guidance') {
-           // SeÃ§ili iÅŸletmeleri kontrol et
+           // Seçili işletmeleri kontrol et
             const checkedBoxes = document.querySelectorAll('#business-dropdown-content .business-checkbox:checked');
-            console.log('SeÃ§ili checkbox sayÄ±sÄ±:', checkedBoxes.length);
+            console.log('Seçili checkbox sayısı:', checkedBoxes.length);
 
             if (checkedBoxes.length === 0) { 
-                showNotification('LÃ¼tfen en az bir iÅŸletme seÃ§in.', 'error'); 
+                showNotification('Lütfen en az bir işletme seçin.', 'error'); 
                 return; 
             }
 
@@ -2183,11 +2185,11 @@
             const year = parseInt(dom.genYearSelect.value);
             const today = new Date();
             const currentYear = today.getFullYear();
-            const currentMonth = today.getMonth(); // JavaScript'te aylar 0'dan baÅŸlar (Ocak=0)
+            const currentMonth = today.getMonth(); // JavaScript'te aylar 0'dan başlar (Ocak=0)
 
             if (year > currentYear || (year === currentYear && month > currentMonth)) {
-                showNotification('HenÃ¼z gelmemiÅŸ bir tarih iÃ§in form oluÅŸturulamaz.', 'error');
-                return; // Ä°ÅŸlemi burada durdurur ama ay ve yÄ±l deÄŸerleri korunur
+                showNotification('Henüz gelmemiş bir tarih için form oluşturulamaz.', 'error');
+                return; // İşlemi burada durdurur ama ay ve yıl değerleri korunur
             }
             
             if(formType === 'attendance'){
@@ -2209,7 +2211,7 @@
                         allFormsHTML += `<div class="print-page-container print-page-attendance"><div class="print-sheet-wrapper"><div class="print-sheet first-half">${formHTML1}</div><div class="print-sheet second-half">${formHTML2}</div></div></div>`;
                     } else {
                         const formHTML = generateAttendanceSheet(chunk[0], month, year);
-                        // Tek iÅŸletme de yarÄ±m sayfa kullansÄ±n, diÄŸer yarÄ±sÄ± boÅŸ kalsÄ±n
+                        // Tek işletme de yarım sayfa kullansın, diğer yarısı boş kalsın
                         allFormsHTML += `<div class="print-page-container print-page-attendance"><div class="print-sheet-wrapper"><div class="print-sheet first-half">${formHTML}</div><div class="print-sheet second-half"></div></div></div>`;
                     }
                 });
@@ -2233,19 +2235,19 @@
             const selectedWeek = parseInt(dom.genWeekSelect1.value);
             
             if (selectedBusinessIds.length === 0) { 
-                showNotification('LÃ¼tfen en az bir iÅŸletme seÃ§in.', 'error'); 
+                showNotification('Lütfen en az bir işletme seçin.', 'error'); 
                 return; 
             }
             
             const month = parseInt(dom.dailyMonthSelect.value);
             const year = parseInt(dom.dailyYearSelect.value);
             
-            // SeÃ§ilen hafta bilgisini almak iÃ§in
+            // Seçilen hafta bilgisini almak için
             const selectedWeekOption = dom.genWeekSelect1.querySelector(`option[value="${selectedWeek}"]`);
             let weekStartDate = null, weekEndDate = null;
             
             if (selectedWeekOption) {
-                // Hafta seÃ§eneklerini yeniden hesapla ve tarihleri al
+                // Hafta seçeneklerini yeniden hesapla ve tarihleri al
                 const weeks = [];
                 const firstDayOfMonth = new Date(year, month, 1);
                 const lastDayOfMonth = new Date(year, month + 1, 0);
@@ -2279,7 +2281,7 @@
                 const business = appData.businesses.find(b => b.id === businessId);
                 if (!business || !business.visitDay) return null;
                 
-                // SeÃ§ilen hafta iÃ§indeki ziyaret gÃ¼nÃ¼nÃ¼ bul
+                // Seçilen hafta içindeki ziyaret gününü bul
                 if (!weekStartDate || !weekEndDate) return null;
                 
                 let visitDate = null;
@@ -2296,7 +2298,7 @@
             }).filter(form => form !== null);
             
             if (businessForms.length === 0) {
-                showNotification('SeÃ§ilen hafta iÃ§in uygun ziyaret gÃ¼nÃ¼ bulunamadÄ±.', 'error');
+                showNotification('Seçilen hafta için uygun ziyaret günü bulunamadı.', 'error');
                 return;
             }
             
@@ -2304,17 +2306,17 @@
                 const form1HTML = businessForms[i];
                 const form2HTML = businessForms[i + 1] || null;
 
-                // Sol sÃ¼tunu oluÅŸtur (kÃ¶ÅŸe yazÄ±larÄ± + Ã§erÃ§eveli form)
+                // Sol sütunu oluştur (köşe yazıları + çerçeveli form)
                 let column1 = `<div class="daily-guidance-column">
-                                 <div class="top-right-text">Ä°ME-GÃ–REV REHBERLÄ°K</div>
+                                 <div class="top-right-text">İME-GÖREV REHBERLİK</div>
                                  ${form1HTML}
                                  <div class="bottom-left-text">FORM 4A</div>
                                </div>`;
                 
-                // SaÄŸ sÃ¼tunu oluÅŸtur (eÄŸer ikinci form varsa)
+                // Sağ sütunu oluştur (eğer ikinci form varsa)
                 let column2 = `<div class="daily-guidance-column">`;
                 if (form2HTML) {
-                    column2 += `<div class="top-right-text">Ä°ME-GÃ–REV REHBERLÄ°K</div>
+                    column2 += `<div class="top-right-text">İME-GÖREV REHBERLİK</div>
                                 ${form2HTML}
                                 <div class="bottom-left-text">FORM 4A</div>`;
                 }
@@ -2338,7 +2340,7 @@
 
    
     document.addEventListener('click', function(e) {
-            // Checkbox'a direkt tÄ±klama - EN Ã–NCELÄ°KLÄ°
+            // Checkbox'a direkt tıklama - EN ÖNCELİKLİ
             if (e.target.type === 'checkbox' && (e.target.classList.contains('business-checkbox') || e.target.classList.contains('daily-business-checkbox'))) {
                 setTimeout(() => {
                     updateDropdownText();
@@ -2346,7 +2348,7 @@
                 return;
             }
             
-            // Label'a tÄ±klama
+            // Label'a tıklama
             if (e.target.tagName === 'LABEL') {
                 const checkbox = document.getElementById(e.target.getAttribute('for'));
                 if (checkbox) {
@@ -2358,7 +2360,7 @@
                 return;
             }
             
-            // AylÄ±k dropdown aÃ§ma/kapama
+            // Aylık dropdown açma/kapama
             if (e.target.closest('#business-dropdown-header')) {
                 const content = document.getElementById('business-dropdown-content');
                 const header = document.getElementById('business-dropdown-header');
@@ -2373,7 +2375,7 @@
                 return;
             }
             
-            // GÃ¼nlÃ¼k dropdown aÃ§ma/kapama
+            // Günlük dropdown açma/kapama
             if (e.target.closest('#daily-business-dropdown-header')) {
                 const content = document.getElementById('daily-business-dropdown-content');
                 const header = document.getElementById('daily-business-dropdown-header');
@@ -2388,7 +2390,7 @@
                 return;
             }
             
-            // Dropdown item'a tÄ±klama (yedek sistem)
+            // Dropdown item'a tıklama (yedek sistem)
             if (e.target.closest('.dropdown-item') && !e.target.closest('button')) {
                 const item = e.target.closest('.dropdown-item');
                 const checkbox = item.querySelector('input[type="checkbox"]');
@@ -2406,7 +2408,7 @@
         dom.dailyBusinessDropdownContent.classList.toggle('open');
     });
     
-    // DÄ±ÅŸarÄ± tÄ±klamada dropdown'larÄ± kapat
+    // Dışarı tıklamada dropdown'ları kapat
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.dropdown-container')) {
             document.querySelectorAll('.dropdown-header').forEach(header => header.classList.remove('open'));
@@ -2414,7 +2416,7 @@
         }
     });
 
-    // TÃ¼mÃ¼nÃ¼ seÃ§/temizle butonlarÄ±
+    // Tümünü seç/temizle butonları
     dom.selectAllBusinesses.addEventListener('click', (e) => {
         e.stopPropagation();
         document.querySelectorAll('.business-checkbox').forEach(cb => cb.checked = true);
@@ -2439,7 +2441,7 @@
         updateDropdownText();
     });
 
-    // Checkbox deÄŸiÅŸikliklerini dinle
+    // Checkbox değişikliklerini dinle
     document.addEventListener('change', (e) => {
         if (e.target.matches('.business-checkbox, .daily-business-checkbox')) {
             updateDropdownText();
@@ -2455,11 +2457,11 @@
             return; 
         } 
         
-        // Accordion header kontrolÃ¼ - BURASI Ã–NEMLÄ°
+        // Accordion header kontrolü - BURASI ÖNEMLİ
         const accordionHeader = e.target.closest('.accordion-header'); 
         if (accordionHeader) { 
             accordionHeader.nextElementSibling.classList.toggle('open'); 
-            return; // Bu return'Ã¼ ekle ki diÄŸer aksiyonlar Ã§alÄ±ÅŸmasÄ±n
+            return; // Bu return'ü ekle ki diğer aksiyonlar çalışmasın
         } 
         
         const action = e.target.dataset.action; 
@@ -2488,12 +2490,12 @@
     dom.businessForm.addEventListener('submit', saveBusiness);
     dom.studentForm.addEventListener('submit', saveStudent);
     dom.terminationForm.addEventListener('submit', generateTerminationForm);
-    dom.downloadBtn.addEventListener('click', () => { saveData(); const dataStr = JSON.stringify(appData, null, 2); const blob = new Blob([dataStr], {type: 'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `mesem_verileri_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); showNotification('Veriler baÅŸarÄ±yla indirildi.', 'success'); });
+    dom.downloadBtn.addEventListener('click', () => { saveData(); const dataStr = JSON.stringify(appData, null, 2); const blob = new Blob([dataStr], {type: 'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `mesem_verileri_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); showNotification('Veriler başarıyla indirildi.', 'success'); });
     dom.uploadBtn.addEventListener('click', () => dom.uploadInput.click());
-    dom.uploadInput.addEventListener('change', (event) => { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const loadedData = JSON.parse(e.target.result); if (loadedData.settings && loadedData.businesses) { appData = loadedData; saveData(); loadData(); renderAll(); showNotification('Veriler baÅŸarÄ±yla geri yÃ¼klendi.', 'success'); } else { showNotification('HatalÄ± dosya formatÄ±.', 'error'); } } catch (error) { showNotification('Dosya okunurken bir hata oluÅŸtu: ' + error, 'error'); } }; reader.readAsText(file); event.target.value = ''; });
+    dom.uploadInput.addEventListener('change', (event) => { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const loadedData = JSON.parse(e.target.result); if (loadedData.settings && loadedData.businesses) { appData = loadedData; saveData(); loadData(); renderAll(); showNotification('Veriler başarıyla geri yüklendi.', 'success'); } else { showNotification('Hatalı dosya formatı.', 'error'); } } catch (error) { showNotification('Dosya okunurken bir hata oluştu: ' + error, 'error'); } }; reader.readAsText(file); event.target.value = ''; });
     dom.printListBtn.addEventListener('click', () => { const listHTML = generateListPrint(); dom.printContainer.innerHTML = listHTML; window.print(); });
 
-    // Telefon numarasÄ± input'larÄ±na otomatik dÃ¼zenleme
+    // Telefon numarası input'larına otomatik düzenleme
     document.addEventListener('input', (e) => {
         if (e.target.hasAttribute('inputmode') && e.target.getAttribute('inputmode') === 'numeric') {
             e.target.value = e.target.value.replace(/[^0-9]/g, '');
@@ -2509,14 +2511,14 @@
         const vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
     }
-   // --- OLAY DÄ°NLEYÄ°CÄ°LERÄ° (EVENT LISTENERS) ---
+   // --- OLAY DİNLEYİCİLERİ (EVENT LISTENERS) ---
         dom.googleLoginBtn.onclick = signInWithGoogle;
         dom.logoutBtn.onclick = () => signOut(auth);
         
         dom.generateSheetBtn.addEventListener('click', () => { /* ... Mevcut kodunuzdaki gibi ... */ });
         dom.formTypeSelect.addEventListener('change', (e) => { /* ... Mevcut kodunuzdaki gibi ... */ });
        document.addEventListener('click', function(e) {
-            // Checkbox'a direkt tÄ±klama - EN Ã–NCELÄ°KLÄ°
+            // Checkbox'a direkt tıklama - EN ÖNCELİKLİ
             if (e.target.type === 'checkbox' && (e.target.classList.contains('business-checkbox') || e.target.classList.contains('daily-business-checkbox'))) {
                 setTimeout(() => {
                     updateDropdownText();
@@ -2524,7 +2526,7 @@
                 return;
             }
             
-            // Label'a tÄ±klama
+            // Label'a tıklama
             if (e.target.tagName === 'LABEL') {
                 const checkbox = document.getElementById(e.target.getAttribute('for'));
                 if (checkbox) {
@@ -2536,7 +2538,7 @@
                 return;
             }
             
-            // AylÄ±k dropdown aÃ§ma/kapama
+            // Aylık dropdown açma/kapama
             if (e.target.closest('#business-dropdown-header')) {
                 const content = document.getElementById('business-dropdown-content');
                 const header = document.getElementById('business-dropdown-header');
@@ -2551,7 +2553,7 @@
                 return;
             }
             
-            // GÃ¼nlÃ¼k dropdown aÃ§ma/kapama
+            // Günlük dropdown açma/kapama
             if (e.target.closest('#daily-business-dropdown-header')) {
                 const content = document.getElementById('daily-business-dropdown-content');
                 const header = document.getElementById('daily-business-dropdown-header');
@@ -2566,7 +2568,7 @@
                 return;
             }
             
-            // Dropdown item'a tÄ±klama (yedek sistem)
+            // Dropdown item'a tıklama (yedek sistem)
             if (e.target.closest('.dropdown-item') && !e.target.closest('button')) {
                 const item = e.target.closest('.dropdown-item');
                 const checkbox = item.querySelector('input[type="checkbox"]');
@@ -2610,7 +2612,7 @@
                 case 'open-absence-modal': openModal('absenceModal', { studentId: id, businessId: businessId }); break;
             }
         });
-        dom.absenceModal.addEventListener('click', e => { const dayEl = e.target.closest('.calendar-day.workday'); if (!dayEl) return; const statusEl = dayEl.querySelector('.calendar-day-status'); let currentStatus = statusEl.textContent.replace(/\s/g, ''); let newStatus = ''; if (currentStatus === '') newStatus = 'S'; else if (currentStatus === 'S') newStatus = 'Ã–'; else if (currentStatus === 'Ã–') newStatus = 'SÃ–'; else newStatus = ''; statusEl.innerHTML = newStatus.replace('SÃ–', 'S<br>Ã–'); statusEl.classList.toggle('f-gold', newStatus !== ''); });
+        dom.absenceModal.addEventListener('click', e => { const dayEl = e.target.closest('.calendar-day.workday'); if (!dayEl) return; const statusEl = dayEl.querySelector('.calendar-day-status'); let currentStatus = statusEl.textContent.replace(/\s/g, ''); let newStatus = ''; if (currentStatus === '') newStatus = 'S'; else if (currentStatus === 'S') newStatus = 'Ö'; else if (currentStatus === 'Ö') newStatus = 'SÖ'; else newStatus = ''; statusEl.innerHTML = newStatus.replace('SÖ', 'S<br>Ö'); statusEl.classList.toggle('f-gold', newStatus !== ''); });
         dom.absenceModal.querySelector('#saveAbsenceBtn').addEventListener('click', saveAbsences);
         dom.absenceModal.querySelector('#absenceMonthSelect').addEventListener('change', renderAbsenceCalendar);
         dom.absenceModal.querySelector('#absenceYearSelect').addEventListener('change', renderAbsenceCalendar);
@@ -2618,9 +2620,9 @@
         dom.businessForm.addEventListener('submit', saveBusiness);
         dom.studentForm.addEventListener('submit', saveStudent);
         dom.terminationForm.addEventListener('submit', generateTerminationForm);
-        dom.downloadBtn.addEventListener('click', () => { saveData(); const dataStr = JSON.stringify(appData, null, 2); const blob = new Blob([dataStr], {type: 'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `mesem_verileri_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); showNotification('Veriler baÅŸarÄ±yla indirildi.', 'success'); });
+        dom.downloadBtn.addEventListener('click', () => { saveData(); const dataStr = JSON.stringify(appData, null, 2); const blob = new Blob([dataStr], {type: 'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `mesem_verileri_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); showNotification('Veriler başarıyla indirildi.', 'success'); });
         dom.uploadBtn.addEventListener('click', () => dom.uploadInput.click());
-        dom.uploadInput.addEventListener('change', (event) => { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const loadedData = JSON.parse(e.target.result); if (loadedData.settings && loadedData.businesses) { appData = loadedData; saveData(); renderAll(); showNotification('Veriler baÅŸarÄ±yla geri yÃ¼klendi ve buluta kaydedildi.', 'success'); } else { showNotification('HatalÄ± dosya formatÄ±.', 'error'); } } catch (error) { showNotification('Dosya okunurken bir hata oluÅŸtu: ' + error, 'error'); } }; reader.readAsText(file); event.target.value = ''; });
+        dom.uploadInput.addEventListener('change', (event) => { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const loadedData = JSON.parse(e.target.result); if (loadedData.settings && loadedData.businesses) { appData = loadedData; saveData(); renderAll(); showNotification('Veriler başarıyla geri yüklendi ve buluta kaydedildi.', 'success'); } else { showNotification('Hatalı dosya formatı.', 'error'); } } catch (error) { showNotification('Dosya okunurken bir hata oluştu: ' + error, 'error'); } }; reader.readAsText(file); event.target.value = ''; });
         dom.printListBtn.addEventListener('click', () => { const listHTML = generateListPrint(); dom.printContainer.innerHTML = listHTML; window.print(); });
         document.addEventListener('input', (e) => { if (e.target.hasAttribute('inputmode') && e.target.getAttribute('inputmode') === 'numeric') { e.target.value = e.target.value.replace(/[^0-9]/g, ''); } });
         
@@ -2631,7 +2633,7 @@
         window.addEventListener('resize', setVhProperty);
         window.addEventListener('orientationchange', setVhProperty);
         
-        // --- UYGULAMAYI BAÅžLATAN TETÄ°KLEYÄ°CÄ° ---
+        // --- UYGULAMAYI BAŞLATAN TETİKLEYİCİ ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
@@ -2639,7 +2641,7 @@
                 dom.userInfo.style.display = 'block';
                 dom.userName.textContent = user.displayName || user.email;
                 dom.container.style.display = 'block';
-                loadUserData(); // KullanÄ±cÄ± giriÅŸ yapÄ±nca verileri yÃ¼kle
+                loadUserData(); // Kullanıcı giriş yapınca verileri yükle
             } else {
                 currentUser = null;
                 dom.loginSection.style.display = 'block';
