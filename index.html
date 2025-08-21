@@ -7,8 +7,6 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin-allow-popups">
-    <meta http-equiv="Cross-Origin-Embedder-Policy" content="unsafe-none">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -982,6 +980,7 @@
         <div id="login-section" style="text-align: center;">
             <h2 style="color: var(--accent-gold); margin-bottom: 10px;">🎓 MESEM Takip Sistemi</h2>
             <button id="google-login-btn" class="btn btn-primary">🔐 Google Hesabımla Giriş</button>
+            <button id="github-login-btn" class="btn" style="background-color: #333; margin-left: 10px;">🐈 GitHub Hesabımla Giriş (Yönetici)</button>
         </div>
         <div id="user-info" style="display: none; text-align: right;">
             <span id="user-name" style="color: var(--text-light); margin-right: 15px;"></span>
@@ -994,7 +993,6 @@
         <div class="tabs">
             <button class="tab active" data-tab="management-panel">🏢 Yönetim Paneli</button>
             <button class="tab" data-tab="generator-panel">📋 Form Oluştur</button>
-            <button class="tab" data-tab="yonetici-panel" id="yonetici-tab" style="display:none;">👨‍💼 Yönetici Gösterge Paneli</button>
         </div>
         <div class="content">
             <div id="management-panel" class="tab-content active">
@@ -1087,14 +1085,8 @@
                     </div>
                     <div class="form-group"><label for="genWeekSelect1">4. Hafta Seçin</label><select id="genWeekSelect1" class="form-select"></select></div>
                 </div>
-                    <button class="btn btn-primary" id="generate-sheet-btn" style="margin-top:20px; width: 100%; padding: 15px;">Formları Oluştur ve Yazdır</button>
-                </div>
-                <div id="yonetici-panel" class="tab-content">
-                    <h2>Yönetici Gösterge Paneli</h2>
-                    <div id="yonetici-dashboard">
-                        <p>Bilgiler yükleniyor...</p>
-                    </div>
-                </div>
+                 <button class="btn btn-primary" id="generate-sheet-btn" style="margin-top:20px; width: 100%; padding: 15px;">Formları Oluştur ve Yazdır</button>
+            </div>
         </div>
     </div>
     <div id="print-container"></div>
@@ -1118,9 +1110,8 @@
 <script type="module">
     // 1. Firebase Kütüphanelerini import et
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithRedirect } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
     // 2. Firebase ayarlarını yap ve başlat
     const firebaseConfig = {
@@ -1135,10 +1126,6 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-
-    // POPUP AYARLARI
-    auth.useDeviceLanguage();
-
   
     // 3. TÜM UYGULAMA MANTIĞI HTML YÜKLENDİKTEN SONRA ÇALIŞACAK ŞEKİLDE DÜZENLENDİ
     document.addEventListener('DOMContentLoaded', () => {
@@ -1146,9 +1133,6 @@
         let currentUser = null;
         let appData = {};
         let currentAbsence = { studentId: null, businessId: null };
-        // YÖNETİCİ SİSTEMİ
-        const YONETICI_EMAIL = "mesemumtal@gmail.com";
-        let kullaniciRolu = "koordinator";
 
         // DOM elementleri tek bir yerde, en başta tanımlanıyor.
         const dom = {
@@ -1228,23 +1212,28 @@
         
 
         // --- Firebase Fonksiyonları ---
-       async function signInWithGoogle() {
+        async function signInWithGoogle() {
             try {
                 const provider = new GoogleAuthProvider();
-                
-                // REDIRECT AYARLARI (Cross-Origin hatası çözümü)
-                provider.setCustomParameters({
-                    prompt: 'select_account'
-                });
-                
-                // POPUP yerine REDIRECT kullan
-                await signInWithRedirect(auth, provider);
-                console.log('Giriş yönlendirmesi başlatıldı');
+                // YENİ EKLENEN SATIR: Her seferinde hesap seçme ekranını göstermeye zorla
+                provider.setCustomParameters({ prompt: 'select_account' });
+                await signInWithPopup(auth, provider);
             } catch (error) {
                 console.error('Giriş hatası:', error);
                 showNotification('Giriş yapılamadı: ' + error.message, 'error');
             }
         }
+
+        async function signInWithGitHub() {
+            try {
+                const provider = new GithubAuthProvider();
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                console.error('GitHub ile giriş hatası:', error);
+                showNotification('GitHub ile giriş yapılamadı: ' + error.message, 'error');
+            }
+        }
+
         async function loadUserData() {
             if (!currentUser) return;
             try {
@@ -1665,77 +1654,6 @@
         dom.totalBusinesses.textContent = appData.businesses.length;
         const totalStudents = appData.businesses.reduce((sum, business) => sum + (business.students ? business.students.length : 0), 0);
         dom.totalStudents.textContent = totalStudents;
-    }
-
-    // YÖNETİCİ FONKSİYONLARI
-    async function tumKullaniciVerileriniYukle() {
-        if (kullaniciRolu !== "yonetici") return;
-        
-        try {
-            const tumKullanicilar = await getDocs(collection(db, 'users'));
-            const yoneticiVerileri = {
-                toplamKoordinator: 0,
-                toplamIsletme: 0,
-                toplamOgrenci: 0,
-                koordinatorler: []
-            };
-            
-            tumKullanicilar.forEach(doc => {
-                const kullaniciVerisi = doc.data();
-                if (kullaniciVerisi.businesses) {
-                    yoneticiVerileri.toplamKoordinator++;
-                    yoneticiVerileri.toplamIsletme += kullaniciVerisi.businesses.length;
-                    kullaniciVerisi.businesses.forEach(business => {
-                        yoneticiVerileri.toplamOgrenci += business.students ? business.students.length : 0;
-                    });
-                    
-                    yoneticiVerileri.koordinatorler.push({
-                        id: doc.id,
-                        isim: kullaniciVerisi.settings?.coordinatorName || 'İsimsiz',
-                        okul: kullaniciVerisi.settings?.schoolName || '',
-                        isletmeSayisi: kullaniciVerisi.businesses.length,
-                        ogrenciSayisi: kullaniciVerisi.businesses.reduce((sum, b) => sum + (b.students?.length || 0), 0)
-                    });
-                }
-            });
-            
-            yoneticiPaneliniGoster(yoneticiVerileri);
-        } catch (error) {
-            console.error('Yönetici veri yükleme hatası:', error);
-        }
-    }
-
-    function yoneticiPaneliniGoster(veriler) {
-        const yoneticiContainer = document.getElementById('yonetici-dashboard');
-        
-        yoneticiContainer.innerHTML = `
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
-                <div style="background: var(--card-bg); padding: 20px; border: 2px solid var(--accent-gold); border-radius: 8px; text-align: center;">
-                    <div style="font-size: 2rem; font-weight: bold; color: var(--accent-gold);">${veriler.toplamKoordinator}</div>
-                    <div style="color: var(--text-light);">Toplam Koordinatör Öğretmen</div>
-                </div>
-                <div style="background: var(--card-bg); padding: 20px; border: 2px solid var(--accent-gold); border-radius: 8px; text-align: center;">
-                    <div style="font-size: 2rem; font-weight: bold; color: var(--accent-gold);">${veriler.toplamIsletme}</div>
-                    <div style="color: var(--text-light);">Toplam İş Yeri Sayısı</div>
-                </div>
-                <div style="background: var(--card-bg); padding: 20px; border: 2px solid var(--accent-gold); border-radius: 8px; text-align: center;">
-                    <div style="font-size: 2rem; font-weight: bold; color: var(--accent-gold);">${veriler.toplamOgrenci}</div>
-                    <div style="color: var(--text-light);">Toplam Öğrenci Sayısı</div>
-                </div>
-            </div>
-            <h3 style="color: var(--text-white); margin-bottom: 15px;">Koordinatör Öğretmenler</h3>
-            <div style="display: grid; gap: 15px;">
-                ${veriler.koordinatorler.map(koord => `
-                    <div style="background: var(--card-bg); padding: 15px; border: 2px solid var(--accent-gold); border-radius: 8px;">
-                        <strong style="color: var(--text-white);">${koord.isim}</strong>
-                        <div style="color: var(--text-light); font-size: 0.9rem; margin-top: 5px;">
-                            ${koord.okul}<br>
-                            📊 ${koord.isletmeSayisi} iş yeri • 🎓 ${koord.ogrenciSayisi} öğrenci
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        `;
     }
 
     function openModal(modalId, data) {
@@ -2543,7 +2461,39 @@
 
     [dom.dailyMonthSelect, dom.dailyYearSelect].forEach(el => el.addEventListener('change', populateWeeksForDailyForm));
     
-    
+    dom.tabs.addEventListener('click', e => { if(e.target.matches('.tab')) { const tabId=e.target.dataset.tab; document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(tabId).classList.add('active'); e.target.classList.add('active'); }});
+    document.addEventListener('click', e => { 
+        if (e.target.matches('[data-action="cancel-modal"]')) { 
+            e.target.closest('.modal').style.display = 'none'; 
+            return; 
+        } 
+        
+        // Accordion header kontrolü - BURASI ÖNEMLİ
+        const accordionHeader = e.target.closest('.accordion-header'); 
+        if (accordionHeader) { 
+            accordionHeader.nextElementSibling.classList.toggle('open'); 
+            return; // Bu return'ü ekle ki diğer aksiyonlar çalışmasın
+        } 
+        
+        const action = e.target.dataset.action; 
+        if(!action) return; 
+        const id = e.target.dataset.id; 
+        const businessId = e.target.dataset.businessId; 
+        
+        switch(action) { 
+            case 'add-student': openModal('studentModal', {businessId: id}); break; 
+            case 'edit-business': openModal('businessModal', {id: id}); break; 
+            case 'delete-business': deleteBusiness(id); break; 
+            case 'edit-student': openModal('studentModal', {id: id, businessId: businessId}); break; 
+            case 'delete-student': deleteStudent(id, businessId); break; 
+            case 'open-termination-modal': openModal('terminationModal', {studentId: id, businessId: businessId}); break; 
+            case 'cancel-termination': 
+                const studentId = e.target.dataset.studentId || e.target.dataset.id;
+                cancelTermination(studentId, businessId); 
+                break;
+            case 'open-absence-modal': openModal('absenceModal', {studentId: id, businessId: businessId}); break; 
+        } 
+    });
     dom.absenceModal.querySelector('#saveAbsenceBtn').addEventListener('click', saveAbsences);
     dom.absenceModal.querySelector('#absenceMonthSelect').addEventListener('change', renderAbsenceCalendar);
     dom.absenceModal.querySelector('#absenceYearSelect').addEventListener('change', renderAbsenceCalendar);
@@ -2574,6 +2524,7 @@
     }
    // --- OLAY DİNLEYİCİLERİ (EVENT LISTENERS) ---
         dom.googleLoginBtn.onclick = signInWithGoogle;
+        document.getElementById('github-login-btn').onclick = signInWithGitHub;
         dom.logoutBtn.onclick = () => signOut(auth);
         
         dom.generateSheetBtn.addEventListener('click', () => { /* ... Mevcut kodunuzdaki gibi ... */ });
@@ -2649,12 +2600,7 @@
         dom.deselectAllDailyBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.daily-business-checkbox').forEach(cb => cb.checked = false); updateDropdownText(); });
         document.addEventListener('change', (e) => { if (e.target.matches('.business-checkbox, .daily-business-checkbox')) { updateDropdownText(); } });
         [dom.dailyMonthSelect, dom.dailyYearSelect].forEach(el => el.addEventListener('change', populateWeeksForDailyForm));
-        dom.tabs.addEventListener('click', e => { if(e.target.matches('.tab')) { const tabId=e.target.dataset.tab;
-            // YÖNETİCİ PANELİ AÇILIRSA VERİ YÜKLE
-            if (tabId === 'yonetici-panel' && kullaniciRolu === 'yonetici') {
-                tumKullaniciVerileriniYukle();
-            }
-            document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(tabId).classList.add('active'); e.target.classList.add('active'); }});
+        dom.tabs.addEventListener('click', e => { if(e.target.matches('.tab')) { const tabId=e.target.dataset.tab; document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(tabId).classList.add('active'); e.target.classList.add('active'); }});
         document.addEventListener('click', e => {
             if (e.target.matches('[data-action="cancel-modal"]')) {
                 e.target.closest('.modal').style.display = 'none';
@@ -2703,11 +2649,6 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
-            // YÖNETİCİ KONTROLÜ
-            if (user.email === YONETICI_EMAIL) {
-                kullaniciRolu = "yonetici";
-                document.getElementById('yonetici-tab').style.display = 'block';
-            }
                 dom.loginSection.style.display = 'none';
                 dom.userInfo.style.display = 'block';
                 dom.userName.textContent = user.displayName || user.email;
