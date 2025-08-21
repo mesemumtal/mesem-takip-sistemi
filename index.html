@@ -2685,20 +2685,43 @@
         window.addEventListener('orientationchange', setVhProperty);
         
         // --- UYGULAMAYI BAŞLATAN TETİKLEYİCİ ---
-         firebaseAuth.onAuthStateChanged(auth, (user) => {
+        firebaseAuth.onAuthStateChanged(auth, (user) => {
+            // İlgili ana konteynerları en başta seçelim
+            const appContainer = document.getElementById('app-container');
+            const adminDashboard = document.getElementById('admin-dashboard');
+            const loginSection = document.getElementById('login-section');
+            const userInfo = document.getElementById('user-info');
+            const userName = document.getElementById('user-name');
+
             if (user) {
                 currentUser = user;
-                dom.loginSection.style.display = 'none';
-                dom.userInfo.style.display = 'block';
-                dom.userName.textContent = user.displayName || user.email;
-                dom.container.style.display = 'block';
-                loadUserData(); // Kullanıcı giriş yapınca verileri yükle
+                loginSection.style.display = 'none';
+                userInfo.style.display = 'block';
+                userName.textContent = user.displayName || user.email;
+
+                // Giriş yapan kullanıcının yöntemini kontrol et
+                const providerId = user.providerData[0].providerId;
+
+                if (providerId === 'github.com') {
+                    // Yönetici ise: Normal kullanıcı arayüzünü gizle, yönetici arayüzünü göster
+                    if (appContainer) appContainer.style.display = 'none';
+                    if (adminDashboard) adminDashboard.style.display = 'block';
+                    loadAndRenderAdminData(); 
+                } else {
+                    // Normal kullanıcı ise: Yönetici arayüzünü gizle, normal arayüzü göster
+                    if (adminDashboard) adminDashboard.style.display = 'none';
+                    if (appContainer) appContainer.style.display = 'block';
+                    loadUserData();
+                }
+
             } else {
+                // Kullanıcı çıkış yaptı
                 currentUser = null;
-                dom.loginSection.style.display = 'block';
-                dom.userInfo.style.display = 'none';
-                dom.container.style.display = 'none';
-                appData = {}; // Verileri temizle
+                loginSection.style.display = 'block';
+                userInfo.style.display = 'none';
+                if (appContainer) appContainer.style.display = 'none';
+                if (adminDashboard) adminDashboard.style.display = 'none';
+                appData = {};
             }
         });
 
