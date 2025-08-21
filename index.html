@@ -2,14 +2,11 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#f4c542">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
     <title>MESEM Günlük ve Aylık Rehberlik- Devamsızlık- Fesih Formları</title>
     <style>
         :root { 
@@ -683,48 +680,8 @@
             top: 0; 
             width: 100%; 
             height: 100%; 
-            backdrop-filter: none !important;
             background-color: rgba(11, 29, 58, 0.9); 
         }
-
-        .modal input,
-        .modal textarea,
-        .modal select {
-            scroll-margin-block-start: 99vh;
-        }
-
-        /* Masaüstünde modal kendi yerinde kalsın; sürükleyince pozisyonu korunur */
-        .modal-content{
-            position: fixed;
-            top: 50%;        /* tekrar ekle */
-            left: 50%;       /* tekrar ekle */
-            transform: translate(-50%, -50%); /* tekrar ekle */
-            margin: 0;
-            z-index: 10001;
-            will-change: auto;
-        }
-
-        /* SADECE mobil/tablet’te ortala (dokunmatik için) */
-        @media (max-width: 768px) {
-        .modal-content{
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }        
-
-        /* Sadece 'Öğrenciyi Düzenle' penceresini (studentModal) açılışta ekranın tam ortasına al */
-            #studentModal .modal-content{
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                margin: 0;         /* varsa margin:5% auto’yu geçersiz kılar */
-                max-height: 90vh;  /* taşmayı önler */
-                overflow: auto;    /* içerik uzun olursa kaydır */
-            }
-        }
-
-            
 
 
 
@@ -881,97 +838,6 @@
             }
 
 
-            /* --- MOBİL YAMASI (sadece mobilde çalışır) --- */
-            @media (max-width: 768px), (pointer: coarse) {
-
-            /* Modal içerik: iOS/Android'de akıcı kaydırma, taşmadan görünüm */
-            .modal .modal-content,
-            #studentModal .modal-content{
-                max-height: 90dvh;              /* iOS barlarını hesaba katar */
-                width: 96vw;                     /* ekrandan taşmayı engeller */
-                overflow: auto;                  /* içerik kayar */
-                -webkit-overflow-scrolling: touch;
-            }
-
-            /* Varsa modal gövdesini kaydırılabilir yap (tercih edilir) */
-            .modal .modal-body{
-                max-height: 70dvh;
-                overflow: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            /* Yalnızca mobil */
-            @media (max-width: 768px){
-            /* Konteyner: yan yana sığmayan butonlar otomatik bir alt satıra iner, ortalanır */
-            .modal .modal-footer,
-            .button-bar, .actions, .toolbar{
-                display: flex;
-                flex-wrap: wrap;          /* ALT SATIRA İNSİN */
-                justify-content: center;  /* ORTALA */
-                gap: 8px;
-            }
-
-            /* Butonlar: metin KIRILMAZ; sığmazsa buton komple alta geçer */
-            .modal .modal-footer > *,
-            .button-bar > *, .actions > *, .toolbar > *{
-                flex: 0 0 auto;           /* içeriğe göre genişlik */
-                white-space: nowrap;      /* buton içi metin tek satır */
-                min-height: 44px;
-                padding: 10px 12px;
-                font-size: clamp(12px, 3.2vw, 14px);  /* mobilde biraz küçült */
-                max-width: 100%;          /* güvenlik: taşma engeli */
-            }
-            }
-
-
-            /* Çok dar telefonlarda tek sütun */
-            @media (max-width: 360px){
-                .modal .modal-footer,
-                .button-bar, .actions, .toolbar{
-                grid-template-columns: 1fr;
-                }
-            }
-
-            /* Buton metni kırılabilsin; üst üste binmeyi kes */
-            .btn, button{
-                max-width: 100%;
-                white-space: normal;
-                line-height: 1.2;
-            }
-            }
-
-            /* SADECE MOBİL İÇİN - Desktop'a dokunmuyoruz */
-            @media (max-width: 768px) {
-                /* Veri Yönetimi butonları - sadece mobilde flex-wrap */
-                .panel > div:last-child > div {
-                    flex-wrap: wrap !important;
-                    justify-content: center !important;
-                }
-                
-                /* İşletmeler başlık hizası - mobilde alt alta */
-                div[style*="display:flex"][style*="justify-content: space-between"] {
-                    flex-direction: column !important;
-                    text-align: center !important;
-                    gap: 15px !important;
-                }
-            }
-
-            @media (max-width: 480px) {
-                /* Küçük ekranlarda butonlar tam genişlik */
-                .panel > div:last-child > div {
-                    flex-direction: column !important;
-                }
-                
-                .panel > div:last-child > div .btn {
-                    width: 100% !important;
-                    margin-bottom: 10px !important;
-                }
-            }
-
-
-
-
-
      </style>
 </head>
 <body>
@@ -1003,9 +869,9 @@
                          <div class="form-group"><label for="asstPrincipalName">Koordinatör Müdür Yardımcısı</label><input type="text" id="asstPrincipalName" class="form-input"></div>
                          <div class="form-group"><label for="principalName">Okul Müdürü</label><input type="text" id="principalName" class="form-input"></div>
                     </div>
-                    <div class="data-management-section">
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--accent-gold);">
                         <h3 style="color: var(--white); font-size: 1.2rem; margin-bottom: 15px;">Veri Yönetimi</h3>
-                        <div class="data-management-buttons">
+                        <div style="display: flex; gap: 15px;">
                             <button class="btn btn-primary" id="download-data-btn">Verileri İndir</button>
                             <button class="btn" id="upload-data-btn">Verileri Yükle</button>
                             <button class="btn" id="print-list-btn">Liste Yazdır</button>
@@ -1013,7 +879,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="business-header-section">
+                <div style="display:flex; justify-content: space-between; align-items: center;">
                     <h2>İşletmeler</h2>
                     <button class="btn btn-primary" id="add-business-btn">Yeni İşletme Ekle</button>
                 </div>
@@ -1110,7 +976,7 @@
     // 1. Firebase Kütüphanelerini import et
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
     // 2. Firebase ayarlarını yap ve başlat
     const firebaseConfig = {
@@ -1125,7 +991,6 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const YONETICI_EMAIL = "mesemumtal@gmail.com";
   
     // 3. TÜM UYGULAMA MANTIĞI HTML YÜKLENDİKTEN SONRA ÇALIŞACAK ŞEKİLDE DÜZENLENDİ
     document.addEventListener('DOMContentLoaded', () => {
@@ -1215,8 +1080,6 @@
         async function signInWithGoogle() {
             try {
                 const provider = new GoogleAuthProvider();
-                // YENİ EKLENEN SATIR: Her seferinde hesap seçme ekranını göstermeye zorla
-                provider.setCustomParameters({ prompt: 'select_account' });
                 await signInWithPopup(auth, provider);
             } catch (error) {
                 console.error('Giriş hatası:', error);
@@ -1255,78 +1118,19 @@
     
         async function saveData() {
             if (!currentUser) return;
-
-            // Ayarları al
-            dom.settingsInputs.forEach(input => {
+            dom.settingsInputs.forEach(input => { 
                 if(input.id && appData.settings) {
-                    appData.settings[input.id] = input.value;
+                    appData.settings[input.id] = input.value; 
                 }
             });
-
             try {
-                // 1. Veriyi her zaman kullanıcının kendi kişisel alanına kaydet
-                const userDocRef = doc(db, 'users', currentUser.uid);
-                await setDoc(userDocRef, appData);
-
-                // 2. Verinin bir kopyasını AYRICA yöneticinin görebilmesi için 'koordinatorler' koleksiyonuna kaydet
-                const coordinatorDocRef = doc(db, 'koordinatorler', currentUser.uid);
-                
-                // Belgeye, verinin kime ait olduğunu belirtmek için ek bilgi ekleyelim
-                const dataForAdmin = {
-                    ...appData,
-                    teacherName: currentUser.displayName,
-                    teacherEmail: currentUser.email
-                };
-                await setDoc(coordinatorDocRef, dataForAdmin);
-
-                console.log('Veri başarıyla iki yere de kaydedildi.');
+                await setDoc(doc(db, 'users', currentUser.uid), appData);
+                console.log('Veri başarıyla buluta kaydedildi.');
             } catch (error) {
                 console.error('Buluta kaydetme hatası:', error);
                 showNotification('Veri kaydedilirken bir hata oluştu.', 'error');
             }
         }
-
-        // YÖNETİCİ GİRİŞ YAPTIĞINDA ÇALIŞACAK YENİ FONKSİYON
-    async function loadAndRenderAdminData() {
-        const adminDashboard = document.getElementById('admin-dashboard');
-        adminDashboard.innerHTML = '<h2>Yönetici Paneli - Tüm Koordinatörler</h2><p>Veriler yükleniyor...</p>';
-
-        try {
-            const querySnapshot = await getDocs(collection(db, "koordinatorler"));
-            let allTeachersHTML = '';
-            
-            if (querySnapshot.empty) {
-                adminDashboard.innerHTML = '<h2>Yönetici Paneli - Tüm Koordinatörler</h2><p>Henüz hiçbir koordinatör verisi kaydedilmemiş.</p>';
-                return;
-            }
-
-            querySnapshot.forEach((doc) => {
-                const teacherData = doc.data();
-                const teacherName = teacherData.teacherName || 'İsimsiz Öğretmen';
-                const totalBusinesses = teacherData.businesses?.length || 0;
-                const totalStudents = teacherData.businesses?.reduce((sum, b) => sum + (b.students?.length || 0), 0) || 0;
-
-                let businessesHTML = '<ul>';
-                (teacherData.businesses || []).forEach(business => {
-                    businessesHTML += `<li><strong>${business.name}</strong> (${business.students?.length || 0} öğrenci)</li>`;
-                });
-                businessesHTML += '</ul>';
-
-                allTeachersHTML += `
-                    <div class="panel">
-                        <h3>${teacherName} <small>(${teacherData.teacherEmail})</small></h3>
-                        <p style="margin:10px 0;">Toplam İşletme: ${totalBusinesses} | Toplam Öğrenci: ${totalStudents}</p>
-                        ${businessesHTML}
-                    </div>
-                `;
-            });
-
-            adminDashboard.innerHTML = '<h2>Yönetici Paneli - Tüm Koordinatörler</h2>' + allTeachersHTML;
-        } catch (error) {
-            console.error("Yönetici verileri yüklenirken hata:", error);
-            adminDashboard.innerHTML = '<h2>Yönetici Paneli</h2><p style="color:red;">Veriler yüklenirken bir hata oluştu.</p>';
-        }
-    }
 
     const monthNames = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 
@@ -1707,70 +1511,68 @@
 
     function openModal(modalId, data) {
         const modal = document.getElementById(modalId);
-        const form = modal.querySelector('form'); 
-        if (form) form.reset();
-        if (form) { 
-            form.querySelectorAll('.error-message').forEach(el => el.style.display = 'none'); 
-            form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid')); 
-        }
+        const form = modal.querySelector('form'); if (form) form.reset();
+        if (form) { form.querySelectorAll('.error-message').forEach(el => el.style.display = 'none'); form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid')); }
         const title = modal.querySelector('h2');
-        
         if (modalId === 'businessModal') {
-            if (data && data.id) { 
-                const b = appData.businesses.find(b => b.id === data.id); 
-                title.textContent = 'İşletmeyi Düzenle'; 
-                form.querySelector('#businessId').value = b.id; 
-                form.querySelector('#businessName').value = b.name; 
-                form.querySelector('#businessAddress').value = b.address; 
-                form.querySelector('#businessPhone').value = b.phone; 
-                form.querySelector('#businessOfficial').value = b.official; 
-                form.querySelector('#businessVisitDay').value = b.visitDay; 
-            } else { 
-                title.textContent = 'Yeni İşletme Ekle'; 
-                form.querySelector('#businessId').value = ''; 
-            }
-        } else if (modalId === 'studentModal') {
-            form.querySelector('#studentBusinessId').value = data.businessId;
-            if (data && data.id) { 
-                const s = appData.businesses.find(b => b.id === data.businessId).students.find(s => s.id === data.id); 
-                title.textContent = 'Öğrenciyi Düzenle'; 
-                form.querySelector('#studentId').value = s.id; 
-                form.querySelector('#studentClass').value = s.class || '9';
-                form.querySelector('#studentNo').value = s.no; 
-                form.querySelector('#studentName').value = s.name; 
-                form.querySelector('#studentField').value = s.field; 
-                form.querySelector('#studentSchoolDay').value = s.schoolDay; 
-                form.querySelector('#studentPhone').value = s.phone; 
-                form.querySelector('#studentStartDate').value = s.startDate; 
-                form.querySelector('#studentEndDate').value = s.endDate; 
-            } else { 
-                title.textContent = 'Yeni Öğrenci Ekle'; 
-                form.querySelector('#studentId').value = ''; 
-            }
-        } else if (modalId === 'terminationModal') {
+            if (data && data.id) { const b = appData.businesses.find(b => b.id === data.id); title.textContent = 'İşletmeyi Düzenle'; form.querySelector('#businessId').value = b.id; form.querySelector('#businessName').value = b.name; form.querySelector('#businessAddress').value = b.address; form.querySelector('#businessPhone').value = b.phone; form.querySelector('#businessOfficial').value = b.official; form.querySelector('#businessVisitDay').value = b.visitDay; } 
+            else { title.textContent = 'Yeni İşletme Ekle'; form.querySelector('#businessId').value = ''; }
+        }else if (modalId === 'studentModal') {
+        form.querySelector('#studentBusinessId').value = data.businessId;
+        if (data && data.id) { 
+            const s = appData.businesses.find(b => b.id === data.businessId).students.find(s => s.id === data.id); 
+            title.textContent = 'Öğrenciyi Düzenle'; 
+            form.querySelector('#studentId').value = s.id; 
+            form.querySelector('#studentClass').value = s.class || '9';
+            form.querySelector('#studentNo').value = s.no; 
+            form.querySelector('#studentName').value = s.name; 
+            form.querySelector('#studentField').value = s.field; 
+            form.querySelector('#studentSchoolDay').value = s.schoolDay; 
+            form.querySelector('#studentPhone').value = s.phone; 
+            form.querySelector('#studentStartDate').value = s.startDate; 
+            form.querySelector('#studentEndDate').value = s.endDate; 
+        } 
+        else { 
+            title.textContent = 'Yeni Öğrenci Ekle'; 
+            form.querySelector('#studentId').value = ''; 
+        }
+        
+        // Modal'ı ekran ortasına hizala
+        setTimeout(() => {
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.style.position = 'fixed';
+            modalContent.style.top = '50%';
+            modalContent.style.left = '50%';
+            modalContent.style.transform = 'translate(-50%, -50%)';
+            modalContent.style.margin = '0';
+        }, 10);
+
+    
+        }else if (modalId === 'terminationModal') {
             form.querySelector('#terminationStudentId').value = data.studentId; 
             form.querySelector('#terminationBusinessId').value = data.businessId; 
             form.querySelector('#terminationDate').value = new Date().toISOString().slice(0, 10);
+            
+            // Modal'ı ekran ortasına getir
+            setTimeout(() => {
+                const modalContent = modal.querySelector('.modal-content');
+                modalContent.style.position = 'fixed';
+                modalContent.style.top = '50%';
+                modalContent.style.left = '50%';
+                modalContent.style.transform = 'translate(-50%, -50%)';
+                modalContent.style.margin = '0';
+            }, 10);
+        
         } else if (modalId === 'absenceModal') {
             currentAbsence = { studentId: data.studentId, businessId: data.businessId };
             const student = appData.businesses.find(b=>b.id===data.businessId).students.find(s=>s.id===data.studentId);
             modal.querySelector('h2').textContent = `${student.name} - Devamsızlık Girişi`;
             const monthSelect = modal.querySelector('#absenceMonthSelect');
             const yearSelect = modal.querySelector('#absenceYearSelect');
-            if (monthSelect.innerHTML === '') { 
-                monthSelect.innerHTML = monthNames.map((n,i) => `<option value="${i}">${n}</option>`).join(''); 
-            }
-            monthSelect.value = new Date().getMonth(); 
-            yearSelect.value = new Date().getFullYear();
+            if (monthSelect.innerHTML === '') { monthSelect.innerHTML = monthNames.map((n,i) => `<option value="${i}">${n}</option>`).join(''); }
+            monthSelect.value = new Date().getMonth(); yearSelect.value = new Date().getFullYear();
             renderAbsenceCalendar();
         }
-
-        const mc = modal.querySelector('.modal-content');
-        mc.style.top = '50%';
-        mc.style.left = '50%';
-        mc.style.transform = 'translate(-50%, -50%)';
-
-        
         modal.style.display = 'block';
     }
 
@@ -2400,69 +2202,69 @@
 
    
     document.addEventListener('click', function(e) {
-            // Checkbox'a direkt tıklama - EN ÖNCELİKLİ
-            if (e.target.type === 'checkbox' && (e.target.classList.contains('business-checkbox') || e.target.classList.contains('daily-business-checkbox'))) {
+        // Checkbox'a direkt tıklama - EN ÖNCELİKLİ
+        if (e.target.type === 'checkbox' && (e.target.classList.contains('business-checkbox') || e.target.classList.contains('daily-business-checkbox'))) {
+            setTimeout(() => {
+                updateDropdownText();
+            }, 10);
+            return;
+        }
+        
+        // Label'a tıklama
+        if (e.target.tagName === 'LABEL') {
+            const checkbox = document.getElementById(e.target.getAttribute('for'));
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
                 setTimeout(() => {
                     updateDropdownText();
                 }, 10);
-                return;
             }
+            return;
+        }
+        
+        // Aylık dropdown açma/kapama
+        if (e.target.closest('#business-dropdown-header')) {
+            const content = document.getElementById('business-dropdown-content');
+            const header = document.getElementById('business-dropdown-header');
             
-            // Label'a tıklama
-            if (e.target.tagName === 'LABEL') {
-                const checkbox = document.getElementById(e.target.getAttribute('for'));
-                if (checkbox) {
-                    checkbox.checked = !checkbox.checked;
-                    setTimeout(() => {
-                        updateDropdownText();
-                    }, 10);
-                }
-                return;
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                header.classList.remove('open');
+            } else {
+                content.style.display = 'block';
+                header.classList.add('open');
             }
+            return;
+        }
+        
+        // Günlük dropdown açma/kapama
+        if (e.target.closest('#daily-business-dropdown-header')) {
+            const content = document.getElementById('daily-business-dropdown-content');
+            const header = document.getElementById('daily-business-dropdown-header');
             
-            // Aylık dropdown açma/kapama
-            if (e.target.closest('#business-dropdown-header')) {
-                const content = document.getElementById('business-dropdown-content');
-                const header = document.getElementById('business-dropdown-header');
-                
-                if (content.style.display === 'block') {
-                    content.style.display = 'none';
-                    header.classList.remove('open');
-                } else {
-                    content.style.display = 'block';
-                    header.classList.add('open');
-                }
-                return;
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                header.classList.remove('open');
+            } else {
+                content.style.display = 'block';
+                header.classList.add('open');
             }
+            return;
+        }
+        
+        // Dropdown item'a tıklama (yedek sistem)
+        if (e.target.closest('.dropdown-item') && !e.target.closest('button')) {
+            const item = e.target.closest('.dropdown-item');
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                setTimeout(() => {
+                    updateDropdownText();
+                }, 10);
+            }
+        }
+    });
             
-            // Günlük dropdown açma/kapama
-            if (e.target.closest('#daily-business-dropdown-header')) {
-                const content = document.getElementById('daily-business-dropdown-content');
-                const header = document.getElementById('daily-business-dropdown-header');
-                
-                if (content.style.display === 'block') {
-                    content.style.display = 'none';
-                    header.classList.remove('open');
-                } else {
-                    content.style.display = 'block';
-                    header.classList.add('open');
-                }
-                return;
-            }
-            
-            // Dropdown item'a tıklama (yedek sistem)
-            if (e.target.closest('.dropdown-item') && !e.target.closest('button')) {
-                const item = e.target.closest('.dropdown-item');
-                const checkbox = item.querySelector('input[type="checkbox"]');
-                if (checkbox) {
-                    checkbox.checked = !checkbox.checked;
-                    setTimeout(() => {
-                        updateDropdownText();
-                    }, 10);
-                }
-            }
-        });
-                
     dom.dailyBusinessDropdownHeader.addEventListener('click', () => {
         dom.dailyBusinessDropdownHeader.classList.toggle('open');
         dom.dailyBusinessDropdownContent.classList.toggle('open');
@@ -2565,7 +2367,18 @@
     loadData();
     dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));
 
-    
+    // Mobil klavye fix
+    document.addEventListener('focusin', function(e) {
+        if (e.target.matches('input, textarea, select')) {
+            setTimeout(() => {
+                e.target.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            }, 300);
+        }
+    });
+
     // iOS Safari viewport fix
     function setVhProperty() {
         const vh = window.innerHeight * 0.01;
@@ -2685,7 +2498,7 @@
         dom.uploadInput.addEventListener('change', (event) => { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const loadedData = JSON.parse(e.target.result); if (loadedData.settings && loadedData.businesses) { appData = loadedData; saveData(); renderAll(); showNotification('Veriler başarıyla geri yüklendi ve buluta kaydedildi.', 'success'); } else { showNotification('Hatalı dosya formatı.', 'error'); } } catch (error) { showNotification('Dosya okunurken bir hata oluştu: ' + error, 'error'); } }; reader.readAsText(file); event.target.value = ''; });
         dom.printListBtn.addEventListener('click', () => { const listHTML = generateListPrint(); dom.printContainer.innerHTML = listHTML; window.print(); });
         document.addEventListener('input', (e) => { if (e.target.hasAttribute('inputmode') && e.target.getAttribute('inputmode') === 'numeric') { e.target.value = e.target.value.replace(/[^0-9]/g, ''); } });
-        
+        document.addEventListener('focusin', function(e) { if (e.target.matches('input, textarea, select')) { setTimeout(() => { e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300); } });
         dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));        
      
         
@@ -2694,48 +2507,24 @@
         window.addEventListener('orientationchange', setVhProperty);
         
         // --- UYGULAMAYI BAŞLATAN TETİKLEYİCİ ---
-       onAuthStateChanged(auth, (user) => {
-            const adminDashboard = document.getElementById('admin-dashboard');
-
+        onAuthStateChanged(auth, (user) => {
             if (user) {
-
-                // HATA AYIKLAMA KODLARI
-                console.log("Giriş yapan kullanıcı e-postası:", user.email);
-                console.log("Tanımlanan yönetici e-postası:", YONETICI_EMAIL);
-                // HATA AYIKLAMA KODLARI SONU
                 currentUser = user;
                 dom.loginSection.style.display = 'none';
                 dom.userInfo.style.display = 'block';
                 dom.userName.textContent = user.displayName || user.email;
-
-                // KULLANICI YÖNETİCİ Mİ KONTROLÜ
-                if (user.email === YONETICI_EMAIL) {
-                    // Evet, Yönetici
-                    dom.container.style.display = 'none'; // Normal arayüzü gizle
-                    adminDashboard.style.display = 'block'; // Yönetici panelini göster
-                    loadAndRenderAdminData(); // Yönetici verilerini yükle
-                } else {
-                    // Hayır, Normal Koordinatör
-                    adminDashboard.style.display = 'none'; // Yönetici panelini gizle
-                    dom.container.style.display = 'block'; // Normal arayüzü göster
-                    loadUserData(); // Normal kullanıcının kendi verilerini yükle
-                }
-
+                dom.container.style.display = 'block';
+                loadUserData(); // Kullanıcı giriş yapınca verileri yükle
             } else {
-                // Kullanıcı Çıkış Yaptı
                 currentUser = null;
                 dom.loginSection.style.display = 'block';
                 dom.userInfo.style.display = 'none';
                 dom.container.style.display = 'none';
-                adminDashboard.style.display = 'none';
                 appData = {}; // Verileri temizle
             }
         });
     });
 
 </script>
-
-<div id="admin-dashboard" class="container" style="display: none; padding-top: 30px;"></div>
-
 </body>
 </html>
