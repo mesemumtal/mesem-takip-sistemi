@@ -1124,7 +1124,7 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    const auth = firebaseAuth.getAuth(app);
     const db = getFirestore(app);
   
     // 3. TÜM UYGULAMA MANTIĞI HTML YÜKLENDİKTEN SONRA ÇALIŞACAK ŞEKİLDE DÜZENLENDİ
@@ -1214,10 +1214,9 @@
         // --- Firebase Fonksiyonları ---
         async function signInWithGoogle() {
             try {
-                const provider = new GoogleAuthProvider();
-                // YENİ EKLENEN SATIR: Her seferinde hesap seçme ekranını göstermeye zorla
+                const provider = new firebaseAuth.GoogleAuthProvider();
                 provider.setCustomParameters({ prompt: 'select_account' });
-                await signInWithPopup(auth, provider);
+                await firebaseAuth.signInWithPopup(auth, provider);
             } catch (error) {
                 console.error('Giriş hatası:', error);
                 showNotification('Giriş yapılamadı: ' + error.message, 'error');
@@ -1226,8 +1225,8 @@
 
         async function signInWithGitHub() {
             try {
-                const provider = new GithubAuthProvider();
-                await signInWithPopup(auth, provider);
+                const provider = new firebaseAuth.GithubAuthProvider();
+                await firebaseAuth.signInWithPopup(auth, provider);
             } catch (error) {
                 console.error('GitHub ile giriş hatası:', error);
                 showNotification('GitHub ile giriş yapılamadı: ' + error.message, 'error');
@@ -2646,7 +2645,7 @@
         window.addEventListener('orientationchange', setVhProperty);
         
         // --- UYGULAMAYI BAŞLATAN TETİKLEYİCİ ---
-        onAuthStateChanged(auth, (user) => {
+         firebaseAuth.onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
                 dom.loginSection.style.display = 'none';
@@ -2662,6 +2661,11 @@
                 appData = {}; // Verileri temizle
             }
         });
+
+        // --- OLAY DİNLEYİCİLERİ ---
+        dom.googleLoginBtn.onclick = signInWithGoogle;
+        document.getElementById('github-login-btn').onclick = signInWithGitHub; // github-login-btn ID'li butonunuz olduğunu varsayarak
+        dom.logoutBtn.onclick = () => firebaseAuth.signOut(auth);
     });
 
 </script>
