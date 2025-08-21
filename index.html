@@ -1120,6 +1120,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithRedirect } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
     // 2. Firebase ayarlarını yap ve başlat
     const firebaseConfig = {
@@ -1227,27 +1228,23 @@
         
 
         // --- Firebase Fonksiyonları ---
-        async function signInWithGoogle() {
+       async function signInWithGoogle() {
             try {
                 const provider = new GoogleAuthProvider();
                 
-                // POPUP AYARLARI
+                // REDIRECT AYARLARI (Cross-Origin hatası çözümü)
                 provider.setCustomParameters({
                     prompt: 'select_account'
                 });
                 
-                const result = await signInWithPopup(auth, provider);
-                console.log('Giriş başarılı:', result.user);
+                // POPUP yerine REDIRECT kullan
+                await signInWithRedirect(auth, provider);
+                console.log('Giriş yönlendirmesi başlatıldı');
             } catch (error) {
-                if (error.code === 'auth/popup-closed-by-user') {
-                    showNotification('Giriş penceresi kapatıldı. Tekrar deneyin.', 'info');
-                } else {
-                    console.error('Giriş hatası:', error);
-                    showNotification('Giriş yapılamadı: ' + error.message, 'error');
-                }
+                console.error('Giriş hatası:', error);
+                showNotification('Giriş yapılamadı: ' + error.message, 'error');
             }
         }
-
         async function loadUserData() {
             if (!currentUser) return;
             try {
