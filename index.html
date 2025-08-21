@@ -980,7 +980,6 @@
         <div id="login-section" style="text-align: center;">
             <h2 style="color: var(--accent-gold); margin-bottom: 10px;">🎓 MESEM Takip Sistemi</h2>
             <button id="google-login-btn" class="btn btn-primary">🔐 Google Hesabımla Giriş</button>
-            <button id="github-login-btn" class="btn btn-primary" style="margin-left:8px;">🔐 GitHub Hesabımla Giriş</button>
         </div>
         <div id="user-info" style="display: none; text-align: right;">
             <span id="user-name" style="color: var(--text-light); margin-right: 15px;"></span>
@@ -993,6 +992,7 @@
         <div class="tabs">
             <button class="tab active" data-tab="management-panel">🏢 Yönetim Paneli</button>
             <button class="tab" data-tab="generator-panel">📋 Form Oluştur</button>
+            <button class="tab" data-tab="yonetici-panel" id="yonetici-tab" style="display:none;">👨‍💼 Yönetici Gösterge Paneli</button>
         </div>
         <div class="content">
             <div id="management-panel" class="tab-content active">
@@ -1085,8 +1085,14 @@
                     </div>
                     <div class="form-group"><label for="genWeekSelect1">4. Hafta Seçin</label><select id="genWeekSelect1" class="form-select"></select></div>
                 </div>
-                 <button class="btn btn-primary" id="generate-sheet-btn" style="margin-top:20px; width: 100%; padding: 15px;">Formları Oluştur ve Yazdır</button>
-            </div>
+                    <button class="btn btn-primary" id="generate-sheet-btn" style="margin-top:20px; width: 100%; padding: 15px;">Formları Oluştur ve Yazdır</button>
+                </div>
+                <div id="yonetici-panel" class="tab-content">
+                    <h2>Yönetici Gösterge Paneli</h2>
+                    <div id="yonetici-dashboard">
+                        <p>Bilgiler yükleniyor...</p>
+                    </div>
+                </div>
         </div>
     </div>
     <div id="print-container"></div>
@@ -1110,14 +1116,8 @@
 <script type="module">
     // 1. Firebase Kütüphanelerini import et
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-    import { 
-    getAuth, signInWithPopup, GoogleAuthProvider, GithubAuthProvider,
-    onAuthStateChanged, signOut 
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-    import { 
-    getFirestore, doc, getDoc, setDoc, getDocs, collection 
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
     // 2. Firebase ayarlarını yap ve başlat
     const firebaseConfig = {
@@ -1139,8 +1139,9 @@
         let currentUser = null;
         let appData = {};
         let currentAbsence = { studentId: null, businessId: null };
-        let isAdminViewer = false;  // GitHub ile giriş yaparsa true (yönetici görüntüleyici)
-        let ownerUid = null;        // Koordinatörün UID'si (kendi verisi)
+        // YÖNETİCİ SİSTEMİ
+        const YONETICI_EMAIL = "mesemumtal@gmail.com";
+        let kullaniciRolu = "koordinator";
 
         // DOM elementleri tek bir yerde, en başta tanımlanıyor.
         const dom = {
@@ -1148,7 +1149,6 @@
             userInfo: document.getElementById('user-info'),
             userName: document.getElementById('user-name'),
             googleLoginBtn: document.getElementById('google-login-btn'),
-            githubLoginBtn: document.getElementById('github-login-btn'),
             logoutBtn: document.getElementById('logout-btn'),
             container: document.querySelector('.container'),
             tabs: document.querySelector('.tabs'),
@@ -1233,45 +1233,6 @@
             }
         }
 
-        async function loadAllCoordinatorsDataReadOnly() {
-            try {
-                // Tüm users koleksiyonunu çek
-                const snap = await getDocs(collection(db, 'users'));
-
-                // Yönetici birleşik görünümü: tüm işletmeleri tek listede topla
-                const mergedBusinesses = [];
-                let mergedSettingsSchoolName = '— (Yönetici Görünümü) —';
-
-                snap.forEach(d => {
-                const data = d.data() || {};
-                const owner = d.id;
-                const settings = data.settings || {};
-                const businesses = data.businesses || [];
-
-                businesses.forEach(b => {
-                    mergedBusinesses.push({
-                    ...b,
-                    __ownerUid: owner,
-                    __ownerSchool: settings.schoolName || ''
-                    });
-                });
-                });
-
-                // Mevcut render akışına uyacak şekilde appData oluştur
-                appData = {
-                settings: { schoolName: mergedSettingsSchoolName },
-                businesses: mergedBusinesses
-                };
-
-                renderAll();
-                dom.container.style.display = 'block';
-            } catch (e) {
-                console.error('Yönetici veri yükleme hatası:', e);
-                showNotification('Yönetici verileri çekilemedi.', 'error');
-            }
-        }
-
-
         async function loadUserData() {
             if (!currentUser) return;
             try {
@@ -1303,11 +1264,6 @@
     
         async function saveData() {
             if (!currentUser) return;
-                if (isAdminViewer) {
-                showNotification('Yönetici modunda değişiklik yapılamaz.', 'error');
-                return;
-            }
-
             dom.settingsInputs.forEach(input => { 
                 if(input.id && appData.settings) {
                     appData.settings[input.id] = input.value; 
@@ -1494,11 +1450,6 @@
 
     async function saveData() {
         if (!currentUser) return;
-        if (isAdminViewer) {
-            showNotification('Yönetici modunda değişiklik yapılamaz.', 'error');
-            return;
-        }
-
         
         dom.settingsInputs.forEach(input => { if(input.id) appData.settings[input.id] = input.value; });
         
@@ -1584,16 +1535,7 @@
             return `<div class="student-item"> <div class="student-info"> <strong style="${isTerminated ? 'text-decoration: line-through; color: var(--slate);' : ''}">${s.name}</strong> <small>${s.field || 'Alan belirtilmedi'} ${s.phone ? `- Tel: ${s.phone}` : ''} ${isTerminated ? `(Fesih: ${parseDateString(s.endDate).toLocaleDateString('tr-TR')})` : ''}</small> </div> <div class="student-actions">${actionButtons}</div> </div>`;
         }).join('') : '<p>Bu işletmeye kayıtlı öğrenci bulunmamaktadır.</p>';
 
-        let businessActions = '';
-        if (!isAdminViewer) {
-        businessActions = `
-            <button class="btn btn-primary" data-action="add-student" data-id="${business.id}">Öğrenci Ekle</button>
-            <button class="btn" data-action="edit-business" data-id="${business.id}">İşletmeyi Düzenle</button>
-            <button class="btn btn-danger" data-action="delete-business" data-id="${business.id}">İşletmeyi Sil</button>
-        `;
-        }
-        return `<div style="display:flex; gap:10px; margin-bottom:20px;">${businessActions}</div>${studentList}`;
-
+        return `<div style="display:flex; gap:10px; margin-bottom:20px;"> <button class="btn btn-primary" data-action="add-student" data-id="${business.id}">Öğrenci Ekle</button> <button class="btn" data-action="edit-business" data-id="${business.id}">İşletmeyi Düzenle</button> <button class="btn btn-danger" data-action="delete-business" data-id="${business.id}">İşletmeyi Sil</button> </div>${studentList}`;
     }
     
     function renderGeneratorUI() {
@@ -1713,6 +1655,77 @@
         dom.totalStudents.textContent = totalStudents;
     }
 
+    // YÖNETİCİ FONKSİYONLARI
+    async function tumKullaniciVerileriniYukle() {
+        if (kullaniciRolu !== "yonetici") return;
+        
+        try {
+            const tumKullanicilar = await getDocs(collection(db, 'users'));
+            const yoneticiVerileri = {
+                toplamKoordinator: 0,
+                toplamIsletme: 0,
+                toplamOgrenci: 0,
+                koordinatorler: []
+            };
+            
+            tumKullanicilar.forEach(doc => {
+                const kullaniciVerisi = doc.data();
+                if (kullaniciVerisi.businesses) {
+                    yoneticiVerileri.toplamKoordinator++;
+                    yoneticiVerileri.toplamIsletme += kullaniciVerisi.businesses.length;
+                    kullaniciVerisi.businesses.forEach(business => {
+                        yoneticiVerileri.toplamOgrenci += business.students ? business.students.length : 0;
+                    });
+                    
+                    yoneticiVerileri.koordinatorler.push({
+                        id: doc.id,
+                        isim: kullaniciVerisi.settings?.coordinatorName || 'İsimsiz',
+                        okul: kullaniciVerisi.settings?.schoolName || '',
+                        isletmeSayisi: kullaniciVerisi.businesses.length,
+                        ogrenciSayisi: kullaniciVerisi.businesses.reduce((sum, b) => sum + (b.students?.length || 0), 0)
+                    });
+                }
+            });
+            
+            yoneticiPaneliniGoster(yoneticiVerileri);
+        } catch (error) {
+            console.error('Yönetici veri yükleme hatası:', error);
+        }
+    }
+
+    function yoneticiPaneliniGoster(veriler) {
+        const yoneticiContainer = document.getElementById('yonetici-dashboard');
+        
+        yoneticiContainer.innerHTML = `
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <div style="background: var(--card-bg); padding: 20px; border: 2px solid var(--accent-gold); border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: var(--accent-gold);">${veriler.toplamKoordinator}</div>
+                    <div style="color: var(--text-light);">Toplam Koordinatör Öğretmen</div>
+                </div>
+                <div style="background: var(--card-bg); padding: 20px; border: 2px solid var(--accent-gold); border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: var(--accent-gold);">${veriler.toplamIsletme}</div>
+                    <div style="color: var(--text-light);">Toplam İş Yeri Sayısı</div>
+                </div>
+                <div style="background: var(--card-bg); padding: 20px; border: 2px solid var(--accent-gold); border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: var(--accent-gold);">${veriler.toplamOgrenci}</div>
+                    <div style="color: var(--text-light);">Toplam Öğrenci Sayısı</div>
+                </div>
+            </div>
+            <h3 style="color: var(--text-white); margin-bottom: 15px;">Koordinatör Öğretmenler</h3>
+            <div style="display: grid; gap: 15px;">
+                ${veriler.koordinatorler.map(koord => `
+                    <div style="background: var(--card-bg); padding: 15px; border: 2px solid var(--accent-gold); border-radius: 8px;">
+                        <strong style="color: var(--text-white);">${koord.isim}</strong>
+                        <div style="color: var(--text-light); font-size: 0.9rem; margin-top: 5px;">
+                            ${koord.okul}<br>
+                            📊 ${koord.isletmeSayisi} iş yeri • 🎓 ${koord.ogrenciSayisi} öğrenci
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
     function openModal(modalId, data) {
         const modal = document.getElementById(modalId);
         const form = modal.querySelector('form'); 
@@ -1828,25 +1841,13 @@
         return true;
     }
 
-    function saveBusiness(e) {
-        if (isAdminViewer) { 
-            showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
-            return; 
-        }
-
-        e.preventDefault(); if (!validateForm(dom.businessForm)) return; const form = dom.businessForm; const id = form.querySelector('#businessId').value; const businessData = { id: id || Date.now().toString(), name: form.querySelector('#businessName').value, address: form.querySelector('#businessAddress').value, phone: form.querySelector('#businessPhone').value, official: form.querySelector('#businessOfficial').value, visitDay: form.querySelector('#businessVisitDay').value, students: id ? appData.businesses.find(b => b.id === id).students : [] }; if (id) appData.businesses = appData.businesses.map(b => b.id === id ? businessData : b); else { if(!appData.businesses) appData.businesses = []; appData.businesses.push(businessData); } saveData(); renderAll(); closeModal('businessModal'); 
+    function saveBusiness(e) { e.preventDefault(); if (!validateForm(dom.businessForm)) return; const form = dom.businessForm; const id = form.querySelector('#businessId').value; const businessData = { id: id || Date.now().toString(), name: form.querySelector('#businessName').value, address: form.querySelector('#businessAddress').value, phone: form.querySelector('#businessPhone').value, official: form.querySelector('#businessOfficial').value, visitDay: form.querySelector('#businessVisitDay').value, students: id ? appData.businesses.find(b => b.id === id).students : [] }; if (id) appData.businesses = appData.businesses.map(b => b.id === id ? businessData : b); else { if(!appData.businesses) appData.businesses = []; appData.businesses.push(businessData); } saveData(); renderAll(); closeModal('businessModal'); 
     setTimeout(() => {
         showNotification('İşletme başarıyla kaydedildi.', 'success');
     }, 100);
 
     showNotification('İşletme başarıyla kaydedildi.', 'success'); }
-    function saveStudent(e) {
-        if (isAdminViewer) { 
-            showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
-            return; 
-        }
-
-        e.preventDefault(); if (!validateStudentForm()) return; const form = dom.studentForm; const businessId = form.querySelector('#studentBusinessId').value; const id = form.querySelector('#studentId').value; const business = appData.businesses.find(b => b.id === businessId); const existingStudent = id ? business.students.find(s => s.id === id) : {}; const studentData = { id: id || Date.now().toString(), no: form.querySelector('#studentNo').value, name: form.querySelector('#studentName').value, class: form.querySelector('#studentClass').value, field: form.querySelector('#studentField').value, schoolDay: form.querySelector('#studentSchoolDay').value, phone: form.querySelector('#studentPhone').value, startDate: form.querySelector('#studentStartDate').value, endDate: form.querySelector('#studentEndDate').value, terminationReason: existingStudent.terminationReason || '', absences: existingStudent.absences || {} }; 
+    function saveStudent(e) { e.preventDefault(); if (!validateStudentForm()) return; const form = dom.studentForm; const businessId = form.querySelector('#studentBusinessId').value; const id = form.querySelector('#studentId').value; const business = appData.businesses.find(b => b.id === businessId); const existingStudent = id ? business.students.find(s => s.id === id) : {}; const studentData = { id: id || Date.now().toString(), no: form.querySelector('#studentNo').value, name: form.querySelector('#studentName').value, class: form.querySelector('#studentClass').value, field: form.querySelector('#studentField').value, schoolDay: form.querySelector('#studentSchoolDay').value, phone: form.querySelector('#studentPhone').value, startDate: form.querySelector('#studentStartDate').value, endDate: form.querySelector('#studentEndDate').value, terminationReason: existingStudent.terminationReason || '', absences: existingStudent.absences || {} }; 
     if (id) {
         business.students = business.students.map(s => s.id === id ? studentData : s);
     } else {
@@ -1865,11 +1866,6 @@
     showNotification('Öğrenci başarıyla kaydedildi.', 'success'); }
        
     function deleteBusiness(id) {
-        if (isAdminViewer) { 
-            showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
-            return; 
-        }
-
         showNotification('İşletmeyi ve içindeki tüm öğrencileri silmek istediğinizden emin misiniz?', 'confirm', (result) => {
             if (result) {
                 appData.businesses = appData.businesses.filter(b => b.id !== id);
@@ -1880,11 +1876,6 @@
         });
     }
     function deleteStudent(id, businessId) {
-        if (isAdminViewer) { 
-            showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
-            return; 
-        }
-
         showNotification('Öğrenciyi kalıcı olarak silmek istediğinizden emin misiniz?', 'confirm', (result) => {
             if (result) {
                 const business = appData.businesses.find(b => b.id === businessId);
@@ -1896,12 +1887,6 @@
         });
     }
     function cancelTermination(id, businessId) {
-        if (isAdminViewer) { 
-            showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
-            return; 
-        }
-
-
         showNotification('Öğrencinin sözleşme feshini iptal etmek istediğinizden emin misiniz?', 'confirm', (result) => {
             if (result) {
                 const business = appData.businesses.find(b => b.id === businessId);
@@ -2546,39 +2531,7 @@
 
     [dom.dailyMonthSelect, dom.dailyYearSelect].forEach(el => el.addEventListener('change', populateWeeksForDailyForm));
     
-    dom.tabs.addEventListener('click', e => { if(e.target.matches('.tab')) { const tabId=e.target.dataset.tab; document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(tabId).classList.add('active'); e.target.classList.add('active'); }});
-    document.addEventListener('click', e => { 
-        if (e.target.matches('[data-action="cancel-modal"]')) { 
-            e.target.closest('.modal').style.display = 'none'; 
-            return; 
-        } 
-        
-        // Accordion header kontrolü - BURASI ÖNEMLİ
-        const accordionHeader = e.target.closest('.accordion-header'); 
-        if (accordionHeader) { 
-            accordionHeader.nextElementSibling.classList.toggle('open'); 
-            return; // Bu return'ü ekle ki diğer aksiyonlar çalışmasın
-        } 
-        
-        const action = e.target.dataset.action; 
-        if(!action) return; 
-        const id = e.target.dataset.id; 
-        const businessId = e.target.dataset.businessId; 
-        
-        switch(action) { 
-            case 'add-student': openModal('studentModal', {businessId: id}); break; 
-            case 'edit-business': openModal('businessModal', {id: id}); break; 
-            case 'delete-business': deleteBusiness(id); break; 
-            case 'edit-student': openModal('studentModal', {id: id, businessId: businessId}); break; 
-            case 'delete-student': deleteStudent(id, businessId); break; 
-            case 'open-termination-modal': openModal('terminationModal', {studentId: id, businessId: businessId}); break; 
-            case 'cancel-termination': 
-                const studentId = e.target.dataset.studentId || e.target.dataset.id;
-                cancelTermination(studentId, businessId); 
-                break;
-            case 'open-absence-modal': openModal('absenceModal', {studentId: id, businessId: businessId}); break; 
-        } 
-    });
+    
     dom.absenceModal.querySelector('#saveAbsenceBtn').addEventListener('click', saveAbsences);
     dom.absenceModal.querySelector('#absenceMonthSelect').addEventListener('change', renderAbsenceCalendar);
     dom.absenceModal.querySelector('#absenceYearSelect').addEventListener('change', renderAbsenceCalendar);
@@ -2684,7 +2637,12 @@
         dom.deselectAllDailyBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.daily-business-checkbox').forEach(cb => cb.checked = false); updateDropdownText(); });
         document.addEventListener('change', (e) => { if (e.target.matches('.business-checkbox, .daily-business-checkbox')) { updateDropdownText(); } });
         [dom.dailyMonthSelect, dom.dailyYearSelect].forEach(el => el.addEventListener('change', populateWeeksForDailyForm));
-        dom.tabs.addEventListener('click', e => { if(e.target.matches('.tab')) { const tabId=e.target.dataset.tab; document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(tabId).classList.add('active'); e.target.classList.add('active'); }});
+        dom.tabs.addEventListener('click', e => { if(e.target.matches('.tab')) { const tabId=e.target.dataset.tab;
+            // YÖNETİCİ PANELİ AÇILIRSA VERİ YÜKLE
+            if (tabId === 'yonetici-panel' && kullaniciRolu === 'yonetici') {
+                tumKullaniciVerileriniYukle();
+            }
+            document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(tabId).classList.add('active'); e.target.classList.add('active'); }});
         document.addEventListener('click', e => {
             if (e.target.matches('[data-action="cancel-modal"]')) {
                 e.target.closest('.modal').style.display = 'none';
@@ -2698,39 +2656,15 @@
             const businessId = e.target.dataset.businessId;
             
             switch (action) {
-                case 'add-student': 
-                    openModal('studentModal', { businessId: id }); 
-                    break;
-
-                case 'edit-business': 
-                    openModal('businessModal', { id: id }); 
-                    break;
-
-                case 'delete-business': 
-                    deleteBusiness(id); 
-                    break;
-
-                case 'edit-student': 
-                    openModal('studentModal', { id: id, businessId: businessId }); 
-                    break;
-
-                case 'delete-student': 
-                    deleteStudent(id, businessId); 
-                    break;
-
-                case 'open-termination-modal': 
-                    openModal('terminationModal', { studentId: id, businessId: businessId }); 
-                    break;
-
-                case 'cancel-termination': 
-                    cancelTermination(e.target.dataset.studentId, businessId); 
-                    break;
-
-                case 'open-absence-modal': 
-                    openModal('absenceModal', { studentId: id, businessId: businessId }); 
-                    break;
-             }
-
+                case 'add-student': openModal('studentModal', { businessId: id }); break;
+                case 'edit-business': openModal('businessModal', { id: id }); break;
+                case 'delete-business': deleteBusiness(id); break;
+                case 'edit-student': openModal('studentModal', { id: id, businessId: businessId }); break;
+                case 'delete-student': deleteStudent(id, businessId); break;
+                case 'open-termination-modal': openModal('terminationModal', { studentId: id, businessId: businessId }); break;
+                case 'cancel-termination': cancelTermination(e.target.dataset.studentId, businessId); break;
+                case 'open-absence-modal': openModal('absenceModal', { studentId: id, businessId: businessId }); break;
+            }
         });
         dom.absenceModal.addEventListener('click', e => { const dayEl = e.target.closest('.calendar-day.workday'); if (!dayEl) return; const statusEl = dayEl.querySelector('.calendar-day-status'); let currentStatus = statusEl.textContent.replace(/\s/g, ''); let newStatus = ''; if (currentStatus === '') newStatus = 'S'; else if (currentStatus === 'S') newStatus = 'Ö'; else if (currentStatus === 'Ö') newStatus = 'SÖ'; else newStatus = ''; statusEl.innerHTML = newStatus.replace('SÖ', 'S<br>Ö'); statusEl.classList.toggle('f-gold', newStatus !== ''); });
         dom.absenceModal.querySelector('#saveAbsenceBtn').addEventListener('click', saveAbsences);
@@ -2754,38 +2688,26 @@
         window.addEventListener('orientationchange', setVhProperty);
         
         // --- UYGULAMAYI BAŞLATAN TETİKLEYİCİ ---
-        onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            currentUser = user;
-            ownerUid = user.uid;
-
-            // Sağlayıcı tespiti (ilk provider yeterli)
-            const providerId = (user.providerData && user.providerData[0] && user.providerData[0].providerId) || '';
-            isAdminViewer = (providerId === 'github.com'); // GitHub ile giriş = Yönetici (salt-okuma)
-
-            dom.loginSection.style.display = 'none';
-            dom.userInfo.style.display = 'block';
-            dom.userName.textContent = user.displayName || user.email;
-
-            if (isAdminViewer) {
-            await loadAllCoordinatorsDataReadOnly();
-            dom.userName.textContent += ' — (Yönetici Görünümü)';
-            } else {
-            dom.container.style.display = 'block';
-            await loadUserData();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+            // YÖNETİCİ KONTROLÜ
+            if (user.email === YONETICI_EMAIL) {
+                kullaniciRolu = "yonetici";
+                document.getElementById('yonetici-tab').style.display = 'block';
             }
-
-            toggleEditabilityByRole();
-        } else {
-            currentUser = null;
-            isAdminViewer = false;
-            ownerUid = null;
-
-            dom.loginSection.style.display = 'block';
-            dom.userInfo.style.display = 'none';
-            dom.container.style.display = 'none';
-            appData = {};
-        }
+                dom.loginSection.style.display = 'none';
+                dom.userInfo.style.display = 'block';
+                dom.userName.textContent = user.displayName || user.email;
+                dom.container.style.display = 'block';
+                loadUserData(); // Kullanıcı giriş yapınca verileri yükle
+            } else {
+                currentUser = null;
+                dom.loginSection.style.display = 'block';
+                dom.userInfo.style.display = 'none';
+                dom.container.style.display = 'none';
+                appData = {}; // Verileri temizle
+            }
         });
     });
 
