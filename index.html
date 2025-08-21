@@ -2685,32 +2685,34 @@
         window.addEventListener('orientationchange', setVhProperty);
         
         // --- UYGULAMAYI BAŞLATAN TETİKLEYİCİ ---
+      
         firebaseAuth.onAuthStateChanged(auth, (user) => {
-            // İlgili ana konteynerları en başta seçelim
             const appContainer = document.getElementById('app-container');
             const adminDashboard = document.getElementById('admin-dashboard');
+
+            // DOM referanslarını doğrudan burada kullanalım
             const loginSection = document.getElementById('login-section');
             const userInfo = document.getElementById('user-info');
             const userName = document.getElementById('user-name');
 
             if (user) {
                 currentUser = user;
+                // --- GİRİŞ YAPILDI BİLDİRİMİ (HER ZAMAN ÇALIŞIR) ---
                 loginSection.style.display = 'none';
                 userInfo.style.display = 'block';
                 userName.textContent = user.displayName || user.email;
 
-                // Giriş yapan kullanıcının yöntemini kontrol et
                 const providerId = user.providerData[0].providerId;
 
                 if (providerId === 'github.com') {
-                    // Yönetici ise: Normal kullanıcı arayüzünü gizle, yönetici arayüzünü göster
-                    if (appContainer) appContainer.style.display = 'none';
-                    if (adminDashboard) adminDashboard.style.display = 'block';
+                    // Yönetici ise: Normal arayüzü gizle, yönetici arayüzünü göster
+                    appContainer.style.display = 'none';
+                    adminDashboard.style.display = 'block';
                     loadAndRenderAdminData(); 
                 } else {
                     // Normal kullanıcı ise: Yönetici arayüzünü gizle, normal arayüzü göster
-                    if (adminDashboard) adminDashboard.style.display = 'none';
-                    if (appContainer) appContainer.style.display = 'block';
+                    adminDashboard.style.display = 'none';
+                    appContainer.style.display = 'block';
                     loadUserData();
                 }
 
@@ -2719,8 +2721,8 @@
                 currentUser = null;
                 loginSection.style.display = 'block';
                 userInfo.style.display = 'none';
-                if (appContainer) appContainer.style.display = 'none';
-                if (adminDashboard) adminDashboard.style.display = 'none';
+                appContainer.style.display = 'none';
+                adminDashboard.style.display = 'none';
                 appData = {};
             }
         });
