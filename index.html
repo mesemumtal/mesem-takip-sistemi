@@ -2521,108 +2521,156 @@
         const vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
     }
-   // --- OLAY DİNLEYİCİLERİ (EVENT LISTENERS) ---
+   // =================================================================
+        // --- OLAY DİNLEYİCİLERİ (TÜMÜ TEK BİR YERDE VE DÜZELTİLMİŞ) ---
+        // =================================================================
+
+        // --- Kimlik Doğrulama Butonları ---
         dom.googleLoginBtn.onclick = signInWithGoogle;
-        document.getElementById('github-login-btn').onclick = signInWithGitHub;
-        dom.logoutBtn.onclick = () => signOut(auth);
+        dom.logoutBtn.onclick = () => firebaseAuth.signOut(auth);
+
+        const githubBtn = document.getElementById('github-login-btn');
+        if (githubBtn) {
+            githubBtn.onclick = signInWithGitHub;
+        }
+
+        // --- Ana Form Gönderimleri ---
+        if (dom.businessForm) dom.businessForm.addEventListener('submit', saveBusiness);
+        if (dom.studentForm) dom.studentForm.addEventListener('submit', saveStudent);
+        if (dom.terminationForm) dom.terminationForm.addEventListener('submit', generateTerminationForm);
+
+        // --- Veri Yönetimi Butonları ---
+        if (dom.downloadBtn) dom.downloadBtn.addEventListener('click', () => { 
+            saveData(); 
+            const dataStr = JSON.stringify(appData, null, 2); 
+            const blob = new Blob([dataStr], {type: 'application/json'}); 
+            const url = URL.createObjectURL(blob); 
+            const a = document.createElement('a'); 
+            a.href = url; 
+            a.download = `mesem_verileri_${new Date().toISOString().slice(0,10)}.json`; 
+            a.click(); 
+            URL.revokeObjectURL(url); 
+            showNotification('Veriler başarıyla indirildi.', 'success'); 
+        });
+
+        if (dom.uploadBtn) dom.uploadBtn.addEventListener('click', () => dom.uploadInput.click());
+
+        if (dom.uploadInput) dom.uploadInput.addEventListener('change', (event) => { 
+            const file = event.target.files[0]; 
+            if (!file) return; 
+            const reader = new FileReader(); 
+            reader.onload = (e) => { 
+                try { 
+                    const loadedData = JSON.parse(e.target.result); 
+                    if (loadedData.settings && loadedData.businesses) { 
+                        appData = loadedData; 
+                        saveData(); 
+                        renderAll(); 
+                        showNotification('Veriler başarıyla geri yüklendi ve buluta kaydedildi.', 'success'); 
+                    } else { 
+                        showNotification('Hatalı dosya formatı.', 'error'); 
+                    } 
+                } catch (error) { 
+                    showNotification('Dosya okunurken bir hata oluştu: ' + error, 'error'); 
+                } 
+            }; 
+            reader.readAsText(file); 
+            event.target.value = ''; 
+        });
+
+        if (dom.printListBtn) dom.printListBtn.addEventListener('click', () => { 
+            const listHTML = generateListPrint(); 
+            dom.printContainer.innerHTML = listHTML; 
+            window.print(); 
+        });
         
-        dom.generateSheetBtn.addEventListener('click', () => { /* ... Mevcut kodunuzdaki gibi ... */ });
-        dom.formTypeSelect.addEventListener('change', (e) => { /* ... Mevcut kodunuzdaki gibi ... */ });
-       document.addEventListener('click', function(e) {
-            // Checkbox'a direkt tıklama - EN ÖNCELİKLİ
-            if (e.target.type === 'checkbox' && (e.target.classList.contains('business-checkbox') || e.target.classList.contains('daily-business-checkbox'))) {
-                setTimeout(() => {
-                    updateDropdownText();
-                }, 10);
-                return;
-            }
-            
-            // Label'a tıklama
-            if (e.target.tagName === 'LABEL') {
-                const checkbox = document.getElementById(e.target.getAttribute('for'));
-                if (checkbox) {
-                    checkbox.checked = !checkbox.checked;
-                    setTimeout(() => {
-                        updateDropdownText();
-                    }, 10);
-                }
-                return;
-            }
-            
-            // Aylık dropdown açma/kapama
-            if (e.target.closest('#business-dropdown-header')) {
-                const content = document.getElementById('business-dropdown-content');
-                const header = document.getElementById('business-dropdown-header');
-                
-                if (content.style.display === 'block') {
-                    content.style.display = 'none';
-                    header.classList.remove('open');
-                } else {
-                    content.style.display = 'block';
-                    header.classList.add('open');
-                }
-                return;
-            }
-            
-            // Günlük dropdown açma/kapama
-            if (e.target.closest('#daily-business-dropdown-header')) {
-                const content = document.getElementById('daily-business-dropdown-content');
-                const header = document.getElementById('daily-business-dropdown-header');
-                
-                if (content.style.display === 'block') {
-                    content.style.display = 'none';
-                    header.classList.remove('open');
-                } else {
-                    content.style.display = 'block';
-                    header.classList.add('open');
-                }
-                return;
-            }
-            
-            // Dropdown item'a tıklama (yedek sistem)
-            if (e.target.closest('.dropdown-item') && !e.target.closest('button')) {
-                const item = e.target.closest('.dropdown-item');
-                const checkbox = item.querySelector('input[type="checkbox"]');
-                if (checkbox) {
-                    checkbox.checked = !checkbox.checked;
-                    setTimeout(() => {
-                        updateDropdownText();
-                    }, 10);
-                }
+        // --- Arayüz Etkileşimleri ---
+        if (dom.addBusinessBtn) dom.addBusinessBtn.addEventListener('click', () => openModal('businessModal', null));
+        if (dom.generateSheetBtn) dom.generateSheetBtn.addEventListener('click', () => { /* Generate Sheet Logic */ });
+        if (dom.formTypeSelect) dom.formTypeSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'daily_guidance') { 
+                dom.controlsMonthly.classList.remove('active'); 
+                dom.controlsDaily.classList.add('active'); 
+            } else { 
+                dom.controlsDaily.classList.remove('active'); 
+                dom.controlsMonthly.classList.add('active'); 
             }
         });
-        dom.dailyBusinessDropdownHeader.addEventListener('click', () => { dom.dailyBusinessDropdownHeader.classList.toggle('open'); dom.dailyBusinessDropdownContent.classList.toggle('open'); });
-        document.addEventListener('click', (e) => { if (!e.target.closest('.dropdown-container')) { document.querySelectorAll('.dropdown-header.open').forEach(h => h.classList.remove('open')); document.querySelectorAll('.dropdown-content.open').forEach(c => c.classList.remove('open')); } });
-        dom.selectAllBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.business-checkbox').forEach(cb => cb.checked = true); updateDropdownText(); });
-        dom.deselectAllBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.business-checkbox').forEach(cb => cb.checked = false); updateDropdownText(); });
-        dom.selectAllDailyBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.daily-business-checkbox').forEach(cb => cb.checked = true); updateDropdownText(); });
-        dom.deselectAllDailyBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.daily-business-checkbox').forEach(cb => cb.checked = false); updateDropdownText(); });
-        document.addEventListener('change', (e) => { if (e.target.matches('.business-checkbox, .daily-business-checkbox')) { updateDropdownText(); } });
-        [dom.dailyMonthSelect, dom.dailyYearSelect].forEach(el => el.addEventListener('change', populateWeeksForDailyForm));
-        dom.tabs.addEventListener('click', e => { if(e.target.matches('.tab')) { const tabId=e.target.dataset.tab; document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(tabId).classList.add('active'); e.target.classList.add('active'); }});
+
+        // --- Devamsızlık Modalı Dinleyicileri ---
+        if (dom.absenceModal) {
+            dom.absenceModal.addEventListener('click', e => { 
+                const dayEl = e.target.closest('.calendar-day.workday'); 
+                if (!dayEl) return; 
+                const statusEl = dayEl.querySelector('.calendar-day-status'); 
+                let currentStatus = statusEl.textContent.replace(/\s/g, ''); 
+                let newStatus = ''; 
+                if (currentStatus === '') newStatus = 'S'; 
+                else if (currentStatus === 'S') newStatus = 'Ö'; 
+                else if (currentStatus === 'Ö') newStatus = 'SÖ'; 
+                else newStatus = ''; 
+                statusEl.innerHTML = newStatus.replace('SÖ', 'S<br>Ö'); 
+                statusEl.classList.toggle('f-gold', newStatus !== ''); 
+            });
+            dom.absenceModal.querySelector('#saveAbsenceBtn').addEventListener('click', saveAbsences);
+            dom.absenceModal.querySelector('#absenceMonthSelect').addEventListener('change', renderAbsenceCalendar);
+            dom.absenceModal.querySelector('#absenceYearSelect').addEventListener('change', renderAbsenceCalendar);
+        }
+
+        // --- Genel Tıklama Yöneticisi (Tüm Sayfa İçin) ---
         document.addEventListener('click', e => {
-            if (e.target.matches('[data-action="cancel-modal"]')) {
-                e.target.closest('.modal').style.display = 'none';
+            const actionTarget = e.target.closest('[data-action]');
+            const accordionHeader = e.target.closest('.accordion-header');
+            const tab = e.target.closest('.tab');
+            
+            // data-action butonları için (Öğrenci sil, düzenle vs.)
+            if (actionTarget) {
+                const action = actionTarget.dataset.action;
+                const id = actionTarget.dataset.id;
+                const businessId = actionTarget.dataset.businessId;
+                const studentId = actionTarget.dataset.studentId;
+
+                if (action === 'cancel-modal') {
+                    e.target.closest('.modal').style.display = 'none';
+                    return;
+                }
+
+                switch(action) { 
+                    case 'add-student': openModal('studentModal', {businessId: id}); break; 
+                    case 'edit-business': openModal('businessModal', {id: id}); break; 
+                    case 'delete-business': deleteBusiness(id); break; 
+                    case 'edit-student': openModal('studentModal', {id: id, businessId: businessId}); break; 
+                    case 'delete-student': deleteStudent(id, businessId); break; 
+                    case 'open-termination-modal': openModal('terminationModal', {studentId: id, businessId: businessId}); break; 
+                    case 'cancel-termination': cancelTermination(studentId, businessId); break;
+                    case 'open-absence-modal': openModal('absenceModal', {studentId: id, businessId: businessId}); break; 
+                }
                 return;
             }
 
-            const action = e.target.dataset.action;
-            if (!action) return;
+            // Akordiyon menüler için
+            if (accordionHeader) { 
+                accordionHeader.nextElementSibling.classList.toggle('open'); 
+                return;
+            }
 
-            const id = e.target.dataset.id;
-            const businessId = e.target.dataset.businessId;
-            
-            switch (action) {
-                case 'add-student': openModal('studentModal', { businessId: id }); break;
-                case 'edit-business': openModal('businessModal', { id: id }); break;
-                case 'delete-business': deleteBusiness(id); break;
-                case 'edit-student': openModal('studentModal', { id: id, businessId: businessId }); break;
-                case 'delete-student': deleteStudent(id, businessId); break;
-                case 'open-termination-modal': openModal('terminationModal', { studentId: id, businessId: businessId }); break;
-                case 'cancel-termination': cancelTermination(e.target.dataset.studentId, businessId); break;
-                case 'open-absence-modal': openModal('absenceModal', { studentId: id, businessId: businessId }); break;
+            // Sekmeler için (Yönetim Paneli / Form Oluştur)
+            if (tab) {
+                const tabId = tab.dataset.tab;
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                tab.classList.add('active');
             }
         });
+
+        // --- Diğer Genel Dinleyiciler ---
+        document.addEventListener('input', (e) => {
+            if (e.target.hasAttribute('inputmode') && e.target.getAttribute('inputmode') === 'numeric') {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            }
+        });
+        
         dom.absenceModal.addEventListener('click', e => { const dayEl = e.target.closest('.calendar-day.workday'); if (!dayEl) return; const statusEl = dayEl.querySelector('.calendar-day-status'); let currentStatus = statusEl.textContent.replace(/\s/g, ''); let newStatus = ''; if (currentStatus === '') newStatus = 'S'; else if (currentStatus === 'S') newStatus = 'Ö'; else if (currentStatus === 'Ö') newStatus = 'SÖ'; else newStatus = ''; statusEl.innerHTML = newStatus.replace('SÖ', 'S<br>Ö'); statusEl.classList.toggle('f-gold', newStatus !== ''); });
         dom.absenceModal.querySelector('#saveAbsenceBtn').addEventListener('click', saveAbsences);
         dom.absenceModal.querySelector('#absenceMonthSelect').addEventListener('change', renderAbsenceCalendar);
@@ -2661,11 +2709,6 @@
                 appData = {}; // Verileri temizle
             }
         });
-
-        // --- OLAY DİNLEYİCİLERİ ---
-        dom.googleLoginBtn.onclick = signInWithGoogle;
-        document.getElementById('github-login-btn').onclick = signInWithGitHub; // github-login-btn ID'li butonunuz olduğunu varsayarak
-        dom.logoutBtn.onclick = () => firebaseAuth.signOut(auth);
     });
 
 </script>
