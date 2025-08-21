@@ -7,6 +7,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin-allow-popups">
+    <meta http-equiv="Cross-Origin-Embedder-Policy" content="unsafe-none">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -1132,6 +1134,10 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+
+    // POPUP AYARLARI
+    auth.useDeviceLanguage();
+
   
     // 3. TÜM UYGULAMA MANTIĞI HTML YÜKLENDİKTEN SONRA ÇALIŞACAK ŞEKİLDE DÜZENLENDİ
     document.addEventListener('DOMContentLoaded', () => {
@@ -1224,12 +1230,21 @@
         async function signInWithGoogle() {
             try {
                 const provider = new GoogleAuthProvider();
-                // YENİ EKLENEN SATIR: Her seferinde hesap seçme ekranını göstermeye zorla
-                provider.setCustomParameters({ prompt: 'select_account' });
-                await signInWithPopup(auth, provider);
+                
+                // POPUP AYARLARI
+                provider.setCustomParameters({
+                    prompt: 'select_account'
+                });
+                
+                const result = await signInWithPopup(auth, provider);
+                console.log('Giriş başarılı:', result.user);
             } catch (error) {
-                console.error('Giriş hatası:', error);
-                showNotification('Giriş yapılamadı: ' + error.message, 'error');
+                if (error.code === 'auth/popup-closed-by-user') {
+                    showNotification('Giriş penceresi kapatıldı. Tekrar deneyin.', 'info');
+                } else {
+                    console.error('Giriş hatası:', error);
+                    showNotification('Giriş yapılamadı: ' + error.message, 'error');
+                }
             }
         }
 
