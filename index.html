@@ -980,6 +980,9 @@
         <div id="login-section" style="text-align: center;">
             <h2 style="color: var(--accent-gold); margin-bottom: 10px;">🎓 MESEM Takip Sistemi</h2>
             <button id="google-login-btn" class="btn btn-primary">🔐 Google Hesabımla Giriş</button>
+            <button id="github-login-btn" class="btn btn-primary" style="margin-left:8px;">
+            🔐 GitHub Hesabımla Giriş
+            </button>
         </div>
         <div id="user-info" style="display: none; text-align: right;">
             <span id="user-name" style="color: var(--text-light); margin-right: 15px;"></span>
@@ -1109,8 +1112,14 @@
 <script type="module">
     // 1. Firebase Kütüphanelerini import et
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+    import { 
+    getAuth, signInWithPopup, GoogleAuthProvider, GithubAuthProvider,
+    onAuthStateChanged, signOut 
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+    import { 
+    getFirestore, doc, getDoc, setDoc, getDocs, collection 
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
 
     // 2. Firebase ayarlarını yap ve başlat
     const firebaseConfig = {
@@ -1132,6 +1141,8 @@
         let currentUser = null;
         let appData = {};
         let currentAbsence = { studentId: null, businessId: null };
+        let isAdminViewer = false;  // GitHub ile giriş yaparsa true (yönetici görüntüleyici)
+        let ownerUid = null;        // Koordinatörün UID'si (kendi verisi)
 
         // DOM elementleri tek bir yerde, en başta tanımlanıyor.
         const dom = {
@@ -1139,6 +1150,7 @@
             userInfo: document.getElementById('user-info'),
             userName: document.getElementById('user-name'),
             googleLoginBtn: document.getElementById('google-login-btn'),
+            githubLoginBtn: document.getElementById('github-login-btn'),
             logoutBtn: document.getElementById('logout-btn'),
             container: document.querySelector('.container'),
             tabs: document.querySelector('.tabs'),
@@ -1223,6 +1235,45 @@
             }
         }
 
+        async function loadAllCoordinatorsDataReadOnly() {
+            try {
+                // Tüm users koleksiyonunu çek
+                const snap = await getDocs(collection(db, 'users'));
+
+                // Yönetici birleşik görünümü: tüm işletmeleri tek listede topla
+                const mergedBusinesses = [];
+                let mergedSettingsSchoolName = '— (Yönetici Görünümü) —';
+
+                snap.forEach(d => {
+                const data = d.data() || {};
+                const owner = d.id;
+                const settings = data.settings || {};
+                const businesses = data.businesses || [];
+
+                businesses.forEach(b => {
+                    mergedBusinesses.push({
+                    ...b,
+                    __ownerUid: owner,
+                    __ownerSchool: settings.schoolName || ''
+                    });
+                });
+                });
+
+                // Mevcut render akışına uyacak şekilde appData oluştur
+                appData = {
+                settings: { schoolName: mergedSettingsSchoolName },
+                businesses: mergedBusinesses
+                };
+
+                renderAll();
+                dom.container.style.display = 'block';
+            } catch (e) {
+                console.error('Yönetici veri yükleme hatası:', e);
+                showNotification('Yönetici verileri çekilemedi.', 'error');
+            }
+        }
+
+
         async function loadUserData() {
             if (!currentUser) return;
             try {
@@ -1254,6 +1305,11 @@
     
         async function saveData() {
             if (!currentUser) return;
+                if (isAdminViewer) {
+                showNotification('Yönetici modunda değişiklik yapılamaz.', 'error');
+                return;
+            }
+
             dom.settingsInputs.forEach(input => { 
                 if(input.id && appData.settings) {
                     appData.settings[input.id] = input.value; 
@@ -1440,6 +1496,11 @@
 
     async function saveData() {
         if (!currentUser) return;
+        if (isAdminViewer) {
+            showNotification('Yönetici modunda değişiklik yapılamaz.', 'error');
+            return;
+        }
+
         
         dom.settingsInputs.forEach(input => { if(input.id) appData.settings[input.id] = input.value; });
         
@@ -1525,7 +1586,16 @@
             return `<div class="student-item"> <div class="student-info"> <strong style="${isTerminated ? 'text-decoration: line-through; color: var(--slate);' : ''}">${s.name}</strong> <small>${s.field || 'Alan belirtilmedi'} ${s.phone ? `- Tel: ${s.phone}` : ''} ${isTerminated ? `(Fesih: ${parseDateString(s.endDate).toLocaleDateString('tr-TR')})` : ''}</small> </div> <div class="student-actions">${actionButtons}</div> </div>`;
         }).join('') : '<p>Bu işletmeye kayıtlı öğrenci bulunmamaktadır.</p>';
 
-        return `<div style="display:flex; gap:10px; margin-bottom:20px;"> <button class="btn btn-primary" data-action="add-student" data-id="${business.id}">Öğrenci Ekle</button> <button class="btn" data-action="edit-business" data-id="${business.id}">İşletmeyi Düzenle</button> <button class="btn btn-danger" data-action="delete-business" data-id="${business.id}">İşletmeyi Sil</button> </div>${studentList}`;
+        let businessActions = '';
+        if (!isAdminViewer) {
+        businessActions = `
+            <button class="btn btn-primary" data-action="add-student" data-id="${business.id}">Öğrenci Ekle</button>
+            <button class="btn" data-action="edit-business" data-id="${business.id}">İşletmeyi Düzenle</button>
+            <button class="btn btn-danger" data-action="delete-business" data-id="${business.id}">İşletmeyi Sil</button>
+        `;
+        }
+        return `<div style="display:flex; gap:10px; margin-bottom:20px;">${businessActions}</div>${studentList}`;
+
     }
     
     function renderGeneratorUI() {
@@ -1760,13 +1830,25 @@
         return true;
     }
 
-    function saveBusiness(e) { e.preventDefault(); if (!validateForm(dom.businessForm)) return; const form = dom.businessForm; const id = form.querySelector('#businessId').value; const businessData = { id: id || Date.now().toString(), name: form.querySelector('#businessName').value, address: form.querySelector('#businessAddress').value, phone: form.querySelector('#businessPhone').value, official: form.querySelector('#businessOfficial').value, visitDay: form.querySelector('#businessVisitDay').value, students: id ? appData.businesses.find(b => b.id === id).students : [] }; if (id) appData.businesses = appData.businesses.map(b => b.id === id ? businessData : b); else { if(!appData.businesses) appData.businesses = []; appData.businesses.push(businessData); } saveData(); renderAll(); closeModal('businessModal'); 
+    function saveBusiness(e) {
+        if (isAdminViewer) { 
+            showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
+            return; 
+        }
+
+        e.preventDefault(); if (!validateForm(dom.businessForm)) return; const form = dom.businessForm; const id = form.querySelector('#businessId').value; const businessData = { id: id || Date.now().toString(), name: form.querySelector('#businessName').value, address: form.querySelector('#businessAddress').value, phone: form.querySelector('#businessPhone').value, official: form.querySelector('#businessOfficial').value, visitDay: form.querySelector('#businessVisitDay').value, students: id ? appData.businesses.find(b => b.id === id).students : [] }; if (id) appData.businesses = appData.businesses.map(b => b.id === id ? businessData : b); else { if(!appData.businesses) appData.businesses = []; appData.businesses.push(businessData); } saveData(); renderAll(); closeModal('businessModal'); 
     setTimeout(() => {
         showNotification('İşletme başarıyla kaydedildi.', 'success');
     }, 100);
 
     showNotification('İşletme başarıyla kaydedildi.', 'success'); }
-    function saveStudent(e) { e.preventDefault(); if (!validateStudentForm()) return; const form = dom.studentForm; const businessId = form.querySelector('#studentBusinessId').value; const id = form.querySelector('#studentId').value; const business = appData.businesses.find(b => b.id === businessId); const existingStudent = id ? business.students.find(s => s.id === id) : {}; const studentData = { id: id || Date.now().toString(), no: form.querySelector('#studentNo').value, name: form.querySelector('#studentName').value, class: form.querySelector('#studentClass').value, field: form.querySelector('#studentField').value, schoolDay: form.querySelector('#studentSchoolDay').value, phone: form.querySelector('#studentPhone').value, startDate: form.querySelector('#studentStartDate').value, endDate: form.querySelector('#studentEndDate').value, terminationReason: existingStudent.terminationReason || '', absences: existingStudent.absences || {} }; 
+    function saveStudent(e) {
+        if (isAdminViewer) { 
+            showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
+            return; 
+        }
+
+        e.preventDefault(); if (!validateStudentForm()) return; const form = dom.studentForm; const businessId = form.querySelector('#studentBusinessId').value; const id = form.querySelector('#studentId').value; const business = appData.businesses.find(b => b.id === businessId); const existingStudent = id ? business.students.find(s => s.id === id) : {}; const studentData = { id: id || Date.now().toString(), no: form.querySelector('#studentNo').value, name: form.querySelector('#studentName').value, class: form.querySelector('#studentClass').value, field: form.querySelector('#studentField').value, schoolDay: form.querySelector('#studentSchoolDay').value, phone: form.querySelector('#studentPhone').value, startDate: form.querySelector('#studentStartDate').value, endDate: form.querySelector('#studentEndDate').value, terminationReason: existingStudent.terminationReason || '', absences: existingStudent.absences || {} }; 
     if (id) {
         business.students = business.students.map(s => s.id === id ? studentData : s);
     } else {
@@ -1785,6 +1867,11 @@
     showNotification('Öğrenci başarıyla kaydedildi.', 'success'); }
        
     function deleteBusiness(id) {
+        if (isAdminViewer) { 
+            showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
+            return; 
+        }
+
         showNotification('İşletmeyi ve içindeki tüm öğrencileri silmek istediğinizden emin misiniz?', 'confirm', (result) => {
             if (result) {
                 appData.businesses = appData.businesses.filter(b => b.id !== id);
@@ -1795,6 +1882,11 @@
         });
     }
     function deleteStudent(id, businessId) {
+        if (isAdminViewer) { 
+            showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
+            return; 
+        }
+
         showNotification('Öğrenciyi kalıcı olarak silmek istediğinizden emin misiniz?', 'confirm', (result) => {
             if (result) {
                 const business = appData.businesses.find(b => b.id === businessId);
@@ -1806,6 +1898,12 @@
         });
     }
     function cancelTermination(id, businessId) {
+        if (isAdminViewer) { 
+            showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
+            return; 
+        }
+
+
         showNotification('Öğrencinin sözleşme feshini iptal etmek istediğinizden emin misiniz?', 'confirm', (result) => {
             if (result) {
                 const business = appData.businesses.find(b => b.id === businessId);
@@ -2602,15 +2700,71 @@
             const businessId = e.target.dataset.businessId;
             
             switch (action) {
-                case 'add-student': openModal('studentModal', { businessId: id }); break;
-                case 'edit-business': openModal('businessModal', { id: id }); break;
-                case 'delete-business': deleteBusiness(id); break;
-                case 'edit-student': openModal('studentModal', { id: id, businessId: businessId }); break;
-                case 'delete-student': deleteStudent(id, businessId); break;
-                case 'open-termination-modal': openModal('terminationModal', { studentId: id, businessId: businessId }); break;
-                case 'cancel-termination': cancelTermination(e.target.dataset.studentId, businessId); break;
-                case 'open-absence-modal': openModal('absenceModal', { studentId: id, businessId: businessId }); break;
+                case 'add-student':
+                    if (isAdminViewer) { 
+                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
+                        break; 
+                    }
+                    openModal('studentModal', { businessId: id });
+                    break;
+
+                case 'edit-business':
+                    if (isAdminViewer) { 
+                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
+                        break; 
+                    }
+                    openModal('businessModal', { id: id });
+                    break;
+
+                case 'delete-business':
+                    if (isAdminViewer) { 
+                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
+                        break; 
+                    }
+                    deleteBusiness(id);
+                    break;
+
+                case 'edit-student':
+                    if (isAdminViewer) { 
+                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
+                        break; 
+                    }
+                    openModal('studentModal', { id: id, businessId: businessId });
+                    break;
+
+                case 'delete-student':
+                    if (isAdminViewer) { 
+                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
+                        break; 
+                    }
+                    deleteStudent(id, businessId);
+                    break;
+
+                case 'open-termination-modal':
+                    if (isAdminViewer) { 
+                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
+                        break; 
+                    }
+                    openModal('terminationModal', { studentId: id, businessId: businessId });
+                    break;
+
+                case 'cancel-termination':
+                    if (isAdminViewer) { 
+                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
+                        break; 
+                    }
+                    cancelTermination(e.target.dataset.studentId, businessId);
+                    break;
+
+                case 'open-absence-modal':
+                    if (isAdminViewer) { 
+                        showNotification('Yönetici modunda değişiklik yapılamaz.', 'error'); 
+                        break; 
+                    }
+                    openModal('absenceModal', { studentId: id, businessId: businessId });
+                    break;
             }
+
         });
         dom.absenceModal.addEventListener('click', e => { const dayEl = e.target.closest('.calendar-day.workday'); if (!dayEl) return; const statusEl = dayEl.querySelector('.calendar-day-status'); let currentStatus = statusEl.textContent.replace(/\s/g, ''); let newStatus = ''; if (currentStatus === '') newStatus = 'S'; else if (currentStatus === 'S') newStatus = 'Ö'; else if (currentStatus === 'Ö') newStatus = 'SÖ'; else newStatus = ''; statusEl.innerHTML = newStatus.replace('SÖ', 'S<br>Ö'); statusEl.classList.toggle('f-gold', newStatus !== ''); });
         dom.absenceModal.querySelector('#saveAbsenceBtn').addEventListener('click', saveAbsences);
@@ -2634,21 +2788,38 @@
         window.addEventListener('orientationchange', setVhProperty);
         
         // --- UYGULAMAYI BAŞLATAN TETİKLEYİCİ ---
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUser = user;
-                dom.loginSection.style.display = 'none';
-                dom.userInfo.style.display = 'block';
-                dom.userName.textContent = user.displayName || user.email;
-                dom.container.style.display = 'block';
-                loadUserData(); // Kullanıcı giriş yapınca verileri yükle
+        onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            currentUser = user;
+            ownerUid = user.uid;
+
+            // Sağlayıcı tespiti (ilk provider yeterli)
+            const providerId = (user.providerData && user.providerData[0] && user.providerData[0].providerId) || '';
+            isAdminViewer = (providerId === 'github.com'); // GitHub ile giriş = Yönetici (salt-okuma)
+
+            dom.loginSection.style.display = 'none';
+            dom.userInfo.style.display = 'block';
+            dom.userName.textContent = user.displayName || user.email;
+
+            if (isAdminViewer) {
+            await loadAllCoordinatorsDataReadOnly();
+            dom.userName.textContent += ' — (Yönetici Görünümü)';
             } else {
-                currentUser = null;
-                dom.loginSection.style.display = 'block';
-                dom.userInfo.style.display = 'none';
-                dom.container.style.display = 'none';
-                appData = {}; // Verileri temizle
+            dom.container.style.display = 'block';
+            await loadUserData();
             }
+
+            toggleEditabilityByRole();
+        } else {
+            currentUser = null;
+            isAdminViewer = false;
+            ownerUid = null;
+
+            dom.loginSection.style.display = 'block';
+            dom.userInfo.style.display = 'none';
+            dom.container.style.display = 'none';
+            appData = {};
+        }
         });
     });
 
