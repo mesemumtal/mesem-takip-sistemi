@@ -2183,58 +2183,40 @@
     <div class="modal" id="businessModal"><div class="modal-content"><h2 id="businessModalTitle"></h2><form id="businessForm" novalidate><input type="hidden" id="businessId"><div class="grid" style="grid-template-columns: 1fr 1fr;"><div class="form-group"><label for="businessName">İşletme Adı<span class="required-star">*</span></label><input required class="form-input" id="businessName" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessAddress">İşletme Adresi</label><input class="form-input" id="businessAddress" type="text"></div><div class="form-group"><label for="businessPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="businessPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessOfficial">İşletme Yetkilisi<span class="required-star">*</span></label><input required class="form-input" id="businessOfficial" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessVisitDay">Koordinatör Ziyaret Günü<span class="required-star">*</span></label><select required class="form-select" id="businessVisitDay"><option disabled selected value="">Günü Seçin</option><option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option></select><span class="error-message"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
 
    <div class="modal" id="studentModal"><div class="modal-content"><h2 id="studentModalTitle"></h2><form id="studentForm" novalidate><input id="studentBusinessId" type="hidden"><input id="studentId" type="hidden">
-                <div class="grid" style="grid-template-columns: 1fr 1fr 1fr;">
-            <div class="form-group">
-                <label for="studentClass">Sınıfı</label>
-                <select class="form-select" id="studentClass">
-                    <option value="9">9. Sınıf</option>
-                    <option value="10">10. Sınıf</option>
-                    <option value="11">11. Sınıf</option>
-                    <option value="12">12. Sınıf</option>
-                </select>
+                <div class="grid" style="grid-template-columns: 1fr 1fr;">
+            
+                        <div class="form-group" style="grid-column: 1 / span 2; margin-bottom: 15px;">
+                <div class="grid" style="grid-template-columns: 1.2fr 0.8fr 1fr; gap: 10px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="studentClass">Sınıfı</label>
+                        <select class="form-select" id="studentClass">
+                            <option value="9">9. Sınıf</option>
+                            <option value="10">10. Sınıf</option>
+                            <option value="11">11. Sınıf</option>
+                            <option value="12">12. Sınıf</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="studentBranch">Şubesi</label>
+                        <select class="form-select" id="studentBranch">
+                            <option value="">Seçin...</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option><option value="I">I</option><option value="J">J</option><option value="K">K</option><option value="L">L</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="studentNo">Okul No <span class="field-hint">(Sadece rakam)</span></label>
+                        <input class="form-input" id="studentNo" inputmode="numeric" pattern="[0-9]*" placeholder="1234" type="text">
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="studentBranch">Şubesi</label>
-                <select class="form-select" id="studentBranch">
-                    <option value="">Seçin...</option>
-                    <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option><option value="I">I</option><option value="J">J</option><option value="K">K</option><option value="L">L</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="studentNo">Okul No <span class="field-hint">(Sadece rakam)</span></label>
-                <input class="form-input" id="studentNo" inputmode="numeric" pattern="[0-9]*" placeholder="1234" type="text">
-            </div>
-                        <div class="form-group" style="grid-column: 1 / span 3;">
-                <label for="studentName">Adı Soyadı<span class="required-star">*</span></label>
-                <input required class="form-input" id="studentName" type="text"><span class="error-message"></span>
-            </div>
-            <div class="form-group" style="grid-column: 1 / span 3;">
-                <label for="studentField">Alan/Dalı</label>
-                <input class="form-input" id="studentField" type="text" placeholder="Örn: Bilişim Teknolojileri">
-            </div>
-                        <div class="form-group">
-                <label for="studentSchoolDay">Okul Günü</label>
-                <select class="form-select" id="studentSchoolDay">
-                    <option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="studentPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label>
-                <input class="form-input" id="studentPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text">
-            </div>
-            <div class="form-group">
-                <label for="studentStartDate">İşe Başlama Tarihi (Sözleşme)<span class="required-star">*</span></label>
-                <input required class="form-input" id="studentStartDate" type="date"><span class="error-message"></span>
-            </div>
-                        <div class="form-group" style="grid-column: 1 / span 3;">
-                <label for="studentEndDate">İşten Ayrılma Tarihi (Fesih)</label>
-                <input class="form-input" id="studentEndDate" type="date"><span class="error-message" id="studentEndDateError"></span>
-            </div>
+                        <div class="form-group"><label for="studentName">Adı Soyadı<span class="required-star">*</span></label><input required class="form-input" id="studentName" type="text"><span class="error-message"></span></div>
+            <div class="form-group"><label for="studentField">Alan/Dalı</label><input class="form-input" id="studentField" type="text" placeholder="Örn: Bilişim Teknolojileri"></div>
+            <div class="form-group"><label for="studentSchoolDay">Okul Günü</label><select class="form-select" id="studentSchoolDay"><option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option></select></div>
+            <div class="form-group"><label for="studentPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"></div>
+            <div class="form-group"><label for="studentStartDate">İşe Başlama Tarihi (Sözleşme)<span class="required-star">*</span></label><input required class="form-input" id="studentStartDate" type="date"><span class="error-message"></span></div>
+            <div class="form-group"><label for="studentEndDate">İşten Ayrılma Tarihi (Fesih)</label><input class="form-input" id="studentEndDate" type="date"><span class="error-message" id="studentEndDateError"></span></div>
         </div>
-                <div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;">
-            <button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button>
-            <button class="btn btn-primary" type="submit">Kaydet</button>
-        </div>
+                <div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div>
     </form></div></div>
 
     <div class="modal" id="terminationModal"><div class="modal-content"><h2>Sözleşme Fesih Bilgileri</h2><form id="terminationForm"><input id="terminationStudentId" type="hidden"><input id="terminationBusinessId" type="hidden"><div class="form-group"><label for="terminationDate">Fesih Tarihi<span class="required-star">*</span></label><input required class="form-input" id="terminationDate" type="date"></div><div class="form-group" style="margin-top:15px;"><label for="terminationReason">Fesih Nedenleri<span class="required-star">*</span></label><textarea required class="form-input" id="terminationReason" rows="5"></textarea></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Fesih Tutanağını Oluştur ve Yazdır</button></div></form></div></div>
@@ -4215,13 +4197,13 @@
         student.terminationReason = terminationReason;
         
         saveData(); 
-        renderAll(); 
+      S     renderAll(); 
         closeModal('terminationModal');
         
         const formattedStartDate = student.startDate ? parseDateString(student.startDate).toLocaleDateString('tr-TR') : '';
         const formattedTerminationDate = parseDateString(terminationDate).toLocaleDateString('tr-TR');
         
-        // *** HATA DÜZELTMESİ: Değişkenler `formHTML`'den ÖNCE buraya taşındı ***
+        // Değişkenler `formHTML`'den ÖNCE burada tanımlanıyor (Doğru yer)
         const classDisplay = student.class ? `${student.class}. Sınıf` : '';
         const branchDisplay = student.branch ? `${student.branch}` : '';
         const noDisplay = student.no ? `${student.no}` : '';
@@ -4231,35 +4213,35 @@
         <div class="print-page-container print-page-termination">
             <div class="termination-container" style="padding-bottom: 25px;">
                 <h1 style="font-size: 14pt;">${appData.settings.schoolName}</h1>
-                <h2 style="font-size: 14pt; margin: 15px 0;">
+F               <h2 style="font-size: 14pt; margin: 15px 0;">
                     İŞLETMELERDE BECERİ EĞİTİMİ GÖREN ÖĞRENCİLERE AİT<br>SÖZLEŞME FESİH TUTANAĞI
                 </h2>
                 <table>
                     <tr><td class="label-col">İŞLETMENİN ADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${business.name}</em></strong></td></tr>
                     <tr><td class="label-col">ÖĞRENCİNİN ADI SOYADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.name}</em></strong></td></tr>
                     <tr><td class="label-col">ALANI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.field}</em></strong></td></tr>
-                    <tr><td class="label-col">SINIFI / ŞUBESİ / NUMARASI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${classInfo}</em></strong></td></tr>
+section-cell                 <tr><td class="label-col">SINIFI / ŞUBESİ / NUMARASI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${classInfo}</em></strong></td></tr>
                     <tr><td class="label-col">SÖZLEŞMELİ TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedStartDate}</em></strong></td></tr>
-                    <tr><td class="label-col">SÖZLEŞMENİN FESİH TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedTerminationDate}</em></strong></td></tr>
+A                   <tr><td class="label-col">SÖZLEŞMENİN FESİH TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedTerminationDate}</em></strong></td></tr>
                 </table>
                 <div class="reasons">
                     <div class="label-col" style="border-bottom: 1px solid black; padding-bottom: 2px; margin-bottom: 5px;">FESİH NEDENLERİ:</div>
                     <div class="value-box" style="border: 1px solid transparent; padding: 5px;">
                         <strong><em>${terminationReason.replace(/\n/g, '<br>')}</em></strong>
-                    </div>
+m                 </div>
                 </div>
                 <div class="signatures" style="display: flex; flex-wrap: wrap; justify-content: space-between; text-align: center; width: 100%; margin-top: auto; padding-top: 40px;">
                     <div style="width: 32%; height: 1px;"></div>
-                    <div style="width: 32%; height: 1px;"></div>
+Note:                 <div style="width: 32%; height: 1px;"></div>
                     <div style="width: 32%; margin-bottom: 20px;">..... / ..... / 2025</div>
                     <div style="width: 32%;"><strong><em>${business.official}</em></strong><br>İşletme Yetkilisi</div>
-                    <div style="width: 32%;"><strong><em>${appData.settings.coordinatorName}</em></strong><br>Koordinatör Öğretmen</div>
+A                   <div style="width: 32%;"><strong><em>${appData.settings.coordinatorName}</em></strong><br>Koordinatör Öğretmen</div>
                     <div style="width: 32%;"><strong><em>${appData.settings.principalName}</em></strong><br>Okul Müdürü</div>
                 </div>
             </div>
         </div>`;
-        dom.printContainer.innerHTML = formHTML;OpenModal
-        window.print();
+        dom.printContainer.innerHTML = formHTML;
+TA        window.print();
         showNotification('Sözleşme feshi gerçekleştirildi.', 'success');
     }
 
