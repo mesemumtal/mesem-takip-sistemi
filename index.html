@@ -4283,16 +4283,11 @@
 
                 </h2>
 
-                const classDisplay = student.class ? `${student.class}. Sınıf` : '';
-                const branchDisplay = student.branch ? `${student.branch}` : '';
-                const noDisplay = student.no ? `${student.no}` : '';
-                const classInfo = [classDisplay, branchDisplay, noDisplay].filter(Boolean).join(' / ');
-
-                <table>
+                <table>
                     <tr><td class="label-col">İŞLETMENİN ADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${business.name}</em></strong></td></tr>
                     <tr><td class="label-col">ÖĞRENCİNİN ADI SOYADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.name}</em></strong></td></tr>
                     <tr><td class="label-col">ALANI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.field}</em></strong></td></tr>
-                    <tr><td class="label-col">SINIFI / ŞUBESİ / NUMARASI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${classInfo}</em></strong></td></tr>
+                    <tr><td class="label-col">SINIFI / NUMARASI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.class ? student.class + '. Sınıf' : ''} / ${student.no || ''}</em></strong></td></tr>
                     <tr><td class="label-col">SÖZLEŞMELİ TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedStartDate}</em></strong></td></tr>
                     <tr><td class="label-col">SÖZLEŞMENİN FESİH TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedTerminationDate}</em></strong></td></tr>
                 </table>
