@@ -2182,7 +2182,13 @@
 
     <div class="modal" id="businessModal"><div class="modal-content"><h2 id="businessModalTitle"></h2><form id="businessForm" novalidate><input type="hidden" id="businessId"><div class="grid" style="grid-template-columns: 1fr 1fr;"><div class="form-group"><label for="businessName">İşletme Adı<span class="required-star">*</span></label><input required class="form-input" id="businessName" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessAddress">İşletme Adresi</label><input class="form-input" id="businessAddress" type="text"></div><div class="form-group"><label for="businessPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="businessPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessOfficial">İşletme Yetkilisi<span class="required-star">*</span></label><input required class="form-input" id="businessOfficial" type="text"><span class="error-message"></span></div><div class="form-group"><label for="businessVisitDay">Koordinatör Ziyaret Günü<span class="required-star">*</span></label><select required class="form-select" id="businessVisitDay"><option disabled selected value="">Günü Seçin</option><option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option></select><span class="error-message"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
 
-   <div class="modal" id="studentModal"><div class="modal-content"><h2 id="studentModalTitle"></h2><form id="studentForm" novalidate><input id="studentBusinessId" type="hidden"><input id="studentId" type="hidden"><div class="grid" style="grid-template-columns: 1fr 1fr;"><div class="form-group"><label for="studentClass">Sınıfı</label><select class="form-select" id="studentClass"><option value="9">9. Sınıf</option><option value="10">10. Sınıf</option><option value="11">11. Sınıf</option><option value="12">12. Sınıf</option></select></div><div class="form-group"><label for="studentNo">Okul No <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentNo" inputmode="numeric" pattern="[0-9]*" placeholder="1234" type="text"></div><div class="form-group"><label for="studentName">Adı Soyadı<span class="required-star">*</span></label><input required class="form-input" id="studentName" type="text"><span class="error-message"></span></div><div class="form-group"><label for="studentField">Alan/Dalı</label><input class="form-input" id="studentField" type="text" placeholder="Örn: Bilişim Teknolojileri"></div><div class="form-group"><label for="studentSchoolDay">Okul Günü</label><select class="form-select" id="studentSchoolDay"><option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option></select></div><div class="form-group"><label for="studentPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"></div><div class="form-group"><label for="studentStartDate">İşe Başlama Tarihi (Sözleşme)<span class="required-star">*</span></label><input required class="form-input" id="studentStartDate" type="date"><span class="error-message"></span></div><div class="form-group"><label for="studentEndDate">İşten Ayrılma Tarihi (Fesih)</label><input class="form-input" id="studentEndDate" type="date"><span class="error-message" id="studentEndDateError"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
+   <div class="modal" id="studentModal"><div class="modal-content"><h2 id="studentModalTitle"></h2><form id="studentForm" novalidate><input id="studentBusinessId" type="hidden"><input id="studentId" type="hidden"><div class="grid" style="grid-template-columns: 1fr 1fr 1fr;"><div class="form-group"><label for="studentClass">Sınıfı</label><select class="form-select" id="studentClass"><option value="9">9. Sınıf</option><option value="10">10. Sınıf</option><option value="11">11. Sınıf</option><option value="12">12. Sınıf</option></select></div>
+                                <div class="form-group"><label for="studentBranch">Şubesi</label><select class="form-select" id="studentBranch"><option value="">Seçin...</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option><option value="I">I</option><option value="J">J</option><option value="K">K</option><option value="L">L</option></select></div>
+                <div class="form-group"><label for="studentNo">Okul No <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentNo" inputmode="numeric" pattern="[0-9]*" placeholder="1234" type="text"></div>
+                                <div class="form-group" style="grid-column: 1 / span 3;"><label for="studentName">Adı Soyadı<span class="required-star">*</span></label><input required class="form-input" id="studentName" type="text"><span class="error-message"></span></div>
+                                <div class="form-group" style="grid-column: 1 / span 3;"><label for="studentField">Alan/Dalı</label><input class="form-input" id="studentField" type="text" placeholder="Örn: Bilişim Teknolojileri"></div>
+                <div class="form-group"><label for="studentSchoolDay">Okul Günü</label><select class="form-select" id="studentSchoolDay"><option value="1">Pazartesi</option><option value="2">Salı</option><option value="3">Çarşamba</option><option value="4">Perşembe</option><option value="5">Cuma</option></select></div><div class="form-group"><label for="studentPhone">Telefon <span class="field-hint">(Sadece rakam)</span></label><input class="form-input" id="studentPhone" inputmode="numeric" pattern="[0-9]*" placeholder="5051234567" type="text"></div><div class="form-group"><label for="studentStartDate">İşe Başlama Tarihi (Sözleşme)<span class="required-star">*</span></label><input required class="form-input" id="studentStartDate" type="date"><span class="error-message"></span></div>
+                                <div class="form-group" style="grid-column: 1 / span 3;"><label for="studentEndDate">İşten Ayrılma Tarihi (Fesih)</label><input class="form-input" id="studentEndDate" type="date"><span class="error-message" id="studentEndDateError"></span></div></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Kaydet</button></div></form></div></div>
 
     <div class="modal" id="terminationModal"><div class="modal-content"><h2>Sözleşme Fesih Bilgileri</h2><form id="terminationForm"><input id="terminationStudentId" type="hidden"><input id="terminationBusinessId" type="hidden"><div class="form-group"><label for="terminationDate">Fesih Tarihi<span class="required-star">*</span></label><input required class="form-input" id="terminationDate" type="date"></div><div class="form-group" style="margin-top:15px;"><label for="terminationReason">Fesih Nedenleri<span class="required-star">*</span></label><textarea required class="form-input" id="terminationReason" rows="5"></textarea></div><div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;"><button class="btn btn-danger" data-action="cancel-modal" type="button">İptal</button><button class="btn btn-primary" type="submit">Fesih Tutanağını Oluştur ve Yazdır</button></div></form></div></div>
 
@@ -3353,8 +3359,8 @@
                 form.querySelector('#studentId').value = s.id; 
 
                 form.querySelector('#studentClass').value = s.class || '9';
-
-                form.querySelector('#studentNo').value = s.no; 
+                form.querySelector('#studentBranch').value = s.branch || '';
+                form.querySelector('#studentNo').value = s.no; 
 
                 form.querySelector('#studentName').value = s.name; 
 
@@ -3534,7 +3540,8 @@
 
     showNotification('İşletme başarıyla kaydedildi.', 'success'); }
 
-    function saveStudent(e) { e.preventDefault(); if (!validateStudentForm()) return; const form = dom.studentForm; const businessId = form.querySelector('#studentBusinessId').value; const id = form.querySelector('#studentId').value; const business = appData.businesses.find(b => b.id === businessId); const existingStudent = id ? business.students.find(s => s.id === id) : {}; const studentData = { id: id || Date.now().toString(), no: form.querySelector('#studentNo').value, name: form.querySelector('#studentName').value, class: form.querySelector('#studentClass').value, field: form.querySelector('#studentField').value, schoolDay: form.querySelector('#studentSchoolDay').value, phone: form.querySelector('#studentPhone').value, startDate: form.querySelector('#studentStartDate').value, endDate: form.querySelector('#studentEndDate').value, terminationReason: existingStudent.terminationReason || '', absences: existingStudent.absences || {} }; 
+    function saveStudent(e) { e.preventDefault(); if (!validateStudentForm()) return; const form = dom.studentForm; const businessId = form.querySelector('#studentBusinessId').value; const id = form.querySelector('#studentId').value; const business = appData.businesses.find(b => b.id === businessId); const existingStudent = id ? business.students.find(s => s.id === id) : {}; 
+    const studentData = { id: id || Date.now().toString(), no: form.querySelector('#studentNo').value, name: form.querySelector('#studentName').value, class: form.querySelector('#studentClass').value, branch: form.querySelector('#studentBranch').value, field: form.querySelector('#studentField').value, schoolDay: form.querySelector('#studentSchoolDay').value, phone: form.querySelector('#studentPhone').value, startDate: form.querySelector('#studentStartDate').value, endDate: form.querySelector('#studentEndDate').value, terminationReason: existingStudent.terminationReason || '', absences: existingStudent.absences || {} };
 
     if (id) {
 
@@ -3904,7 +3911,7 @@
 
         let studentRowsHTML = ''; 
 
-        const studentList = business.students.filter(s => !s.endDate || parseDateString(s.endDate) > new Date(year, month, 1));
+        const studentList = business.students.filter(s => !s.endDate || parseDateString(s.endDate) >= new Date(year, month, 1));
 
         
 
@@ -4276,21 +4283,19 @@
 
                 </h2>
 
-                <table>
+                const classDisplay = student.class ? `${student.class}. Sınıf` : '';
+                const branchDisplay = student.branch ? `${student.branch}` : '';
+                const noDisplay = student.no ? `${student.no}` : '';
+                const classInfo = [classDisplay, branchDisplay, noDisplay].filter(Boolean).join(' / ');
 
-                    <tr><td class="label-col">İŞLETMENİN ADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${business.name}</em></strong></td></tr>
-
-                    <tr><td class="label-col">ÖĞRENCİNİN ADI SOYADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.name}</em></strong></td></tr>
-
-                    <tr><td class="label-col">ALANI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.field}</em></strong></td></tr>
-
-                    <tr><td class="label-col">SINIFI / NUMARASI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.class ? student.class + '. Sınıf' : ''} / ${student.no || ''}</em></strong></td></tr>
-
-                    <tr><td class="label-col">SÖZLEŞMELİ TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedStartDate}</em></strong></td></tr>
-
-                    <tr><td class="label-col">SÖZLEŞMENİN FESİH TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedTerminationDate}</em></strong></td></tr>
-
-                </table>
+                <table>
+                    <tr><td class="label-col">İŞLETMENİN ADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${business.name}</em></strong></td></tr>
+                    <tr><td class="label-col">ÖĞRENCİNİN ADI SOYADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.name}</em></strong></td></tr>
+                    <tr><td class="label-col">ALANI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.field}</em></strong></td></tr>
+                    <tr><td class="label-col">SINIFI / ŞUBESİ / NUMARASI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${classInfo}</em></strong></td></tr>
+                    <tr><td class="label-col">SÖZLEŞMELİ TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedStartDate}</em></strong></td></tr>
+                    <tr><td class="label-col">SÖZLEŞMENİN FESİH TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedTerminationDate}</em></strong></td></tr>
+                </table>
 
                 <div class="reasons">
 
