@@ -3904,7 +3904,7 @@
 
         let studentRowsHTML = ''; 
 
-        const studentList = business.students.filter(s => !s.endDate || parseDateString(s.endDate) > new Date(year, month, 1));
+        const studentList = business.students.filter(s => !s.endDate || parseDateString(s.endDate) >= new Date(year, month, 1));
 
         
 
