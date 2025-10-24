@@ -4289,7 +4289,7 @@
 
                     <tr><td class="label-col">ALANI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.field}</em></strong></td></tr>
 
-                    <tr><td class="label-col">SINIFI / ŞUBE / NUMARASI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.class || ''}${student.branch ? '/' + student.branch : ''}${student.no ? ' / ' + student.no : ''}</em></strong></td></tr>
+                    <tr><td class="label-col">SINIFI / ŞUBE / NUMARASI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.class ? student.class + '. Sınıf' : ''}${student.branch ? ' / ' + student.branch + ' Şubesi' : ''}${student.no ? ' / ' + student.no : ''}</em></strong></td></tr>
 
                     <tr><td class="label-col">SÖZLEŞMELİ TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedStartDate}</em></strong></td></tr>
 
