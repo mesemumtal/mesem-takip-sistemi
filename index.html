@@ -4246,14 +4246,12 @@
 
         
 
-        // Öğrenciyi tamamen sil
-
-        business.students = business.students.filter(s => s.id !== studentId);
-
-        saveData(); 
-
-        renderAll(); 
-
+        // Öğrenciyi silmek yerine bilgilerini güncelle
+        student.endDate = terminationDate;
+        student.terminationReason = terminationReason;
+        
+        saveData();
+        renderAll();
         closeModal('terminationModal');
 
         
