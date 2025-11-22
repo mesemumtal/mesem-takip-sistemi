@@ -2315,7 +2315,7 @@
 
                 const dateDiv = document.createElement('div');
                 dateDiv.innerHTML = `
-                    <label for="studentSchoolDayChangeDate" style="color: var(--accent-gold);">Geçerlilik Tarihi</label>
+                    <label for="studentSchoolDayChangeDate" style="color: var(--accent-gold);">Geçerlilik Tarihi (Değiştiyse)</label>
                     <input class="form-input" id="studentSchoolDayChangeDate" type="date">
                 `;
                 parentGroup.appendChild(dateDiv);
@@ -2431,7 +2431,7 @@
             return new Date(parts[0], parts[1] - 1, parts[2]); 
         }
 
-        // DÜZELTİLMİŞ FONKSİYON: Okul Günü Geçmişini Kontrol Et
+        // DÜZELTİLMİŞ FONKSİYON: Okul Günü Geçmişini Kontrol Et (Hafta Bazlı)
         function getSchoolDayForDate(student, targetDate) {
             const checkDate = new Date(targetDate);
             checkDate.setHours(0, 0, 0, 0);
@@ -2441,17 +2441,33 @@
                 return parseInt(student.schoolDay);
             }
 
+            // Yardımcı fonksiyon: Haftanın Pazartesi gününü bul
+            function getWeekStart(date) {
+                const d = new Date(date);
+                d.setHours(0, 0, 0, 0);
+                const dayOfWeek = d.getDay();
+                const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+                d.setDate(d.getDate() - daysToSubtract);
+                return d;
+            }
+
+            // Kontrol edilen tarihin hafta başlangıcı
+            const checkWeekStart = getWeekStart(checkDate);
+
             // Tarihe göre sırala (Yeniden eskiye)
             const sortedHistory = [...student.schoolDayHistory].sort((a, b) => {
                 return new Date(b.startDate) - new Date(a.startDate);
             });
 
-            // Bu tarihten küçük veya eşit olan en güncel kaydı bul
+            // Değişiklik tarihinin hafta başlangıcından itibaren geçerli olacak şekilde kontrol et
             const validRecord = sortedHistory.find(record => {
                 const recordDate = parseDateString(record.startDate);
                 if (recordDate) {
                     recordDate.setHours(0, 0, 0, 0);
-                    return recordDate <= checkDate;
+                    // Değişiklik tarihinin hafta başlangıcını bul
+                    const recordWeekStart = getWeekStart(recordDate);
+                    // Eğer kontrol edilen haftanın Pazartesi'si, değişiklik haftasının Pazartesi'sine eşit veya sonraysa
+                    return recordWeekStart <= checkWeekStart;
                 }
                 return false;
             });
@@ -2460,8 +2476,7 @@
                 return parseInt(validRecord.day);
             }
 
-            // HATA DÜZELTMESİ:
-            // Eğer tarih, tüm geçmiş kayıtlarından daha eskiyse, en yeni kaydı (student.schoolDay) değil,
+            // Eğer tarih, tüm geçmiş kayıtlarından daha eskiyse (eski haftalara ait),
             // tarihteki EN ESKİ (ilk) kaydı döndür.
             const oldestRecord = sortedHistory[sortedHistory.length - 1];
             return parseInt(oldestRecord.day);
