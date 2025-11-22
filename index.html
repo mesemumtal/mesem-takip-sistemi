@@ -2290,6 +2290,23 @@
             deselectAllDailyBusinesses: document.getElementById('deselect-all-daily-businesses'),
         }
 
+        // OKUL GÜNÜ DEĞİŞİKLİK TARİHİ ALANI EKLEME (Manuel HTML müdahalesi yerine JS ile ekliyoruz)
+        const studentSchoolDayGroup = dom.studentForm.querySelector('#studentSchoolDay').parentElement;
+        if (!document.getElementById('studentSchoolDayChangeDate')) {
+            const changeDateDiv = document.createElement('div');
+            changeDateDiv.className = 'form-group';
+            changeDateDiv.style.marginTop = '10px';
+            changeDateDiv.style.borderTop = '1px dashed var(--accent-gold)';
+            changeDateDiv.style.paddingTop = '10px';
+            changeDateDiv.innerHTML = `
+                <label for="studentSchoolDayChangeDate" style="color: var(--accent-gold);">Okul Günü Değişiklik Tarihi (Varsa)</label>
+                <input class="form-input" id="studentSchoolDayChangeDate" type="date">
+                <span class="field-hint" style="font-size: 0.75rem;">Ders programı değiştiyse, yeni günün geçerli olduğu tarihi seçin. İlk kayıt veya hatalı giriş düzeltmesi ise boş bırakın.</span>
+            `;
+            studentSchoolDayGroup.after(changeDateDiv);
+        }
+
+
         // --- Firebase Fonksiyonları ---
         async function signInWithGoogle() {
             try {
@@ -2402,16 +2419,34 @@
             return new Date(parts[0], parts[1] - 1, parts[2]); 
         }
 
-        function getVisitDatesForMonth(year, month, dayOfWeek) { 
-            const dates = [];
-            const targetDay = parseInt(dayOfWeek); 
-            if (isNaN(targetDay)) return []; 
-            const date = new Date(year, month, 1);
-            while (date.getMonth() === month) { 
-                if (date.getDay() === targetDay) { dates.push(new Date(date.getTime())); } 
-                date.setDate(date.getDate() + 1); 
-            } 
-            return dates;
+        // YENİ: Belirli bir tarih için öğrencinin okul gününü bulur (Tarihçeli Sistem)
+        function getSchoolDayForDate(student, targetDate) {
+            // Hedef tarihin saatini sıfırla
+            const checkDate = new Date(targetDate);
+            checkDate.setHours(0, 0, 0, 0);
+
+            // Varsayılan (şu anki) okul günü
+            let activeDay = parseInt(student.schoolDay);
+
+            // Eğer tarihçe varsa
+            if (student.schoolDayHistory && Array.isArray(student.schoolDayHistory) && student.schoolDayHistory.length > 0) {
+                // Tarihçeyi tarihe göre tersten (yeniden eskiye) sırala
+                const sortedHistory = [...student.schoolDayHistory].sort((a, b) => {
+                    return new Date(b.startDate) - new Date(a.startDate);
+                });
+
+                // Hedef tarihten küçük veya eşit olan ilk (en yeni) kaydı bul
+                const validRecord = sortedHistory.find(record => {
+                    const recordDate = parseDateString(record.startDate);
+                    recordDate.setHours(0, 0, 0, 0);
+                    return recordDate <= checkDate;
+                });
+
+                if (validRecord) {
+                    activeDay = parseInt(validRecord.day);
+                }
+            }
+            return activeDay;
         }
 
         function getWeekOfYear(d) {
@@ -2482,7 +2517,6 @@
             '<p style="text-align:center; margin-top:20px;">Kayıtlı işletme bulunmuyor.</p>';
         }
 
-        // GÜNCELLENEN BÖLÜM: renderBusinessContent (Fesih butonu eklendi)
         function renderBusinessContent(business) {
             const studentList = (business.students && business.students.length > 0) ?
                 business.students.map(s => {
@@ -2630,6 +2664,10 @@
                 }
             } else if (modalId === 'studentModal') {
                 form.querySelector('#studentBusinessId').value = data.businessId;
+                // Tarihçe inputunu temizle
+                const historyInput = document.getElementById('studentSchoolDayChangeDate');
+                if(historyInput) historyInput.value = '';
+
                 if (data && data.id) { 
                     const s = appData.businesses.find(b => b.id === data.businessId).students.find(s => s.id === data.id);
                     title.textContent = 'Öğrenciyi Düzenle'; 
@@ -2651,7 +2689,6 @@
                 form.querySelector('#terminationStudentId').value = data.studentId;
                 form.querySelector('#terminationBusinessId').value = data.businessId;
                 
-                // GÜNCELLENEN: Fesih düzenleme verisi
                 const currentBusiness = appData.businesses.find(b => b.id === data.businessId);
                 const currentStudent = currentBusiness.students.find(s => s.id === data.studentId);
                 if (currentStudent.endDate) {
@@ -2754,6 +2791,7 @@
             showNotification('İşletme başarıyla kaydedildi.', 'success'); 
         }
 
+        // GÜNCELLENEN: Öğrenci Kaydı (Okul Günü Tarihçesi Mantığı ile)
         function saveStudent(e) { 
             e.preventDefault(); 
             if (!validateStudentForm()) return; 
@@ -2762,6 +2800,35 @@
             const id = form.querySelector('#studentId').value; 
             const business = appData.businesses.find(b => b.id === businessId);
             const existingStudent = id ? business.students.find(s => s.id === id) : {}; 
+            
+            // Okul Günü Değişiklik Mantığı
+            const newSchoolDay = form.querySelector('#studentSchoolDay').value;
+            const changeDateInput = form.querySelector('#studentSchoolDayChangeDate').value;
+            let history = existingStudent.schoolDayHistory || [];
+
+            if (changeDateInput && id) {
+                // Eğer değişiklik tarihi seçildiyse ve öğrenci düzenleniyorsa
+                // Önce mevcut geçmişi başlatmadıysak, öğrencinin başlangıç tarihini ilk kayıt olarak ekle
+                if (history.length === 0) {
+                     history.push({
+                         startDate: existingStudent.startDate,
+                         day: existingStudent.schoolDay
+                     });
+                }
+                // Yeni değişikliği ekle
+                history.push({
+                    startDate: changeDateInput,
+                    day: newSchoolDay
+                });
+            } else {
+                // Tarih seçilmediyse:
+                // Eğer hiç geçmiş yoksa veya yeni öğrenciyse, sadece güncel değeri tut.
+                // Eğer geçmiş varsa, en son (güncel) kaydı güncelle veya yeni kayıt ekle (basitlik için sadece ana değeri güncelliyoruz, tarihçe kullanıcının manuel girdiği tarihlerle oluşur)
+                // Ancak veri tutarlılığı için: Eğer tarihçe boşsa ve yeni öğrenci değilse, düzeltme yapıyoruz demektir.
+                
+                // Eğer hiç tarihçe yoksa sorun yok, ana değer güncellenir.
+            }
+
             const studentData = { 
                 id: id || Date.now().toString(), 
                 no: form.querySelector('#studentNo').value, 
@@ -2769,13 +2836,15 @@
                 class: form.querySelector('#studentClass').value, 
                 branch: form.querySelector('#studentBranch').value, 
                 field: form.querySelector('#studentField').value, 
-                schoolDay: form.querySelector('#studentSchoolDay').value, 
+                schoolDay: newSchoolDay, // Her zaman en güncel değer
+                schoolDayHistory: history, // Tarihçe dizisi
                 phone: form.querySelector('#studentPhone').value, 
                 startDate: form.querySelector('#studentStartDate').value, 
                 endDate: form.querySelector('#studentEndDate').value, 
                 terminationReason: existingStudent.terminationReason || '', 
                 absences: existingStudent.absences || {} 
             }; 
+            
             if (id) {
                 business.students = business.students.map(s => s.id === id ? studentData : s);
             } else {
@@ -2840,13 +2909,23 @@
                 const dayEl = document.createElement('div');
                 dayEl.className = 'calendar-day';
                 dayEl.innerHTML = `<div class="calendar-day-num">${day}</div><div class="calendar-day-status"></div>`;
-                const currentDate = new Date(year, month, day); const dayOfWeek = currentDate.getDay();
-                let isOutOfRange = (student.startDate && new Date(currentDate) < parseDateString(student.startDate)) || (student.endDate && new Date(currentDate) > parseDateString(student.endDate));
+                const currentDate = new Date(year, month, day); 
+                currentDate.setHours(0,0,0,0);
+                const dayOfWeek = currentDate.getDay();
+                
+                const sStart = parseDateString(student.startDate); if(sStart) sStart.setHours(0,0,0,0);
+                const sEnd = student.endDate ? parseDateString(student.endDate) : null; if(sEnd) sEnd.setHours(0,0,0,0);
+                let isOutOfRange = (sStart && currentDate < sStart) || (sEnd && currentDate > sEnd);
+                
                 if (!isOutOfRange) {
                     const monthYearKey = `${year}-${month}`;
                     const studentAbsences = student.absences?.[monthYearKey]?.[day] || [];
                     const statusEl = dayEl.querySelector('.calendar-day-status');
-                    if(dayOfWeek == student.schoolDay) { dayEl.classList.add('school'); statusEl.textContent = 'O'; statusEl.classList.add('f-blue'); }
+                    
+                    // GÜNCELLENEN: O tarihteki geçerli okul gününü bul
+                    const activeSchoolDay = getSchoolDayForDate(student, currentDate);
+
+                    if(dayOfWeek == activeSchoolDay) { dayEl.classList.add('school'); statusEl.textContent = 'O'; statusEl.classList.add('f-blue'); }
                     else if(dayOfWeek === 0) { dayEl.classList.add('sunday'); statusEl.textContent = 'T'; statusEl.classList.add('f-green'); }
                     else {
                         dayEl.classList.add('workday');
@@ -2895,6 +2974,7 @@
                     if (activeStudents.length > 0) {
                         activeStudents.forEach(student => {
                             const schoolDays = ['', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma'];
+                            // Listede güncel (son) okul gününü göster
                             const schoolDay = schoolDays[student.schoolDay] || '';
                             const studentClass = student.class ? `${student.class}. Sınıf` : '';
                             listHTML += `<tr><td>${student.no || ''}</td><td>${studentClass}</td><td>${student.name}</td><td>${student.field || ''}</td><td>${student.phone || ''}</td><td>${schoolDay}</td></tr>`;
@@ -2907,7 +2987,7 @@
             return listHTML;
         }
 
-        // GÜNCELLENEN BÖLÜM: generateAttendanceSheet (Gelişmiş Tarih Kontrolü)
+        // GÜNCELLENEN: generateAttendanceSheet (Tarihçeli Okul Günü Kontrolü)
         function generateAttendanceSheet(businessId, month, year) {
             const business = appData.businesses.find(b => b.id === businessId);
             const lastDayOfMonth = new Date(year, month + 1, 0); 
@@ -2949,7 +3029,10 @@
                     if(sEnd) sEnd.setHours(0,0,0,0);
 
                     let isOutOfRange = (sStart && currentDate < sStart) || (sEnd && currentDate > sEnd);
-            
+                    
+                    // GÜNCELLENEN: O tarih için geçerli okul gününü bul
+                    const activeSchoolDay = getSchoolDayForDate(student, currentDate);
+
                     if(isOutOfRange) { 
                         morningRowCells += `<td style="background-color:#eee;"></td>`;
                         afternoonRowCells += `<td style="background-color:#eee;"></td>`;
@@ -2957,7 +3040,8 @@
                     else if(isPublicHoliday(currentDate)) {
                         fullDayContent = `<td rowspan="2" class="f-bold f-green">T</td>`;
                     }
-                    else if(dayOfWeek == student.schoolDay && !isSchoolHoliday(currentDate)) { 
+                    // GÜNCELLENEN: Karşılaştırmayı dynamic "activeSchoolDay" ile yap
+                    else if(dayOfWeek == activeSchoolDay && !isSchoolHoliday(currentDate)) { 
                         fullDayContent = `<td rowspan="2" class="f-bold f-blue">O</td>`;
                     }
                     else if(dayOfWeek === 0) {
@@ -2993,7 +3077,6 @@
             return `<div class="sheet-content">${mainTitle}${headerTable}<div class="print-main-table-wrapper">${mainTable}</div>${printFooter}</div>`;
         }
 
-        // GÜNCELLENEN BÖLÜM: generateMonthlyGuidanceForm (Tarih ve Öğrenci Kontrolü)
         function generateMonthlyGuidanceForm(company, month, year) {
             function calculateActiveVisitDates(company, year, month) {
                 const targetDay = parseInt(company.visitDay);
@@ -3023,7 +3106,7 @@
             }
 
             const activeDates = calculateActiveVisitDates(company, year, month);
-            if (activeDates.length === 0) return null; // Öğrenci yoksa form basma
+            if (activeDates.length === 0) return null; 
 
             const visitDatesText = activeDates.map(date => 
                 `${date.toLocaleDateString('tr-TR')} - ${date.toLocaleDateString('tr-TR', { weekday: 'long' })}`
@@ -3050,7 +3133,6 @@
             <table style="width:100%; border-collapse:collapse; font-size:7pt; margin: 2px 0;"><tr><td style="border:1px solid #000; padding:1px; width:50%; vertical-align:top;"><b>İşletmenin Adı ve Adresi:</b><br><span class="dynamic-text">${company.name}, ${company.address}</span></td><td style="border:1px solid #000; padding:1px; width:50%; vertical-align:top;"><b>GÖREV TARİHLERİ:</b><br><span class="dynamic-text">${visitDatesText}</span></td></tr><tr><td style="border:1px solid #000; padding:1px; line-height:1.1;"><b>İşletme Eğitim Yetkilisinin</b><br>Adı Soyadı: <span class="dynamic-text">${company.official}</span><br><br>İmza:</td><td style="border:1px solid #000; padding:1px; line-height:1.1;"><b>Koordinatör Öğretmenin</b><br>Adı Soyadı: <span class="dynamic-text">${appData.settings.coordinatorName}</span><br><br>İmza:</td></tr></table><div class="form-content-wrapper">${getFormQuestionsHTML()}</div><div style="text-align: center; margin-top: auto; font-size: 6pt; border-top: 1px solid #000; padding-top: 1px;"><strong>AÇIKLAMA:</strong> Bu form her işletme için her ay ayrı ayrı doldurulacak, kurum idaresine verilecektir. FORM A</div>`;
         }
         
-        // GÜNCELLENEN BÖLÜM: generateDailyGuidanceForm (Doğru Öğrenci Sayısı)
         function generateDailyGuidanceForm(business, visitDate) {
             if (!business || !visitDate) return `<div class="daily-guidance-form"></div>`;
 
@@ -3130,7 +3212,6 @@
         }
 
         // --- Event Listeners ---
-        // GÜNCELLENEN BÖLÜM: generateSheetBtn (Boş Form Kontrolü)
         dom.generateSheetBtn.addEventListener('click', () => {
             const formType = dom.formTypeSelect.value;
             let allFormsHTML = '';
