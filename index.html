@@ -2290,22 +2290,49 @@
             deselectAllDailyBusinesses: document.getElementById('deselect-all-daily-businesses'),
         }
 
-        // OKUL GÜNÜ DEĞİŞİKLİK TARİHİ ALANI EKLEME (Manuel HTML müdahalesi yerine JS ile ekliyoruz)
-        const studentSchoolDayGroup = dom.studentForm.querySelector('#studentSchoolDay').parentElement;
-        if (!document.getElementById('studentSchoolDayChangeDate')) {
-            const changeDateDiv = document.createElement('div');
-            changeDateDiv.className = 'form-group';
-            changeDateDiv.style.marginTop = '10px';
-            changeDateDiv.style.borderTop = '1px dashed var(--accent-gold)';
-            changeDateDiv.style.paddingTop = '10px';
-            changeDateDiv.innerHTML = `
-                <label for="studentSchoolDayChangeDate" style="color: var(--accent-gold);">Okul Günü Değişiklik Tarihi (Varsa)</label>
-                <input class="form-input" id="studentSchoolDayChangeDate" type="date">
-                <span class="field-hint" style="font-size: 0.75rem;">Ders programı değiştiyse, yeni günün geçerli olduğu tarihi seçin. İlk kayıt veya hatalı giriş düzeltmesi ise boş bırakın.</span>
-            `;
-            studentSchoolDayGroup.after(changeDateDiv);
-        }
+        // --- GÖRÜNÜM DÜZENLEME: Okul Günü ve Tarihini Yan Yana Getir ---
+        // Mevcut "studentSchoolDay" alanını bulup yapısını değiştiriyoruz.
+        const schoolDaySelect = document.getElementById('studentSchoolDay');
+        if (schoolDaySelect) {
+            const parentGroup = schoolDaySelect.parentElement;
+            
+            // Eğer daha önce düzenlenmediyse (ID kontrolü)
+            if (!document.getElementById('studentSchoolDayChangeDate')) {
+                // Mevcut parent'ı temizle ve grid yap
+                parentGroup.style.display = 'grid';
+                parentGroup.style.gridTemplateColumns = '1fr 1fr';
+                parentGroup.style.gap = '10px';
+                parentGroup.innerHTML = ''; // İçini boşalt
 
+                // 1. Sütun: Gün Seçimi (Mevcut select'i yeniden oluştur)
+                const dayDiv = document.createElement('div');
+                dayDiv.innerHTML = `
+                    <label for="studentSchoolDay">Okul Günü</label>
+                    <select class="form-select" id="studentSchoolDay">
+                        <option value="1">Pazartesi</option>
+                        <option value="2">Salı</option>
+                        <option value="3">Çarşamba</option>
+                        <option value="4">Perşembe</option>
+                        <option value="5">Cuma</option>
+                    </select>
+                `;
+                parentGroup.appendChild(dayDiv);
+
+                // 2. Sütun: Değişiklik Tarihi
+                const dateDiv = document.createElement('div');
+                dateDiv.innerHTML = `
+                    <label for="studentSchoolDayChangeDate" style="color: var(--accent-gold);">Geçerlilik Tarihi (Değiştiyse)</label>
+                    <input class="form-input" id="studentSchoolDayChangeDate" type="date">
+                `;
+                parentGroup.appendChild(dateDiv);
+                
+                // Uyarı metni (altına tam genişlik)
+                const hintDiv = document.createElement('div');
+                hintDiv.style.gridColumn = '1 / -1';
+                hintDiv.innerHTML = '<span class="field-hint" style="font-size: 0.75rem;">Öğrencinin okul günü değiştiyse, yeni günü seçip sağ taraftan hangi tarihten itibaren geçerli olduğunu giriniz.</span>';
+                parentGroup.appendChild(hintDiv);
+            }
+        }
 
         // --- Firebase Fonksiyonları ---
         async function signInWithGoogle() {
@@ -2419,34 +2446,39 @@
             return new Date(parts[0], parts[1] - 1, parts[2]); 
         }
 
-        // YENİ: Belirli bir tarih için öğrencinin okul gününü bulur (Tarihçeli Sistem)
+        // YENİ: Okul Günü Geçmişini Kontrol Eden Fonksiyon
         function getSchoolDayForDate(student, targetDate) {
-            // Hedef tarihin saatini sıfırla
             const checkDate = new Date(targetDate);
             checkDate.setHours(0, 0, 0, 0);
 
-            // Varsayılan (şu anki) okul günü
-            let activeDay = parseInt(student.schoolDay);
-
-            // Eğer tarihçe varsa
+            // Eğer geçmiş kaydı varsa
             if (student.schoolDayHistory && Array.isArray(student.schoolDayHistory) && student.schoolDayHistory.length > 0) {
-                // Tarihçeyi tarihe göre tersten (yeniden eskiye) sırala
+                // Tarihe göre sırala (Yeniden eskiye)
                 const sortedHistory = [...student.schoolDayHistory].sort((a, b) => {
                     return new Date(b.startDate) - new Date(a.startDate);
                 });
 
-                // Hedef tarihten küçük veya eşit olan ilk (en yeni) kaydı bul
+                // Bu tarihten küçük veya eşit olan en güncel kaydı bul
                 const validRecord = sortedHistory.find(record => {
                     const recordDate = parseDateString(record.startDate);
-                    recordDate.setHours(0, 0, 0, 0);
-                    return recordDate <= checkDate;
+                    if (recordDate) {
+                        recordDate.setHours(0, 0, 0, 0);
+                        return recordDate <= checkDate;
+                    }
+                    return false;
                 });
 
-                if (validRecord) {
-                    activeDay = parseInt(validRecord.day);
-                }
+                if (validRecord) return parseInt(validRecord.day);
             }
-            return activeDay;
+
+            // Geçmiş yoksa veya tarih kapsam dışıysa mevcut günü döndür
+            // Ancak mantıken, eğer geçmiş varsa ve tarih geçmişin en başından da eskiyse
+            // yine de bir değer dönmeliyiz. En eski kaydı veya varsayılanı kullanırız.
+            // Burada basitçe, eğer tarihçe varsa ama tarih çok eskiyse, tarihçenin en eski elemanını
+            // veya mevcut schoolDay'i döndürmek mantıklı. 
+            // Biz şimdilik mevcut schoolDay'i (son durumu) döndürelim,
+            // ama doğru kayıt için saveStudent'da ilk kaydı oluşturuyoruz.
+            return parseInt(student.schoolDay);
         }
 
         function getWeekOfYear(d) {
@@ -2664,7 +2696,8 @@
                 }
             } else if (modalId === 'studentModal') {
                 form.querySelector('#studentBusinessId').value = data.businessId;
-                // Tarihçe inputunu temizle
+                
+                // Tarihçe inputunu temizle (Her açılışta boş gelsin)
                 const historyInput = document.getElementById('studentSchoolDayChangeDate');
                 if(historyInput) historyInput.value = '';
 
@@ -2791,7 +2824,7 @@
             showNotification('İşletme başarıyla kaydedildi.', 'success'); 
         }
 
-        // GÜNCELLENEN: Öğrenci Kaydı (Okul Günü Tarihçesi Mantığı ile)
+        // GÜNCELLENEN: Öğrenci Kaydı (Okul Günü Tarihçesi)
         function saveStudent(e) { 
             e.preventDefault(); 
             if (!validateStudentForm()) return; 
@@ -2801,33 +2834,27 @@
             const business = appData.businesses.find(b => b.id === businessId);
             const existingStudent = id ? business.students.find(s => s.id === id) : {}; 
             
-            // Okul Günü Değişiklik Mantığı
+            // Okul Günü Değişiklik Kontrolü
             const newSchoolDay = form.querySelector('#studentSchoolDay').value;
             const changeDateInput = form.querySelector('#studentSchoolDayChangeDate').value;
             let history = existingStudent.schoolDayHistory || [];
 
-            if (changeDateInput && id) {
-                // Eğer değişiklik tarihi seçildiyse ve öğrenci düzenleniyorsa
-                // Önce mevcut geçmişi başlatmadıysak, öğrencinin başlangıç tarihini ilk kayıt olarak ekle
+            // Eğer düzenleme yapılıyor, yeni bir gün seçilmiş VE tarih girilmişse:
+            if (id && changeDateInput) {
+                // Eğer geçmiş henüz boşsa, ilk kaydı (öğrencinin başlangıç tarihi ve eski günüyle) ekle
                 if (history.length === 0) {
                      history.push({
                          startDate: existingStudent.startDate,
                          day: existingStudent.schoolDay
                      });
                 }
-                // Yeni değişikliği ekle
+                // Şimdi yeni değişikliği ekle
                 history.push({
                     startDate: changeDateInput,
                     day: newSchoolDay
                 });
-            } else {
-                // Tarih seçilmediyse:
-                // Eğer hiç geçmiş yoksa veya yeni öğrenciyse, sadece güncel değeri tut.
-                // Eğer geçmiş varsa, en son (güncel) kaydı güncelle veya yeni kayıt ekle (basitlik için sadece ana değeri güncelliyoruz, tarihçe kullanıcının manuel girdiği tarihlerle oluşur)
-                // Ancak veri tutarlılığı için: Eğer tarihçe boşsa ve yeni öğrenci değilse, düzeltme yapıyoruz demektir.
-                
-                // Eğer hiç tarihçe yoksa sorun yok, ana değer güncellenir.
             }
+            // Eğer tarih girilmediyse, sadece okul gününü günceller (düzeltme gibi düşünülür)
 
             const studentData = { 
                 id: id || Date.now().toString(), 
@@ -2836,8 +2863,8 @@
                 class: form.querySelector('#studentClass').value, 
                 branch: form.querySelector('#studentBranch').value, 
                 field: form.querySelector('#studentField').value, 
-                schoolDay: newSchoolDay, // Her zaman en güncel değer
-                schoolDayHistory: history, // Tarihçe dizisi
+                schoolDay: newSchoolDay, // Bu her zaman formdaki güncel değerdir
+                schoolDayHistory: history, // Tarihçe
                 phone: form.querySelector('#studentPhone').value, 
                 startDate: form.querySelector('#studentStartDate').value, 
                 endDate: form.querySelector('#studentEndDate').value, 
@@ -2922,7 +2949,7 @@
                     const studentAbsences = student.absences?.[monthYearKey]?.[day] || [];
                     const statusEl = dayEl.querySelector('.calendar-day-status');
                     
-                    // GÜNCELLENEN: O tarihteki geçerli okul gününü bul
+                    // GÜNCELLENEN: Tarihçeye göre o günün okul günü olup olmadığını kontrol et
                     const activeSchoolDay = getSchoolDayForDate(student, currentDate);
 
                     if(dayOfWeek == activeSchoolDay) { dayEl.classList.add('school'); statusEl.textContent = 'O'; statusEl.classList.add('f-blue'); }
@@ -2974,7 +3001,6 @@
                     if (activeStudents.length > 0) {
                         activeStudents.forEach(student => {
                             const schoolDays = ['', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma'];
-                            // Listede güncel (son) okul gününü göster
                             const schoolDay = schoolDays[student.schoolDay] || '';
                             const studentClass = student.class ? `${student.class}. Sınıf` : '';
                             listHTML += `<tr><td>${student.no || ''}</td><td>${studentClass}</td><td>${student.name}</td><td>${student.field || ''}</td><td>${student.phone || ''}</td><td>${schoolDay}</td></tr>`;
@@ -2987,7 +3013,7 @@
             return listHTML;
         }
 
-        // GÜNCELLENEN: generateAttendanceSheet (Tarihçeli Okul Günü Kontrolü)
+        // GÜNCELLENEN: generateAttendanceSheet (Tarihçeli Kontrol)
         function generateAttendanceSheet(businessId, month, year) {
             const business = appData.businesses.find(b => b.id === businessId);
             const lastDayOfMonth = new Date(year, month + 1, 0); 
@@ -3030,7 +3056,7 @@
 
                     let isOutOfRange = (sStart && currentDate < sStart) || (sEnd && currentDate > sEnd);
                     
-                    // GÜNCELLENEN: O tarih için geçerli okul gününü bul
+                    // GÜNCELLENEN: Tarihçeye bak
                     const activeSchoolDay = getSchoolDayForDate(student, currentDate);
 
                     if(isOutOfRange) { 
@@ -3040,7 +3066,7 @@
                     else if(isPublicHoliday(currentDate)) {
                         fullDayContent = `<td rowspan="2" class="f-bold f-green">T</td>`;
                     }
-                    // GÜNCELLENEN: Karşılaştırmayı dynamic "activeSchoolDay" ile yap
+                    // GÜNCELLENEN: dynamic activeSchoolDay ile kontrol
                     else if(dayOfWeek == activeSchoolDay && !isSchoolHoliday(currentDate)) { 
                         fullDayContent = `<td rowspan="2" class="f-bold f-blue">O</td>`;
                     }
