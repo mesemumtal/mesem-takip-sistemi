@@ -404,6 +404,8 @@
 
         @page list        { size: A4 landscape; margin: 12mm; }   /* Liste: Yatay (varsa) */
 
+        @page grade-sheet { size: A4 landscape; margin: 10mm; }    /* Dönem Not Fişi */
+
 
 
         @media print {
@@ -1320,7 +1322,104 @@
 
                 line-height: 1.2 !important;   /* Okunurluk için satır aralığını biraz artırdım */
 
-            }           
+            }
+            
+            
+
+
+            /* --- DÖNEM NOT FİŞİ (İME-DNOT) YATAY TASARIM --- */
+            @page grade-sheet { size: A4 landscape; margin: 10mm; }
+
+            .print-page-grade-sheet {
+                page: grade-sheet;
+                font-family: 'Times New Roman', serif;
+                padding: 10mm;
+                height: 190mm; /* Yatay yükseklik */
+                width: 277mm;  /* Yatay genişlik */
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                background-color: white;
+            }
+
+            /* Otomatik verilerin kalın ve italik olması için kural */
+            .print-page-grade-sheet .dynamic-text {
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            .grade-sheet-header-code {
+                text-align: right;
+                font-weight: bold;
+                font-size: 10pt;
+                margin-bottom: 5px;
+            }
+
+            .grade-sheet-title {
+                text-align: center;
+                font-weight: bold;
+                font-size: 14pt;
+                margin-bottom: 15px;
+                text-decoration: underline;
+            }
+
+            .grade-sheet-info-table {
+                width: 100%;
+                margin-bottom: 10px;
+                font-size: 11pt;
+                border-collapse: collapse;
+            }
+
+            .grade-sheet-info-table td {
+                padding: 3px;
+                vertical-align: bottom;
+            }
+
+            .grade-sheet-main-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 15px;
+                font-size: 8.5pt; /* Yatayda tam sığması için font küçültüldü */
+            }
+
+            .grade-sheet-main-table th, 
+            .grade-sheet-main-table td {
+                border: 1px solid #000;
+                text-align: center;
+                padding: 4px 1px;
+                vertical-align: middle;
+            }
+
+            .grade-sheet-main-table th {
+                font-weight: bold;
+                background-color: #f0f0f0 !important;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .grade-sheet-signatures {
+                display: flex;
+                justify-content: space-around;
+                margin-top: 15px;
+                font-size: 10pt;
+            }
+
+            .grade-sheet-sig-box {
+                width: 30%;
+                text-align: center;
+            }
+            
+            .grade-sheet-sig-box.wide {
+                width: 40%;
+                margin-top: 10px;
+            }
+
+            .grade-sheet-footer {
+                margin-top: auto;
+                font-size: 8.5pt;
+                border-top: 1px solid #000;
+                padding-top: 5px;
+                line-height: 1.2;
+            }
 
         }
 
@@ -1345,6 +1444,8 @@
         .print-page-daily-guidance { page: guidance; height: 190mm; width: 277mm; }
 
         .print-page-list { page: list; height: 186mm; width: 273mm; }
+
+        .print-page-grade-sheet { page: grade-sheet; height: 277mm; width: 190mm; }
 
         
 
@@ -2077,6 +2178,8 @@
                         <option value="monthly_guidance">Aylık Rehberlik Formu</option>
 
                         <option value="daily_guidance">Günlük Rehberlik Formu</option>
+
+                        <option value="grade_sheet">Dönem Not Fişi (İME-DNOT)</option>
 
                      </select>
 
@@ -3084,20 +3187,139 @@
             showNotification('Sözleşme feshi gerçekleştirildi.', 'success');
         }
 
+        function generateGradeSheet(businessId, year) {
+            const business = appData.businesses.find(b => b.id === businessId);
+            
+            // Öğretim Yılı Hesaplama (Otomatik)
+            const academicYear = `${year}-${year + 1}`;
+            
+            // Aktif öğrencileri filtrele
+            const activeStudents = business.students.filter(s => !s.endDate);
+
+            if (activeStudents.length === 0) return null;
+
+            let formsHTML = '';
+
+            activeStudents.forEach(student => {
+                const studentClass = student.class ? `${student.class}. Sınıf` : '';
+                
+                formsHTML += `
+                <div class="print-page-container print-page-grade-sheet">
+                    <div class="grade-sheet-header-code">IME-DNOT</div>
+                    <div class="grade-sheet-title">İŞLETMELERDE MESLEKİ EĞİTİM GÖREN ÖĞRENCİLERE AIT DÖNEM NOT FİŞİ</div>
+                    
+                    <table class="grade-sheet-info-table">
+                        <tr>
+                            <td colspan="2">Okul/ Kurumun Adı: <span class="dynamic-text">${appData.settings.schoolName}</span></td>
+                            <td style="text-align:right;">Öğretim Yılı : <span class="dynamic-text">${academicYear}</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">İşletmenin Adı: <span class="dynamic-text">${business.name}</span></td>
+                            <td style="text-align:right;">Dönemi: <span class="dynamic-text">2. Dönem</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">Dersin Adı: İŞLETMELERDE MESLEKİ EĞİTİM</td>
+                        </tr>
+                         <tr>
+                            <td>Telefonu: <span class="dynamic-text">${business.phone || ''}</span></td>
+                            <td colspan="2">e-posta: _________________________</td>
+                        </tr>
+                    </table>
+
+                    <table class="grade-sheet-main-table">
+                        <thead>
+                            <tr>
+                                <th colspan="4" style="width:35%">Öğrencinin</th>
+                                <th colspan="5" style="width:35%">İşletmede verilen puanlar</th>
+                                <th colspan="2" style="width:15%">Okulda ver.puanlar</th>
+                                <th colspan="2" style="width:15%">Dönem Başarısı</th>
+                            </tr>
+                            <tr>
+                                <th>Numarası</th>
+                                <th>Adı Soyadı</th>
+                                <th>Meslek Alan / Dalı</th>
+                                <th>Sınıfı</th>
+                                <th>Temrin</th>
+                                <th>İş Hizmet<br>Proje</th>
+                                <th>Deney</th>
+                                <th>Eğitim</th>
+                                <th>Yrş.Puanı<br>(*)</th>
+                                <th>Puanı</th>
+                                <th>Telafi<br>Sınavı</th>
+                                <th>Beceri<br>Sınavı</th>
+                                <th>Ortalama<br>(Rakam)</th>
+                                <th>Dönem Notu<br>(Yazıyla)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="height: 50px;">
+                                <td><span class="dynamic-text">${student.no || ''}</span></td>
+                                <td><span class="dynamic-text">${student.name}</span></td>
+                                <td><span class="dynamic-text">${student.field || ''}</span></td>
+                                <td><span class="dynamic-text">${studentClass}</span></td>
+                                <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="grade-sheet-signatures">
+                        <div class="grade-sheet-sig-box" style="width: 30%;">
+                            Usta Öğretici / Eğitici Personel<br><br><br>
+                            İmza
+                        </div>
+                        <div class="grade-sheet-sig-box" style="width: 30%;">
+                            İşletme Yetkilisi<br>
+                            <span class="dynamic-text">${business.official}</span><br><br>
+                            İmza
+                        </div>
+                        <div class="grade-sheet-sig-box" style="width: 30%;">
+                            Koordinatör Öğretmen<br>
+                            <span class="dynamic-text">${appData.settings.coordinatorName}</span><br><br>
+                            İmza
+                        </div>
+                    </div>
+
+                    <div class="grade-sheet-signatures" style="margin-top: 10px;">
+                         <div class="grade-sheet-sig-box" style="width: 45%;">
+                            Müdür Yrd.<br>
+                            <span class="dynamic-text">${appData.settings.asstPrincipalName}</span><br><br>
+                            İmza
+                        </div>
+                        <div class="grade-sheet-sig-box" style="width: 45%;">
+                            Okul Müdürü<br>
+                            <span class="dynamic-text">${appData.settings.principalName}</span><br><br>
+                            İmza
+                        </div>
+                    </div>
+
+                    <div class="grade-sheet-footer">
+                        <p>AÇIKLAMA: 1- Bu çizelge; Orta Öğretim Kurumları Yönetmeliği 144/g maddesine göre işletme yetkilisi tarafından doldurulacak ve dönem sona ermeden beş gün önce kapalı zarf içinde okul/kurum müdürlüğüne teslim edilecektir.</p>
+                        <p>2-* İşaretli bölümler okul/kurum müdürlüğünce doldurulacak ve puan ortalaması alınarak dönem notu belirlenecektir.</p>
+                    </div>
+                </div>`;
+            });
+
+            return formsHTML;
+        }
+
         // --- Event Listeners ---
         dom.generateSheetBtn.addEventListener('click', () => {
             const formType = dom.formTypeSelect.value;
             let allFormsHTML = '';
-            if (formType === 'attendance' || formType === 'monthly_guidance') {
+            
+            if (formType === 'attendance' || formType === 'monthly_guidance' || formType === 'grade_sheet') {
                 const checkedBoxes = document.querySelectorAll('#business-dropdown-content .business-checkbox:checked');
                 if (checkedBoxes.length === 0) { showNotification('Lütfen en az bir işletme seçin.', 'error'); return; }
                 const selectedBusinessIds = Array.from(checkedBoxes).map(cb => cb.value);
                 const month = parseInt(dom.genMonthSelect.value);
                 const year = parseInt(dom.genYearSelect.value);
+                
+                // Tarih kontrolü (Not fişi için tarih kontrolünü esnetebiliriz veya aynı tutabiliriz)
                 const today = new Date();
                 const currentYear = today.getFullYear();
                 const currentMonth = today.getMonth();
-                if (year > currentYear || (year === currentYear && month > currentMonth)) { showNotification('Henüz gelmemiş bir tarih için form oluşturulamaz.', 'error'); return; }
+                if (formType !== 'grade_sheet' && (year > currentYear || (year === currentYear && month > currentMonth))) { 
+                    showNotification('Henüz gelmemiş bir tarih için form oluşturulamaz.', 'error'); return; 
+                }
 
                 if(formType === 'attendance'){
                     let businessChunks = [];
@@ -3126,7 +3348,7 @@
                             allFormsHTML += `<div class="print-page-container print-page-attendance"><div class="print-sheet-wrapper"><div class="print-sheet first-half">${formHTML}</div><div class="print-sheet second-half"></div></div></div>`;
                         }
                     });
-                } else {
+                } else if (formType === 'monthly_guidance') {
                     const validMonthlyForms = [];
                     for (const businessId of selectedBusinessIds) {
                         const company = appData.businesses.find(c => c.id === businessId);
@@ -3138,6 +3360,12 @@
                         const form1 = validMonthlyForms[i];
                         const form2 = validMonthlyForms[i + 1] || ''; 
                         allFormsHTML += `<div class="print-page-container print-page-monthly-guidance"><div class="print-page"><div class="print-form-half">${form1}</div><div class="print-form-half">${form2}</div></div></div>`;
+                    }
+                } else if (formType === 'grade_sheet') {
+                    // DÖNEM NOT FİŞİ EKLEME BÖLÜMÜ
+                    for (const businessId of selectedBusinessIds) {
+                        const formHTML = generateGradeSheet(businessId, year);
+                        if (formHTML) allFormsHTML += formHTML;
                     }
                 }
             } else if (formType === 'daily_guidance') {
@@ -3187,7 +3415,13 @@
                     allFormsHTML += `<div class="print-page-container print-page-daily-guidance"><div class="daily-guidance-container">${column1}${column2}</div></div>`;
                 }
             }
-            if (allFormsHTML) { dom.printContainer.innerHTML = allFormsHTML; window.print(); }
+            
+            if (allFormsHTML) { 
+                dom.printContainer.innerHTML = allFormsHTML; 
+                window.print(); 
+            } else {
+                showNotification('Form oluşturulacak uygun veri bulunamadı.', 'error');
+            }
         });
 
         dom.formTypeSelect.addEventListener('change', (e) => {
@@ -3266,7 +3500,17 @@
         dom.uploadInput.addEventListener('change', (event) => { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const loadedData = JSON.parse(e.target.result); if (loadedData.settings && loadedData.businesses) { appData = loadedData; saveData(); loadData(); renderAll(); showNotification('Veriler başarıyla geri yüklendi.', 'success'); } else { showNotification('Hatalı dosya formatı.', 'error'); } } catch (error) { showNotification('Dosya okunurken bir hata oluştu: ' + error, 'error'); } }; reader.readAsText(file); event.target.value = ''; });
         dom.printListBtn.addEventListener('click', () => { const listHTML = generateListPrint(); dom.printContainer.innerHTML = listHTML; window.print(); });
         document.addEventListener('input', (e) => { if (e.target.hasAttribute('inputmode') && e.target.getAttribute('inputmode') === 'numeric') { e.target.value = e.target.value.replace(/[^0-9]/g, ''); } });
-        dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));        
+        dom.settingsInputs.forEach(input => input.addEventListener('input', saveData)); 
+        
+        dom.formTypeSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'daily_guidance') { 
+                dom.controlsMonthly.classList.remove('active'); 
+                dom.controlsDaily.classList.add('active'); 
+            } else { 
+                dom.controlsDaily.classList.remove('active'); 
+                dom.controlsMonthly.classList.add('active'); 
+            }
+        });
 
         function setVhProperty() {
             const vh = window.innerHeight * 0.01;
