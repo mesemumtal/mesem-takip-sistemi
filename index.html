@@ -410,7 +410,7 @@
 
             .no-print { display: none !important; }
 
-            body, * { background: transparent !important; color: #000 !important; box-shadow: none !important; text-shadow: none !important; }
+            body, *:not(.grade-sheet-page):not(.grade-sheet-page *) { background: transparent !important; color: #000 !important; box-shadow: none !important; text-shadow: none !important; }
 
             body { font-family: Arial, sans-serif !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
@@ -1938,145 +1938,130 @@
 
 
 
+/* --- DÖNEM NOT FİŞİ (EXCEL GÖRÜNÜMÜ) --- */
+        @page grade-sheet {
+            size: A4 landscape;
+            margin: 5mm; /* Kenar boşlukları minimize edildi */
+        }
 
+        .grade-sheet-page {
+            page: grade-sheet;
+            width: 280mm; /* A4 Yatay genişlik */
+            height: 190mm;
+            background: white;
+            color: black;
+            font-family: 'Calibri', Arial, sans-serif;
+            font-size: 11pt;
+            position: relative;
+            page-break-after: always; /* Her öğrenci yeni sayfa */
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            padding: 10px;
+        }
 
+        /* Dinamik Veri Stili: Kalın ve İtalik */
+        .dynamic-data {
+            font-weight: bold !important;
+            font-style: italic !important;
+            font-family: 'Calibri', Arial, sans-serif;
+        }
 
+        /* Tablo Yapısı */
+        .excel-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: none;
+            table-layout: fixed; /* Sütun genişliklerini sabitle */
+        }
 
+        .excel-table td, .excel-table th {
+            border: 0.5pt solid windowtext; /* Excel siyahı ince çizgi */
+            padding: 2px;
+            vertical-align: middle;
+            line-height: 1.2;
+        }
 
+        /* Üst Bilgi Bölümü */
+        .info-row td {
+            border: 0.5pt solid windowtext;
+            height: 25px;
+        }
+        
+        .info-label {
+            font-weight: normal;
+            text-align: left;
+            padding-left: 5px;
+        }
 
+        /* Ana Başlıklar */
+        .main-header {
+            font-weight: bold;
+            text-align: center;
+            background-color: white; /* Arka plan beyaz */
+            font-size: 11pt;
+        }
 
+        /* Dikey Yazılar için Özel Sınıf */
+        .vertical-text-cell {
+            height: 120px; /* Dikey yazı için yeterli yükseklik */
+            position: relative;
+            vertical-align: bottom !important;
+            text-align: center;
+            padding: 5px 0;
+            white-space: nowrap;
+        }
 
-/* --- DÖNEM NOT FİŞİ STİLLERİ (MATBU FORM DÜZENİ) --- */
-@page grade-sheet {
-    size: A4 landscape;
-    margin: 5mm; /* Excel çıktısına uygun dar kenar boşluğu */
-}
+        .vertical-text-content {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            white-space: nowrap;
+            display: inline-block;
+            width: 20px;
+            font-weight: bold;
+            font-size: 10pt;
+        }
 
-/* Print görünümü için özel stiller */
-@media print {
-    /* Genel Not Fişi Sayfa Yapısı */
-    .grade-sheet-page {
-        page: grade-sheet;
-        width: 100%;
-        height: 100%; /* Tüm sayfayı kaplasın */
-        position: relative;
-        page-break-after: always; /* Her öğrenci yeni sayfa */
-        font-family: Calibri, sans-serif;
-        font-size: 11pt;
-        color: black;
-        background: white;
-    }
+        /* Sütun Genişlikleri (Excel'deki orantıya göre) */
+        .col-no { width: 35px; }
+        .col-name { width: 220px; }
+        .col-field { width: 130px; }
+        .col-class { width: 60px; }
+        .col-grade { width: 80px; } /* Temrin, İş, Proje, Deney */
+        .col-vertical { width: 80px; } /* Telafi, Beceri, Ort */
+        .col-result-num { width: 80px; }
+        .col-result-text { width: 120px; }
 
-    /* Tablo Yapısı */
-    .gs-table {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed;
-    }
-    
-    .gs-table td, .gs-table th {
-        padding: 2px;
-        vertical-align: middle;
-        white-space: nowrap; /* Excel gibi sıkışık */
-        overflow: hidden;
-    }
+        /* İmza Bölümü */
+        .signature-section-excel {
+            margin-top: auto; /* Sayfanın en altına it */
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 10pt;
+            font-weight: bold;
+        }
 
-    /* Kenarlık Stilleri - Excel Stili */
-    .b-all { border: 0.5pt solid black; }
-    .b-top { border-top: 0.5pt solid black; }
-    .b-bottom { border-bottom: 0.5pt solid black; }
-    .b-left { border-left: 0.5pt solid black; }
-    .b-right { border-right: 0.5pt solid black; }
-    .b-none { border: none; }
-    
-    /* Metin Stilleri */
-    .t-center { text-align: center; }
-    .t-left { text-align: left; }
-    .t-right { text-align: right; }
-    .f-bold { font-weight: bold; }
-    .f-12 { font-size: 12pt; }
-    .f-9 { font-size: 9pt; }
-    
-    /* Otomatik Doldurulan Alanlar */
-    .dynamic-data {
-        font-weight: bold !important;
-        font-style: italic !important;
-    }
-    
-    /* Dikey Yazı Alanları */
-    .vertical-text-cell {
-        writing-mode: vertical-rl;
-        transform: rotate(180deg);
-        text-align: center;
-        vertical-align: middle;
-        white-space: nowrap;
-        height: 100px; /* Kutudan taşmaması için yükseklik sınırı */
-        padding: 5px 0;
-    }
+        .sig-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .sig-role {
+            font-weight: normal;
+            font-size: 9pt;
+        }
 
-    /* İmza Kutuları */
-    .signature-row td {
-        vertical-align: top;
-        height: 80px;
-    }
-}
-
-/* Tablo Çizgileri ve Yapısı (Liste Görünümü vb için) */
-.excel-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed; /* Sütun genişliklerini sabitle, taşmayı engelle */
-    margin-bottom: 10px;
-}
-
-.excel-table th, .excel-table td {
-    border: 1px solid windowtext; /* Excel siyahı */
-    padding: 3px 2px;
-    text-align: center;
-    vertical-align: middle;
-    font-size: 9pt; /* Orjinal boyuta yakın */
-    line-height: 1.1;
-    word-wrap: break-word; /* Uzun metinleri aşağı kaydır */
-}
-
-/* Form Başlık Alanı */
-.form-header-table {
-    width: 100%;
-    border: none;
-    margin-bottom: 5px;
-    font-size: 10pt;
-}
-.form-header-table td {
-    border: none;
-    padding: 2px;
-    text-align: left;
-    vertical-align: bottom;
-}
-
-/* Alt çizgili doldurulacak alanlar */
-.dotted-line {
-    border-bottom: 1px dotted #000;
-    display: inline-block;
-    width: 100%;
-    min-height: 14px;
-}
-
-/* İmza Alanı */
-.signature-table {
-    width: 100%;
-    margin-top: 15px;
-    border: none;
-    page-break-inside: avoid;
-}
-.signature-table td {
-    border: none;
-    text-align: center;
-    vertical-align: top;
-    font-size: 9pt;
-    padding: 5px;
-}
-
-
+        .footer-note {
+            font-size: 9pt;
+            margin-top: 20px;
+            font-weight: normal;
+        }
 
      </style>
 
@@ -3313,152 +3298,155 @@
 
 
         function generateGradeSheetForm(student, business, period, year) {
-            const schoolName = appData.settings.schoolName || 'UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ';
-            const coordinatorName = appData.settings.coordinatorName || '................................';
-            const asstPrincipalName = appData.settings.asstPrincipalName || '................................';
-            const principalName = appData.settings.principalName || '................................';
+            // Ayarlar ve Sabitler
+            const settings = appData.settings;
+            const schoolName = settings.schoolName || 'UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ';
+            // Yıl zorla 2025-2026 yapıldı (istek üzerine), ancak fonksiyona gelen 'year' parametresi formdan geliyorsa onu ezebiliriz.
+            // İsteğe binaen sabit:
+            const fixedYear = "2025 - 2026"; 
             const periodText = period === "1" ? "1. Dönem" : "2. Dönem";
+            
+            // Öğrenci sınıf bilgisi
             const fullClass = `${student.class || ''}/${student.branch || ''}`;
 
-            // Matbu Form HTML Yapısı - Reference Dosyasına Göre Ayarlanmış
             return `
             <div class="grade-sheet-page">
-                <table class="gs-table" style="width:100%; height:100%;">
-                    <!-- Code Row -->
-                    <tr>
-                        <td colspan="13" class="t-right b-right b-bottom f-bold" style="border-left:none; border-top:none;">IME-DNOT</td>
-                    </tr>
-                    
-                    <!-- Title Row -->
-                    <tr>
-                        <td colspan="13" class="t-center b-all f-bold f-12" style="border-left:none; border-right:none; padding:10px;">İŞLETMELERDE MESLEKİ EĞİTİM GÖREN ÖĞRENCİLERE AİT DÖNEM NOT FİŞİ</td>
-                    </tr>
-                    
-                    <!-- School Name -->
-                    <tr style="height:35px;">
-                        <td colspan="2" class="b-all t-left" style="border-left:none;">Okul/Kurumun Adı :</td>
-                        <td colspan="11" class="b-bottom b-right t-left dynamic-data f-12" style="border-top:none;">${schoolName}</td>
-                    </tr>
-                    
-                    <!-- Year, Period, Lesson -->
-                    <tr style="height:35px;">
-                        <td colspan="2" class="b-all t-left" style="border-left:none;">Öğretim Yılı :</td>
-                        <td colspan="2" class="b-bottom b-right t-center dynamic-data f-12" style="border-top:none;">${year}</td>
-                        <td class="b-bottom t-center" style="border-top:none;">Dönemi :</td>
-                        <td colspan="3" class="b-bottom b-right t-center dynamic-data f-12" style="border-top:none;">${periodText}</td>
-                        <td class="b-bottom t-center" style="border-top:none;">Dersin Adı :</td>
-                        <td colspan="4" class="b-bottom t-left dynamic-data f-12" style="border-top:none; border-right:none;">İŞLETMELERDE MESLEKİ EĞİTİM</td>
-                    </tr>
-                    
-                    <!-- Business Info -->
-                    <tr style="height:50px;">
-                        <td colspan="2" class="b-all t-left" style="border-left:none;">İşletmenin Adı :</td>
-                        <td colspan="3" class="b-bottom t-left dynamic-data f-12" style="border-top:none;">${business.name}</td>
-                        <td class="b-bottom t-right" style="border-top:none;">Telefonu :</td>
-                        <td colspan="2" class="b-bottom t-left dynamic-data f-12" style="border-top:none;">${business.phone || ''}</td>
-                        <td class="b-bottom t-right" style="border-top:none;">e-posta :</td>
-                        <td colspan="4" class="b-bottom b-right t-left dynamic-data f-12" style="border-top:none; border-right:none;"></td>
-                    </tr>
-                    
-                    <!-- Spacer -->
-                    <tr style="height:30px;"><td colspan="13" class="b-right" style="border-left:none;"></td></tr>
-                    
-                    <!-- Table Headers Row 1 -->
-                    <tr>
-                        <td colspan="4" class="t-center b-all f-bold" style="background-color:#f2f2f2;">Öğrencinin</td>
-                        <td colspan="4" class="t-center b-all f-bold" style="background-color:#f2f2f2;">İşletmede verilen puanlar</td>
-                        <td colspan="2" class="t-center b-all f-bold" style="background-color:#f2f2f2;">Okulda ver. puanlar</td>
-                        <td colspan="3" class="t-center b-all f-bold" style="background-color:#f2f2f2;">Dönem Başarısı</td>
-                    </tr>
-                    
-                    <!-- Table Headers Row 2 -->
-                    <tr>
-                        <td rowspan="2" class="t-center b-all f-bold vertical-text-cell" style="width:4%;">Numarası</td>
-                        <td rowspan="2" class="t-center b-all f-bold" style="width:20%;">Adı Soyadı</td>
-                        <td rowspan="2" class="t-center b-all f-bold" style="width:12%;">Meslek Alan/Dalı</td>
-                        <td rowspan="2" class="t-center b-all f-bold" style="width:5%;">Sınıfı</td>
-                        
-                        <td rowspan="2" class="t-center b-all f-bold" style="width:6%;">Temrin</td>
-                        <td rowspan="2" class="t-center b-all f-bold" style="width:6%;">İş Hizmet</td>
-                        <td rowspan="2" class="t-center b-all f-bold" style="width:6%;">Proje</td>
-                        <td rowspan="2" class="t-center b-all f-bold" style="width:6%;">Deney</td>
-                        
-                        <td rowspan="2" class="vertical-text-cell b-all f-bold" style="width:7%;">Telafi Eğitimi Puanı (*)</td>
-                        <td rowspan="2" class="vertical-text-cell b-all f-bold" style="width:7%;">Beceri Yrş. Puanı</td>
-                        <td rowspan="2" class="vertical-text-cell b-all f-bold" style="width:5%;">Ortalama</td>
-                        
-                        <td colspan="2" class="t-center b-all f-bold">Dönem Notu</td>
-                    </tr>
-                    
-                    <!-- Sub Header for Grade -->
-                    <tr>
-                        <td class="t-center b-all f-bold" style="width:8%;">Rakamla</td>
-                        <td class="t-center b-all f-bold" style="width:10%;">Yazıyla</td>
-                    </tr>
-                    
-                    <!-- Data Row (Student) -->
-                    <tr style="height:60px;">
-                        <td class="t-center b-all dynamic-data">${student.no || ''}</td>
-                        <td class="t-left b-all dynamic-data" style="padding-left:5px;">${student.name}</td>
-                        <td class="t-center b-all dynamic-data">${student.field || ''}</td>
-                        <td class="t-center b-all dynamic-data">${fullClass}</td>
-                        <td class="b-all"></td>
-                        <td class="b-all"></td>
-                        <td class="b-all"></td>
-                        <td class="b-all"></td>
-                        <td class="b-all"></td>
-                        <td class="b-all"></td>
-                        <td class="b-all"></td>
-                        <td class="b-all"></td>
-                        <td class="b-all"></td>
-                    </tr>
-                    
-                    <!-- Empty Rows for Spacing/Visual Match (like in excel export) -->
-                    <tr style="height:20px;"><td colspan="13" class="b-all"></td></tr>
-                    <tr style="height:20px;"><td colspan="13" class="b-all"></td></tr>
-                    <tr style="height:20px;"><td colspan="13" class="b-all"></td></tr>
-                    <tr style="height:20px;"><td colspan="13" class="b-all"></td></tr>
-                    <tr style="height:20px;"><td colspan="13" class="b-all"></td></tr>
-                    
-                    <!-- Spacer -->
-                    <tr style="height:30px;"><td colspan="13" class="b-none"></td></tr>
-                    
-                    <!-- Signatures Header -->
-                    <tr class="f-bold f-9 t-center">
-                        <td colspan="3" class="b-none">Usta Öğretici / Eğitici Personel</td>
-                        <td colspan="3" class="b-none">İşletme Yetkilisi</td>
-                        <td colspan="3" class="b-none">Koordinatör Öğretmen</td>
-                        <td colspan="3" class="b-none">Koordinatör Müdür Yardımcısı</td>
-                        <td class="b-none">Okul Müdürü</td>
-                    </tr>
-                    
-                    <!-- Signatures Names -->
-                    <tr class="f-bold f-9 t-center dynamic-data signature-names">
-                        <td colspan="3" class="b-none"></td> <!-- Usta Öğretici Adı Yoksa Boş -->
-                        <td colspan="3" class="b-none">${business.official || ''}</td>
-                        <td colspan="3" class="b-none">${coordinatorName}</td>
-                        <td colspan="3" class="b-none">${asstPrincipalName}</td>
-                        <td class="b-none">${principalName}</td>
-                    </tr>
+                <div style="text-align: right; font-size: 10pt; margin-bottom: 2px;">IME-DNOT</div>
+                
+                <table class="excel-table">
+                    <colgroup>
+                        <col class="col-no">
+                        <col class="col-name">
+                        <col class="col-field">
+                        <col class="col-class">
+                        <col class="col-grade">
+                        <col class="col-grade">
+                        <col class="col-grade">
+                        <col class="col-grade">
+                        <col class="col-vertical">
+                        <col class="col-vertical">
+                        <col class="col-vertical">
+                        <col class="col-result-num">
+                        <col class="col-result-text">
+                    </colgroup>
 
-                    <!-- Signatures Space -->
-                    <tr class="signature-row t-center">
-                        <td colspan="3" class="b-none">İmza</td>
-                        <td colspan="3" class="b-none">İmza</td>
-                        <td colspan="3" class="b-none">İmza</td>
-                        <td colspan="3" class="b-none">İmza</td>
-                        <td class="b-none">İmza</td>
-                    </tr>
-                    
-                    <!-- Footer Info -->
                     <tr>
-                        <td colspan="13" class="b-top f-9" style="padding:5px;">
-                            <strong>AÇIKLAMA:</strong><br>
-                            1- Bu çizelge; Orta Öğretim Kurumları Yönetmeliği 144/g maddesine göre İşletme yetkilisi tarafından doldurulacak ve dönem sona ermeden beş gün önce kapalı zarf içinde okul / kurum müdürlüğüne teslim edilecektir.<br>
-                            2- * İşaretli bölümler okul / kurum müdürlüğünce doldurulacak ve puan ortalaması alınarak dönem notu belirlenecektir.
+                        <td colspan="13" class="main-header" style="height: 30px; font-size:12pt;">
+                            İŞLETMELERDE MESLEKİ EĞİTİM GÖREN ÖĞRENCİLERE AİT DÖNEM NOT FİŞİ
                         </td>
                     </tr>
+
+                    <tr class="info-row">
+                        <td colspan="2" class="info-label">Okul/Kurumun Adı :</td>
+                        <td colspan="11" class="dynamic-data" style="text-align:left; padding-left:10px;">${schoolName}</td>
+                    </tr>
+                    <tr class="info-row">
+                        <td colspan="2" class="info-label">Öğretim Yılı :</td>
+                        <td colspan="2" class="dynamic-data" style="text-align:center;">${fixedYear}</td>
+                        <td class="info-label" style="text-align:right; padding-right:5px;">Dönemi :</td>
+                        <td colspan="3" class="dynamic-data" style="text-align:center;">${periodText}</td>
+                        <td class="info-label" style="text-align:right; padding-right:5px;">Dersin Adı :</td>
+                        <td colspan="4" class="dynamic-data" style="text-align:left; padding-left:10px;">İŞLETMELERDE MESLEKİ EĞİTİM</td>
+                    </tr>
+                    <tr class="info-row">
+                        <td colspan="2" class="info-label" style="height: 50px;">İşletmenin Adı :</td>
+                        <td colspan="3" class="dynamic-data" style="text-align:left; padding-left:10px;">${business.name}</td>
+                        <td class="info-label" style="text-align:right;">Telefonu :</td>
+                        <td colspan="2" class="dynamic-data">${business.phone || ''}</td>
+                        <td class="info-label" style="text-align:center;">e-posta</td>
+                        <td colspan="4"></td>
+                    </tr>
+                    
+                    <tr><td colspan="13" style="height: 20px; border: 0.5pt solid black;"></td></tr>
+
+                    <tr style="font-weight: bold; text-align: center;">
+                        <td colspan="4" style="height: 25px;">Öğrencinin</td>
+                        <td colspan="4">İşletmede verilen puanlar</td>
+                        <td colspan="2">Okulda ver. puanlar</td>
+                        <td colspan="3">Dönem Başarısı</td>
+                    </tr>
+
+                    <tr style="font-weight: bold; text-align: center;">
+                        <td rowspan="2" class="vertical-text-cell">
+                            <span class="vertical-text-content">Numarası</span>
+                        </td>
+                        <td rowspan="2">Adı Soyadı</td>
+                        <td rowspan="2">Meslek<br>Alan/Dalı</td>
+                        <td rowspan="2">Sınıfı</td>
+                        
+                        <td rowspan="2">Temrin</td>
+                        <td rowspan="2">İş Hizmet</td>
+                        <td rowspan="2">Proje</td>
+                        <td rowspan="2">Deney</td>
+                        
+                        <td rowspan="2" class="vertical-text-cell">
+                            <span class="vertical-text-content">Telafi Eğitimi Puanı (*)</span>
+                        </td>
+                        <td rowspan="2" class="vertical-text-cell">
+                            <span class="vertical-text-content">Beceri Yrş. Puanı</span>
+                        </td>
+                        <td rowspan="2" class="vertical-text-cell">
+                            <span class="vertical-text-content">Ortalama</span>
+                        </td>
+                        
+                        <td colspan="2" style="height: 30px;">Dönem Notu</td>
+                    </tr>
+                    <tr style="font-weight: bold; text-align: center;">
+                        <td style="height: 60px;">Rakamla</td>
+                        <td>Yazıyla</td>
+                    </tr>
+
+                    <tr style="height: 30px; text-align: center;">
+                        <td class="dynamic-data">${student.no || ''}</td>
+                        <td class="dynamic-data" style="text-align: left; padding-left: 5px;">${student.name}</td>
+                        <td class="dynamic-data">${student.field || ''}</td>
+                        <td class="dynamic-data">${fullClass}</td>
+                        
+                        <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> </tr>
+
+                    ${Array(7).fill('').map(() => `
+                    <tr style="height: 30px;">
+                        <td></td><td></td><td></td><td></td>
+                        <td></td><td></td><td></td><td></td>
+                        <td></td><td></td><td></td>
+                        <td></td><td></td>
+                    </tr>`).join('')}
+
                 </table>
+
+                <div class="signature-section-excel">
+                    <div class="sig-box">
+                        <div class="dynamic-data" style="min-height: 20px;"></div>
+                        <div class="sig-role">Usta Öğretici / Eğitici Personel</div>
+                        <div style="margin-top: 30px;">İmza</div>
+                    </div>
+                    <div class="sig-box">
+                        <div class="dynamic-data">${business.official || ''}</div>
+                        <div class="sig-role">İşletme Yetkilisi</div>
+                        <div style="margin-top: 30px;">İmza</div>
+                    </div>
+                    <div class="sig-box">
+                        <div class="dynamic-data">${settings.coordinatorName || ''}</div>
+                        <div class="sig-role">Koordinatör Öğretmen</div>
+                        <div style="margin-top: 30px;">İmza</div>
+                    </div>
+                    <div class="sig-box">
+                        <div class="dynamic-data">${settings.asstPrincipalName || ''}</div>
+                        <div class="sig-role">Koordinatör Müdür Yardımcısı</div>
+                        <div style="margin-top: 30px;">İmza</div>
+                    </div>
+                    <div class="sig-box">
+                        <div class="dynamic-data">${settings.principalName || ''}</div>
+                        <div class="sig-role">Okul Müdürü</div>
+                        <div style="margin-top: 30px;">İmza</div>
+                    </div>
+                </div>
+
+                <div class="footer-note">
+                    <strong>AÇIKLAMA:</strong><br>
+                    1- Bu çizelge; Orta Öğretim Kurumları Yönetmeliği 144/g maddesine göre İşletme yetkilisi tarafından doldurulacak ve dönem sona ermeden beş gün önce kapalı zarf içinde okul / kurum müdürlüğüne teslim edilecektir.<br>
+                    2- * İşaretli bölümler okul / kurum müdürlüğünce doldurulacak ve puan ortalaması alınarak dönem notu belirlenecektir.
+                </div>
             </div>
             `;
         }
@@ -3618,4 +3606,266 @@
             closeModal('terminationModal');
             const formattedStartDate = student.startDate ? parseDateString(student.startDate).toLocaleDateString('tr-TR') : '';
             const formattedTerminationDate = parseDateString(terminationDate).toLocaleDateString('tr-TR');
-            const formHTML = `<div class="print-page-container print-page-termination"><div class="termination-container" style="padding-bottom: 25px;"><h1 style="font-size: 14pt;">${appData.settings.schoolName}</h1>
+            const formHTML = `<div class="print-page-container print-page-termination"><div class="termination-container" style="padding-bottom: 25px;"><h1 style="font-size: 14pt;">${appData.settings.schoolName}</h1><h2 style="font-size: 14pt; margin: 15px 0;">İŞLETMELERDE BECERİ EĞİTİMİ GÖREN ÖĞRENCİLERE AİT<br>SÖZLEŞME FESİH TUTANAĞI</h2><table><tr><td class="label-col">İŞLETMENİN ADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${business.name}</em></strong></td></tr><tr><td class="label-col">ÖĞRENCİNİN ADI SOYADI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.name}</em></strong></td></tr><tr><td class="label-col">ALANI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.field}</em></strong></td></tr><tr><td class="label-col">SINIFI / ŞUBE / NUMARASI</td><td class="separator-col">:</td><td class="value-col"><strong><em>${student.class ? student.class + '. Sınıf' : ''}${student.branch ? ' / ' + student.branch + ' Şubesi' : ''}${student.no ? ' / ' + student.no : ''}</em></strong></td></tr><tr><td class="label-col">SÖZLEŞMELİ TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedStartDate}</em></strong></td></tr><tr><td class="label-col">SÖZLEŞMENİN FESİH TARİHİ</td><td class="separator-col">:</td><td class="value-col"><strong><em>${formattedTerminationDate}</em></strong></td></tr></table><div class="reasons"><div class="label-col" style="border-bottom: 1px solid black; padding-bottom: 2px; margin-bottom: 5px;">FESİH NEDENLERİ:</div><div class="value-box" style="border: 1px solid transparent; padding: 5px;"><strong><em>${terminationReason.replace(/\n/g, '<br>')}</em></strong></div></div><div class="signatures" style="display: flex; flex-wrap: wrap; justify-content: space-between; text-align: center; width: 100%; margin-top: auto; padding-top: 40px;"><div style="width: 32%; height: 1px;"></div><div style="width: 32%; height: 1px;"></div><div style="width: 32%; margin-bottom: 20px;">..... / ..... / 2025</div><div style="width: 32%;"><strong><em>${business.official}</em></strong><br>İşletme Yetkilisi</div><div style="width: 32%;"><strong><em>${appData.settings.coordinatorName}</em></strong><br>Koordinatör Öğretmen</div><div style="width: 32%;"><strong><em>${appData.settings.principalName}</em></strong><br>Okul Müdürü</div></div></div></div>`;
+            dom.printContainer.innerHTML = formHTML; 
+            window.print();
+            showNotification('Sözleşme feshi gerçekleştirildi.', 'success');
+        }
+
+        // --- Event Listeners ---
+        dom.generateSheetBtn.addEventListener('click', () => {
+            const formType = dom.formTypeSelect.value;
+            let allFormsHTML = '';
+            if (formType === 'attendance' || formType === 'monthly_guidance') {
+                const checkedBoxes = document.querySelectorAll('#business-dropdown-content .business-checkbox:checked');
+                if (checkedBoxes.length === 0) { showNotification('Lütfen en az bir işletme seçin.', 'error'); return; }
+                const selectedBusinessIds = Array.from(checkedBoxes).map(cb => cb.value);
+                const month = parseInt(dom.genMonthSelect.value);
+                const year = parseInt(dom.genYearSelect.value);
+                const today = new Date();
+                const currentYear = today.getFullYear();
+                const currentMonth = today.getMonth();
+                if (year > currentYear || (year === currentYear && month > currentMonth)) { showNotification('Henüz gelmemiş bir tarih için form oluşturulamaz.', 'error'); return; }
+
+                if(formType === 'attendance'){
+                    let businessChunks = [];
+                    for (let i = 0; i < selectedBusinessIds.length; ) {
+                        const business = appData.businesses.find(b => b.id === selectedBusinessIds[i]);
+                        const hasActiveStudent = business.students.some(s => {
+                             const sStart = parseDateString(s.startDate); if(sStart) sStart.setHours(0,0,0,0);
+                             const monthEnd = new Date(year, month + 1, 0); monthEnd.setHours(0,0,0,0);
+                             return sStart && sStart <= monthEnd;
+                        });
+                        if (!hasActiveStudent) { i++; continue; } 
+                        const studentCount = business.students.filter(s => !s.endDate || parseDateString(s.endDate) > new Date(year, month, 1)).length;
+                        if (studentCount <= 8) {
+                            const nextBusiness = i + 1 < selectedBusinessIds.length ? appData.businesses.find(b => b.id === selectedBusinessIds[i + 1]) : null;
+                            if(nextBusiness) { businessChunks.push([selectedBusinessIds[i], selectedBusinessIds[i+1]]); i += 2; }
+                            else { businessChunks.push([selectedBusinessIds[i]]); i++; }
+                        } else { businessChunks.push([selectedBusinessIds[i]]); i++; }
+                    }
+                    businessChunks.forEach(chunk => {
+                        if(chunk.length === 2) {
+                            const formHTML1 = generateAttendanceSheet(chunk[0], month, year); 
+                            const formHTML2 = generateAttendanceSheet(chunk[1], month, year);
+                            allFormsHTML += `<div class="print-page-container print-page-attendance"><div class="print-sheet-wrapper"><div class="print-sheet first-half">${formHTML1}</div><div class="print-sheet second-half">${formHTML2}</div></div></div>`;
+                        } else {
+                            const formHTML = generateAttendanceSheet(chunk[0], month, year);
+                            allFormsHTML += `<div class="print-page-container print-page-attendance"><div class="print-sheet-wrapper"><div class="print-sheet first-half">${formHTML}</div><div class="print-sheet second-half"></div></div></div>`;
+                        }
+                    });
+                } else {
+                    const validMonthlyForms = [];
+                    for (const businessId of selectedBusinessIds) {
+                        const company = appData.businesses.find(c => c.id === businessId);
+                        const formHTML = generateMonthlyGuidanceForm(company, month, year);
+                        if (formHTML !== null) validMonthlyForms.push(formHTML);
+                    }
+                    if (validMonthlyForms.length === 0) { showNotification('Seçilen işletmelerde belirtilen ayda aktif öğrenci bulunamadı.', 'error'); return; }
+                    for (let i = 0; i < validMonthlyForms.length; i += 2) {
+                        const form1 = validMonthlyForms[i];
+                        const form2 = validMonthlyForms[i + 1] || ''; 
+                        allFormsHTML += `<div class="print-page-container print-page-monthly-guidance"><div class="print-page"><div class="print-form-half">${form1}</div><div class="print-form-half">${form2}</div></div></div>`;
+                    }
+                }
+            } else if (formType === 'daily_guidance') {
+                let selectedBusinessIds = Array.from(document.querySelectorAll('.daily-business-checkbox:checked')).map(cb => cb.value);
+                const selectedWeek = parseInt(dom.genWeekSelect1.value);
+                if (selectedBusinessIds.length === 0) { showNotification('Lütfen en az bir işletme seçin.', 'error'); return; }
+                const month = parseInt(dom.dailyMonthSelect.value);
+                const year = parseInt(dom.dailyYearSelect.value);
+                let weekStartDate = null, weekEndDate = null;
+                const firstDayOfMonth = new Date(year, month, 1);
+                const lastDayOfMonth = new Date(year, month + 1, 0);
+                let firstMonday = new Date(firstDayOfMonth);
+                const firstDayWeekday = firstDayOfMonth.getDay();
+                const daysToSubtract = firstDayWeekday === 0 ? 6 : firstDayWeekday - 1;
+                firstMonday.setDate(firstDayOfMonth.getDate() - daysToSubtract);
+                let weekNumber = 1;
+                let currentMonday = new Date(firstMonday);
+                while (currentMonday <= lastDayOfMonth) {
+                    const weekStart = new Date(currentMonday);
+                    const weekEnd = new Date(currentMonday);
+                    weekEnd.setDate(weekEnd.getDate() + 6);
+                    if (weekEnd >= firstDayOfMonth && weekStart <= lastDayOfMonth) {
+                        if (weekNumber === selectedWeek) { weekStartDate = weekStart; weekEndDate = weekEnd; break; }
+                        weekNumber++;
+                    }
+                    currentMonday.setDate(currentMonday.getDate() + 7);
+                }
+                const businessForms = selectedBusinessIds.map(businessId => {
+                    const business = appData.businesses.find(b => b.id === businessId);
+                    if (!business || !business.visitDay) return null;
+                    if (!weekStartDate || !weekEndDate) return null;
+                    let visitDate = null;
+                    for (let d = new Date(weekStartDate); d <= weekEndDate; d.setDate(d.getDate() + 1)) {
+                        if (d.getDay() === parseInt(business.visitDay)) { visitDate = new Date(d); break; }
+                    }
+                    if (!visitDate) return null;
+                    return generateDailyGuidanceForm(business, visitDate);
+                }).filter(form => form !== null);
+                if (businessForms.length === 0) { showNotification('Seçilen hafta için uygun ziyaret günü veya aktif öğrenci bulunamadı.', 'error'); return; }
+                for (let i = 0; i < businessForms.length; i += 2) {
+                    const form1HTML = businessForms[i];
+                    const form2HTML = businessForms[i + 1] || null;
+                    let column1 = `<div class="daily-guidance-column"><div class="top-right-text">İME-GÖREV REHBERLİK</div>${form1HTML}<div class="bottom-left-text">FORM 4A</div></div>`;
+                    let column2 = `<div class="daily-guidance-column">`;
+                    if (form2HTML) { column2 += `<div class="top-right-text">İME-GÖREV REHBERLİK</div>${form2HTML}<div class="bottom-left-text">FORM 4A</div>`; }
+                    column2 += `</div>`;
+                    allFormsHTML += `<div class="print-page-container print-page-daily-guidance"><div class="daily-guidance-container">${column1}${column2}</div></div>`;
+                }
+            }
+            if (allFormsHTML) { dom.printContainer.innerHTML = allFormsHTML; window.print(); }
+        });
+
+        dom.formTypeSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'daily_guidance') { dom.controlsMonthly.classList.remove('active'); dom.controlsDaily.classList.add('active'); }
+            else { dom.controlsDaily.classList.remove('active'); dom.controlsMonthly.classList.add('active'); }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target.type === 'checkbox' && (e.target.classList.contains('business-checkbox') || e.target.classList.contains('daily-business-checkbox'))) {
+                setTimeout(() => { updateDropdownText(); }, 10); return;
+            }
+            if (e.target.tagName === 'LABEL') {
+                const checkbox = document.getElementById(e.target.getAttribute('for'));
+                if (checkbox) { checkbox.checked = !checkbox.checked; setTimeout(() => { updateDropdownText(); }, 10); }
+                return;
+            }
+            if (e.target.closest('#business-dropdown-header')) {
+                const content = document.getElementById('business-dropdown-content');
+                const header = document.getElementById('business-dropdown-header');
+                if (content.style.display === 'block') { content.style.display = 'none'; header.classList.remove('open'); } 
+                else { content.style.display = 'block'; header.classList.add('open'); }
+                return;
+            }
+            if (e.target.closest('#daily-business-dropdown-header')) {
+                const content = document.getElementById('daily-business-dropdown-content');
+                const header = document.getElementById('daily-business-dropdown-header');
+                if (content.style.display === 'block') { content.style.display = 'none'; header.classList.remove('open'); } 
+                else { content.style.display = 'block'; header.classList.add('open'); }
+                return;
+            }
+            if (e.target.closest('.dropdown-item') && !e.target.closest('button')) {
+                const item = e.target.closest('.dropdown-item');
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                if (checkbox) { checkbox.checked = !checkbox.checked; setTimeout(() => { updateDropdownText(); }, 10); }
+            }
+        });
+
+        dom.selectAllBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.business-checkbox').forEach(cb => cb.checked = true); updateDropdownText(); });
+        dom.deselectAllBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.business-checkbox').forEach(cb => cb.checked = false); updateDropdownText(); });
+        dom.selectAllDailyBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.daily-business-checkbox').forEach(cb => cb.checked = true); updateDropdownText(); });
+        dom.deselectAllDailyBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.daily-business-checkbox').forEach(cb => cb.checked = false); updateDropdownText(); });
+
+        // Grade Sheet Business Dropdown Event Listeners
+        document.addEventListener('click', function(e) {
+            // Grade sheet dropdown header toggle
+            if (e.target.closest('#grade-sheet-business-dropdown-header')) {
+                const content = document.getElementById('grade-sheet-business-dropdown-content');
+                const header = document.getElementById('grade-sheet-business-dropdown-header');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    header.classList.remove('open');
+                } else {
+                    content.style.display = 'block';
+                    header.classList.add('open');
+                }
+                return;
+            }
+        });
+        
+        // Select all grade businesses
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'select-all-grade-businesses') {
+                e.stopPropagation();
+                document.querySelectorAll('.grade-sheet-business-checkbox').forEach(cb => cb.checked = true);
+                updateGradeSheetDropdownText();
+            }
+        });
+        
+        // Deselect all grade businesses
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'deselect-all-grade-businesses') {
+                e.stopPropagation();
+                document.querySelectorAll('.grade-sheet-business-checkbox').forEach(cb => cb.checked = false);
+                updateGradeSheetDropdownText();
+            }
+        });
+        
+        // Grade sheet checkbox change
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('grade-sheet-business-checkbox')) {
+                updateGradeSheetDropdownText();
+            }
+        });
+        document.addEventListener('change', (e) => { if (e.target.matches('.business-checkbox, .daily-business-checkbox')) { updateDropdownText(); } });
+        [dom.dailyMonthSelect, dom.dailyYearSelect].forEach(el => el.addEventListener('change', populateWeeksForDailyForm));
+        dom.tabs.addEventListener('click', e => { if(e.target.matches('.tab')) { const tabId=e.target.dataset.tab; document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(tabId).classList.add('active'); e.target.classList.add('active'); }});
+        
+        document.addEventListener('click', e => {
+            if (e.target.matches('[data-action="cancel-modal"]')) { e.target.closest('.modal').style.display = 'none'; return; }
+            const accordionHeader = e.target.closest('.accordion-header'); 
+            if (accordionHeader) { accordionHeader.nextElementSibling.classList.toggle('open'); return; } 
+            const action = e.target.dataset.action; 
+            if(!action) return; 
+            const id = e.target.dataset.id; 
+            const businessId = e.target.dataset.businessId; 
+            switch(action) { 
+                case 'add-student': openModal('studentModal', {businessId: id}); break; 
+                case 'edit-business': openModal('businessModal', {id: id}); break; 
+                case 'delete-business': deleteBusiness(id); break; 
+                case 'edit-student': openModal('studentModal', {id: id, businessId: businessId}); break; 
+                case 'delete-student': deleteStudent(id, businessId); break;
+                case 'open-termination-modal': openModal('terminationModal', {studentId: id, businessId: businessId}); break; 
+                case 'cancel-termination': cancelTermination(e.target.dataset.studentId || e.target.dataset.id, businessId); break;
+                case 'open-absence-modal': openModal('absenceModal', {studentId: id, businessId: businessId}); break; 
+            } 
+        });
+
+        dom.absenceModal.querySelector('#saveAbsenceBtn').addEventListener('click', saveAbsences);
+        dom.absenceModal.querySelector('#absenceMonthSelect').addEventListener('change', renderAbsenceCalendar);
+        dom.absenceModal.querySelector('#absenceYearSelect').addEventListener('change', renderAbsenceCalendar);
+        dom.absenceModal.addEventListener('click', e => { const dayEl = e.target.closest('.calendar-day.workday'); if (!dayEl) return; const statusEl = dayEl.querySelector('.calendar-day-status'); let currentStatus = statusEl.textContent.replace(/\s/g, ''); let newStatus = ''; if (currentStatus === '') newStatus = 'S'; else if (currentStatus === 'S') newStatus = 'Ö'; else if (currentStatus === 'Ö') newStatus = 'SÖ'; else newStatus = ''; statusEl.innerHTML = newStatus.replace('SÖ', 'S<br>Ö'); statusEl.classList.toggle('f-gold', newStatus !== ''); });
+        dom.addBusinessBtn.addEventListener('click', () => openModal('businessModal', null));
+        document.getElementById('generateGradeSheetBtn').addEventListener('click', handleGenerateGradeSheet);
+
+        dom.businessForm.addEventListener('submit', saveBusiness);
+        dom.studentForm.addEventListener('submit', saveStudent);
+        dom.terminationForm.addEventListener('submit', generateTerminationForm);
+        dom.downloadBtn.addEventListener('click', () => { saveData(); const dataStr = JSON.stringify(appData, null, 2); const blob = new Blob([dataStr], {type: 'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `mesem_verileri_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); showNotification('Veriler başarıyla indirildi.', 'success'); });
+        dom.uploadBtn.addEventListener('click', () => dom.uploadInput.click());
+        dom.uploadInput.addEventListener('change', (event) => { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const loadedData = JSON.parse(e.target.result); if (loadedData.settings && loadedData.businesses) { appData = loadedData; saveData(); loadData(); renderAll(); showNotification('Veriler başarıyla geri yüklendi.', 'success'); } else { showNotification('Hatalı dosya formatı.', 'error'); } } catch (error) { showNotification('Dosya okunurken bir hata oluştu: ' + error, 'error'); } }; reader.readAsText(file); event.target.value = ''; });
+        dom.printListBtn.addEventListener('click', () => { const listHTML = generateListPrint(); dom.printContainer.innerHTML = listHTML; window.print(); });
+        document.addEventListener('input', (e) => { if (e.target.hasAttribute('inputmode') && e.target.getAttribute('inputmode') === 'numeric') { e.target.value = e.target.value.replace(/[^0-9]/g, ''); } });
+        dom.settingsInputs.forEach(input => input.addEventListener('input', saveData));        
+
+        function setVhProperty() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        setVhProperty();
+        window.addEventListener('resize', setVhProperty);
+        window.addEventListener('orientationchange', setVhProperty);
+        
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                dom.loginSection.style.display = 'none';
+                dom.userInfo.style.display = 'block';
+                dom.userName.textContent = user.displayName || user.email;
+                dom.container.style.display = 'block';
+                loadUserData(); 
+            } else {
+                currentUser = null;
+                dom.loginSection.style.display = 'block';
+                dom.userInfo.style.display = 'none';
+                dom.container.style.display = 'none';
+                appData = {}; 
+            }
+        });
+    });
+</script>
+</body>
+
+</html>
