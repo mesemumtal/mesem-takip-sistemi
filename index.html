@@ -1947,7 +1947,13 @@
         .grade-sheet-page {
             page: grade-sheet;
             width: 285mm;
-            height: 195mm;
+            
+            /* --- DEĞİŞEN KISIMLAR BAŞLANGIÇ --- */
+            height: auto;          /* Sabit 195mm yerine içeriğe göre otomatik olsun */
+            min-height: unset;     /* Minimum yükseklik kuralını iptal et */
+            padding-bottom: 15px;  /* Çerçeve çizgisi ile yazı arasında 15px boşluk bırak */
+            /* --- DEĞİŞEN KISIMLAR BİTİŞ --- */
+
             background: white;
             color: #000;
             font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
