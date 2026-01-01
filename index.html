@@ -1949,62 +1949,71 @@
 /* DÖNEM NOT FİŞİ STİLLERİ */
 @page grade-sheet {
     size: A4 landscape;
-    margin: 8mm 8mm 8mm 8mm;
+    margin: 10mm 10mm 10mm 10mm;
 }
 
 .grade-sheet-page {
     page: grade-sheet;
     width: 100%;
-    min-height: 210mm;
-    padding: 5mm;
+    height: 210mm;
+    padding: 0;
     background: white;
     color: black;
     font-family: Arial, sans-serif;
-    font-size: 10pt;
+    font-size: 9pt;
     page-break-after: always;
+    page-break-inside: avoid;
+    box-sizing: border-box;
+}
+
+.grade-sheet-page:last-child {
+    page-break-after: auto;
 }
 
 .grade-sheet-container {
     border: 2px solid black;
-    padding: 3mm;
+    padding: 4mm;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .grade-sheet-header {
     text-align: center;
-    margin-bottom: 3mm;
+    margin-bottom: 4mm;
 }
 
 .grade-sheet-title {
-    font-size: 11pt;
+    font-size: 10pt;
     font-weight: bold;
-    margin-bottom: 2mm;
-    border: 1px solid black;
-    padding: 2mm;
+    border: 1.5px solid black;
+    padding: 3mm 2mm;
+    line-height: 1.2;
 }
 
-.grade-sheet-info {
+.grade-sheet-info-row {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 5mm;
-    margin-bottom: 3mm;
-    font-size: 9pt;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3mm;
+    margin-bottom: 2mm;
+    font-size: 8.5pt;
 }
 
 .grade-sheet-info-item {
     display: flex;
     align-items: center;
+    gap: 3px;
 }
 
 .grade-sheet-info-label {
-    margin-right: 5px;
+    white-space: nowrap;
 }
 
-.grade-sheet-info-bold {
+.grade-sheet-info-value {
     font-weight: bold;
     font-style: italic;
 }
 
-.grade-sheet-contact {
+.grade-sheet-contact-row {
     display: flex;
     justify-content: space-between;
     margin-bottom: 3mm;
@@ -2014,78 +2023,69 @@
 .grade-sheet-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 3mm;
+    margin-bottom: 4mm;
+    font-size: 7.5pt;
 }
 
 .grade-sheet-table th,
 .grade-sheet-table td {
     border: 1px solid black;
-    padding: 2mm;
+    padding: 1.5mm 1mm;
     text-align: center;
-    font-size: 8pt;
+    vertical-align: middle;
 }
 
 .grade-sheet-table th {
-    background-color: white;
     font-weight: bold;
+    background: white;
 }
 
-.grade-sheet-table .header-main {
-    font-size: 8pt;
+/* Dikey yazılar için */
+.vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    white-space: nowrap;
+    padding: 2mm 1mm;
+}
+
+/* Sütun genişlikleri */
+.col-num { width: 25px; }
+.col-name { width: 100px; text-align: left; }
+.col-field { width: 70px; }
+.col-class { width: 35px; }
+.col-score { width: 30px; }
+.col-vertical { width: 30px; padding: 0; }
+
+/* Başlık grupları */
+.header-group {
     font-weight: bold;
-}
-
-.grade-sheet-table .header-sub {
-    font-size: 7pt;
-}
-
-.grade-sheet-table .row-number {
-    width: 30px;
-}
-
-.grade-sheet-table .col-name {
-    width: 120px;
-    text-align: left;
-}
-
-.grade-sheet-table .col-field {
-    width: 80px;
-}
-
-.grade-sheet-table .col-class {
-    width: 40px;
-}
-
-.grade-sheet-table .col-score {
-    width: 40px;
-}
-
-.grade-sheet-table .col-grade {
-    width: 60px;
+    font-size: 7.5pt;
 }
 
 .grade-sheet-signatures {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 2mm;
-    margin-top: 5mm;
-    margin-bottom: 5mm;
+    gap: 3mm;
+    margin-top: 4mm;
+    margin-bottom: 4mm;
+    font-size: 7.5pt;
 }
 
 .grade-sheet-signature {
     text-align: center;
-    font-size: 8pt;
 }
 
 .grade-sheet-signature-title {
     font-weight: bold;
-    margin-bottom: 15mm;
+    margin-bottom: 12mm;
+    font-size: 7.5pt;
 }
 
 .grade-sheet-signature-name {
     font-weight: bold;
     font-style: italic;
     margin-top: 2mm;
+    font-size: 8pt;
 }
 
 .grade-sheet-signature-label {
@@ -2094,23 +2094,27 @@
 }
 
 .grade-sheet-notes {
-    font-size: 7pt;
-    margin-top: 3mm;
-    padding: 2mm;
+    font-size: 6.5pt;
+    line-height: 1.3;
 }
 
 .grade-sheet-notes p {
-    margin-bottom: 2mm;
+    margin-bottom: 1mm;
 }
 
 @media print {
     .grade-sheet-page {
         margin: 0;
-        padding: 5mm;
+        padding: 0;
+        page-break-after: always;
     }
     
     .no-print {
         display: none !important;
+    }
+    
+    @page {
+        margin: 10mm;
     }
 }
      </style>
@@ -2366,10 +2370,20 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="gradeSheetBusiness">İşletme Seçin</label>
-                        <select id="gradeSheetBusiness" class="form-select">
-                            <option value="">Tüm İşletmeler</option>
-                        </select>
+                        <label>İşletme Seçin (Birden Fazla Seçilebilir)</label>
+                        <div class="dropdown-container">
+                            <div class="dropdown-header" id="grade-sheet-business-dropdown-header">
+                                <span id="grade-sheet-business-selected-text">Tüm işletmeler seçili...</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </div>
+                            <div class="dropdown-content" id="grade-sheet-business-dropdown-content">
+                                <div class="dropdown-controls">
+                                    <button type="button" class="dropdown-btn" id="select-all-grade-businesses">Tümünü Seç</button>
+                                    <button type="button" class="dropdown-btn" id="deselect-all-grade-businesses">Temizle</button>
+                                </div>
+                                <div id="grade-sheet-business-dropdown-list"></div>
+                            </div>
+                        </div>
                     </div>
                     
                     <button class="btn btn-primary" id="generateGradeSheetBtn" style="margin-top: 20px; width: 100%; padding: 15px;">
@@ -3224,68 +3238,68 @@
                             </div>
                         </div>
                         
-                        <div class="grade-sheet-info">
+                        <div class="grade-sheet-info-row">
                             <div class="grade-sheet-info-item">
-                                <span class="grade-sheet-info-label">Okul / Kurumun Adı:</span>
-                                <span class="grade-sheet-info-bold">${schoolName} ${year}</span>
+                                <span class="grade-sheet-info-label">Okul / Kurumun Adı :</span>
+                                <span class="grade-sheet-info-value">${schoolName} ${year}</span>
                             </div>
                             <div class="grade-sheet-info-item">
-                                <span class="grade-sheet-info-label">Öğretim Yılı:</span>
-                                <span class="grade-sheet-info-bold">${year}</span>
+                                <span class="grade-sheet-info-label">Öğretim Yılı :</span>
+                                <span class="grade-sheet-info-value">${year}</span>
                             </div>
                             <div class="grade-sheet-info-item">
-                                <span class="grade-sheet-info-label">Dönem:</span>
-                                <span class="grade-sheet-info-bold">${period}. Dönem</span>
+                                <span class="grade-sheet-info-label">Dönem :</span>
+                                <span class="grade-sheet-info-value">${period}. Dönem</span>
                             </div>
                         </div>
                         
-                        <div class="grade-sheet-info">
+                        <div class="grade-sheet-info-row">
                             <div class="grade-sheet-info-item">
-                                <span class="grade-sheet-info-label">İşletmenin Adı:</span>
-                                <span class="grade-sheet-info-bold">İŞLETMELERDE MESLEKİ EĞİTİM</span>
+                                <span class="grade-sheet-info-label">İşletmenin Adı :</span>
+                                <span class="grade-sheet-info-value">İŞLETMELERDE MESLEKİ EĞİTİM</span>
                             </div>
                             <div></div>
                             <div class="grade-sheet-info-item">
-                                <span class="grade-sheet-info-label">Dersin Adı:</span>
-                                <span class="grade-sheet-info-bold">İŞLETMELERDE MESLEKİ EĞİTİM</span>
+                                <span class="grade-sheet-info-label">Dersin Adı :</span>
+                                <span class="grade-sheet-info-value">İŞLETMELERDE MESLEKİ EĞİTİM</span>
                             </div>
                         </div>
                         
-                        <div class="grade-sheet-contact">
-                            <div>Telefonu: ${business.phone || ''}</div>
-                            <div>e-posta:</div>
+                        <div class="grade-sheet-contact-row">
+                            <div>Telefonu : ${business.phone || ''}</div>
+                            <div>e-posta :</div>
                         </div>
                         
                         <table class="grade-sheet-table">
                             <thead>
                                 <tr>
-                                    <th rowspan="3" class="row-number">Numarası</th>
-                                    <th rowspan="3">Öğrencinin</th>
-                                    <th colspan="8" class="header-main">İşletmede verilen puanlar</th>
-                                    <th colspan="4" class="header-main">Okulda ver.puanlar</th>
-                                    <th colspan="2" rowspan="2" class="header-main">Dönem Başarısı</th>
+                                    <th rowspan="3" class="col-num">Numarası</th>
+                                    <th colspan="3" rowspan="2" class="header-group">Öğrencinin</th>
+                                    <th colspan="4" class="header-group">İşletmede verilen puanlar</th>
+                                    <th rowspan="3" class="col-vertical"><div class="vertical-text">Okulda ver.puanlar</div></th>
+                                    <th colspan="3" class="header-group">Dönem Başarısı</th>
                                 </tr>
                                 <tr>
-                                    <th rowspan="2" class="header-sub">Adı Soyadı</th>
-                                    <th rowspan="2" class="header-sub">Meslek Alan / Dalı</th>
-                                    <th rowspan="2" class="header-sub">Sınıfı</th>
-                                    <th rowspan="2" class="header-sub">Temrin</th>
-                                    <th rowspan="2" class="header-sub">İş Hizmet</th>
-                                    <th rowspan="2" class="header-sub">Proje</th>
-                                    <th rowspan="2" class="header-sub">Deney</th>
-                                    <th rowspan="2" class="header-sub">Tutum Eğitim</th>
-                                    <th rowspan="2" class="header-sub">Pratiği</th>
-                                    <th colspan="2" class="header-sub">Sınavı/Sınav</th>
-                                    <th rowspan="2" class="header-sub">Ortalama</th>
+                                    <th rowspan="2" class="col-score">Temrin</th>
+                                    <th rowspan="2" class="col-score">İş Hizmet</th>
+                                    <th rowspan="2" class="col-score">Proje</th>
+                                    <th rowspan="2" class="col-score">Deney</th>
+                                    <th rowspan="2" class="col-vertical"><div class="vertical-text">Tutum Eğitim</div></th>
+                                    <th rowspan="2" class="col-vertical"><div class="vertical-text">Pratiği</div></th>
+                                    <th rowspan="2" class="col-vertical"><div class="vertical-text">Sınavı/Sınav</div></th>
                                 </tr>
                                 <tr>
-                                    <th class="header-sub">Yazı</th>
-                                    <th class="header-sub">Rakam</th>
+                                    <th class="col-name">Adı Soyadı</th>
+                                    <th class="col-field">Meslek Alan / Dalı</th>
+                                    <th class="col-class">Sınıfı</th>
+                                    <th class="col-vertical"><div class="vertical-text">Ortalama</div></th>
+                                    <th class="col-vertical"><div class="vertical-text">Dönem Notu</div></th>
+                                    <th class="col-vertical"><div class="vertical-text">Rakam / Yazı</div></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="row-number">${student.no || ''}</td>
+                                    <td class="col-num">${student.no || ''}</td>
                                     <td class="col-name">${student.name}</td>
                                     <td class="col-field">${student.field || ''}</td>
                                     <td class="col-class">${student.class || ''}/${student.branch || ''}</td>
@@ -3293,16 +3307,15 @@
                                     <td class="col-score"></td>
                                     <td class="col-score"></td>
                                     <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-grade"></td>
-                                    <td class="col-grade"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
                                 </tr>
                                 <tr>
-                                    <td class="row-number"></td>
+                                    <td class="col-num"></td>
                                     <td class="col-name"></td>
                                     <td class="col-field"></td>
                                     <td class="col-class"></td>
@@ -3310,16 +3323,15 @@
                                     <td class="col-score"></td>
                                     <td class="col-score"></td>
                                     <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-grade"></td>
-                                    <td class="col-grade"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
                                 </tr>
                                 <tr>
-                                    <td class="row-number"></td>
+                                    <td class="col-num"></td>
                                     <td class="col-name"></td>
                                     <td class="col-field"></td>
                                     <td class="col-class"></td>
@@ -3327,16 +3339,15 @@
                                     <td class="col-score"></td>
                                     <td class="col-score"></td>
                                     <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-grade"></td>
-                                    <td class="col-grade"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
                                 </tr>
                                 <tr>
-                                    <td class="row-number"></td>
+                                    <td class="col-num"></td>
                                     <td class="col-name"></td>
                                     <td class="col-field"></td>
                                     <td class="col-class"></td>
@@ -3344,16 +3355,15 @@
                                     <td class="col-score"></td>
                                     <td class="col-score"></td>
                                     <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-grade"></td>
-                                    <td class="col-grade"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
                                 </tr>
                                 <tr>
-                                    <td class="row-number"></td>
+                                    <td class="col-num"></td>
                                     <td class="col-name"></td>
                                     <td class="col-field"></td>
                                     <td class="col-class"></td>
@@ -3361,16 +3371,15 @@
                                     <td class="col-score"></td>
                                     <td class="col-score"></td>
                                     <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-grade"></td>
-                                    <td class="col-grade"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
                                 </tr>
                                 <tr>
-                                    <td class="row-number"></td>
+                                    <td class="col-num"></td>
                                     <td class="col-name"></td>
                                     <td class="col-field"></td>
                                     <td class="col-class"></td>
@@ -3378,13 +3387,12 @@
                                     <td class="col-score"></td>
                                     <td class="col-score"></td>
                                     <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-score"></td>
-                                    <td class="col-grade"></td>
-                                    <td class="col-grade"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
+                                    <td class="col-vertical"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -3416,7 +3424,7 @@
                         </div>
                         
                         <div class="grade-sheet-notes">
-                            <p><strong>AÇIKLAMA:</strong> 1- Bu çizelge; Orta Öğretim Kurumları Yönetmeliği 144/g maddesine göre işletme yetkilisi tarafından doldurulacak ve dönem sona ermeden beş gün önce kapalı zarf içinde okul / kurum müdürlüğüne teslim edilecektir.</p>
+                            <p><strong>AÇIKLAMA :</strong> 1- Bu çizelge; Orta Öğretim Kurumları Yönetmeliği 144/g maddesine göre işletme yetkilisi tarafından doldurulacak ve dönem sona ermeden beş gün önce kapalı zarf içinde okul / kurum müdürlüğüne teslim edilecektir.</p>
                             <p>2- * İşaretli bölümler okul / kurum müdürlüğünce doldurulacak ve puan ortalaması alınarak dönem notu belirlenecektir.</p>
                         </div>
                     </div>
@@ -3427,20 +3435,25 @@
         function handleGenerateGradeSheet() {
             const period = document.getElementById('gradeSheetPeriod').value;
             const year = document.getElementById('gradeSheetYear').value;
-            const selectedBusinessId = document.getElementById('gradeSheetBusiness').value;
             
             if (!year) {
                 showNotification('Lütfen öğretim yılını girin.', 'error');
                 return;
             }
             
+            // Seçili işletmeleri al
+            const selectedCheckboxes = document.querySelectorAll('.grade-sheet-business-checkbox:checked');
+            const selectedBusinessIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+            
+            if (selectedBusinessIds.length === 0) {
+                showNotification('Lütfen en az bir işletme seçin.', 'error');
+                return;
+            }
+            
             let allFormsHTML = '';
             
-            const businesses = selectedBusinessId 
-                ? [appData.businesses.find(b => b.id === selectedBusinessId)]
-                : appData.businesses;
-            
-            businesses.forEach(business => {
+            selectedBusinessIds.forEach(businessId => {
+                const business = appData.businesses.find(b => b.id === businessId);
                 if (!business || !business.students) return;
                 
                 const activeStudents = business.students.filter(s => s.status !== 'terminated');
@@ -3451,7 +3464,7 @@
             });
             
             if (!allFormsHTML) {
-                showNotification('Aktif öğrenci bulunamadı.', 'error');
+                showNotification('Seçili işletmelerde aktif öğrenci bulunamadı.', 'error');
                 return;
             }
             
@@ -3461,15 +3474,40 @@
         }
 
         function populateGradeSheetBusinessSelect() {
-            const select = document.getElementById('gradeSheetBusiness');
-            select.innerHTML = '<option value="">Tüm İşletmeler</option>';
+            const dropdownList = document.getElementById('grade-sheet-business-dropdown-list');
+            if (!dropdownList) return;
+            
+            dropdownList.innerHTML = '';
             
             appData.businesses.forEach(business => {
-                const option = document.createElement('option');
-                option.value = business.id;
-                option.textContent = business.name;
-                select.appendChild(option);
+                const div = document.createElement('div');
+                div.className = 'dropdown-item';
+                div.innerHTML = `
+                    <input type="checkbox" class="grade-sheet-business-checkbox" value="${business.id}" id="grade-business-${business.id}" checked>
+                    <label for="grade-business-${business.id}">${business.name}</label>
+                `;
+                dropdownList.appendChild(div);
             });
+            
+            updateGradeSheetDropdownText();
+        }
+        
+        function updateGradeSheetDropdownText() {
+            const checkboxes = document.querySelectorAll('.grade-sheet-business-checkbox');
+            const checkedBoxes = document.querySelectorAll('.grade-sheet-business-checkbox:checked');
+            const textElement = document.getElementById('grade-sheet-business-selected-text');
+            
+            if (!textElement) return;
+            
+            if (checkedBoxes.length === 0) {
+                textElement.textContent = 'İşletme seçin...';
+            } else if (checkedBoxes.length === checkboxes.length) {
+                textElement.textContent = 'Tüm işletmeler seçili';
+            } else if (checkedBoxes.length === 1) {
+                textElement.textContent = checkedBoxes[0].nextElementSibling.textContent;
+            } else {
+                textElement.textContent = `${checkedBoxes.length} işletme seçili`;
+            }
         }
         function generateMonthlyGuidanceForm(company, month, year) {
             function calculateActiveVisitDates(company, year, month) {
@@ -3696,6 +3734,48 @@
         dom.deselectAllBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.business-checkbox').forEach(cb => cb.checked = false); updateDropdownText(); });
         dom.selectAllDailyBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.daily-business-checkbox').forEach(cb => cb.checked = true); updateDropdownText(); });
         dom.deselectAllDailyBusinesses.addEventListener('click', (e) => { e.stopPropagation(); document.querySelectorAll('.daily-business-checkbox').forEach(cb => cb.checked = false); updateDropdownText(); });
+
+        // Grade Sheet Business Dropdown Event Listeners
+        document.addEventListener('click', function(e) {
+            // Grade sheet dropdown header toggle
+            if (e.target.closest('#grade-sheet-business-dropdown-header')) {
+                const content = document.getElementById('grade-sheet-business-dropdown-content');
+                const header = document.getElementById('grade-sheet-business-dropdown-header');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    header.classList.remove('open');
+                } else {
+                    content.style.display = 'block';
+                    header.classList.add('open');
+                }
+                return;
+            }
+        });
+        
+        // Select all grade businesses
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'select-all-grade-businesses') {
+                e.stopPropagation();
+                document.querySelectorAll('.grade-sheet-business-checkbox').forEach(cb => cb.checked = true);
+                updateGradeSheetDropdownText();
+            }
+        });
+        
+        // Deselect all grade businesses
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'deselect-all-grade-businesses') {
+                e.stopPropagation();
+                document.querySelectorAll('.grade-sheet-business-checkbox').forEach(cb => cb.checked = false);
+                updateGradeSheetDropdownText();
+            }
+        });
+        
+        // Grade sheet checkbox change
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('grade-sheet-business-checkbox')) {
+                updateGradeSheetDropdownText();
+            }
+        });
         document.addEventListener('change', (e) => { if (e.target.matches('.business-checkbox, .daily-business-checkbox')) { updateDropdownText(); } });
         [dom.dailyMonthSelect, dom.dailyYearSelect].forEach(el => el.addEventListener('change', populateWeeksForDailyForm));
         dom.tabs.addEventListener('click', e => { if(e.target.matches('.tab')) { const tabId=e.target.dataset.tab; document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(tabId).classList.add('active'); e.target.classList.add('active'); }});
