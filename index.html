@@ -3406,9 +3406,9 @@
 
         function generateGradeSheetForm(student, business, period, year) {
             const schoolName = appData.settings.schoolName || 'UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ';
-            const coordinatorName = appData.settings.coordinatorName || '................................';
-            const asstPrincipalName = appData.settings.asstPrincipalName || '................................';
-            const principalName = appData.settings.principalName || '................................';
+            const coordinatorName = appData.settings.coordinatorName || '';
+            const asstPrincipalName = appData.settings.asstPrincipalName || '';
+            const principalName = appData.settings.principalName || '';
             const periodText = period === "1" ? "1. Dönem" : "2. Dönem";
             const fullClass = `${student.class || ''}/${student.branch || ''}`;
 
@@ -3503,27 +3503,28 @@
 
                         <div class="gs-signatures">
                             <div class="gs-sig-box">
+                                <div class="dynamic-fill" style="margin-bottom:auto; min-height:30px;"></div>
                                 <div class="gs-sig-title">Usta Öğretici /<br>Eğitici Personel</div>
                                 <div>İmza</div>
                             </div>
                             <div class="gs-sig-box">
+                                <div class="dynamic-fill" style="margin-bottom:auto; min-height:30px;">${business.official || ''}</div>
                                 <div class="gs-sig-title">İşletme Yetkilisi</div>
-                                <div class="dynamic-fill" style="margin-bottom:5px;">${business.official || ''}</div>
                                 <div>İmza</div>
                             </div>
                             <div class="gs-sig-box">
-                                <div class="gs-sig-title">Koordinatör<br>Öğretmen</div>
-                                <div class="dynamic-fill" style="margin-bottom:5px;">${coordinatorName}</div>
+                                <div class="dynamic-fill" style="margin-bottom:auto; min-height:30px;">${coordinatorName}</div>
+                                <div class="gs-sig-title">Koordinatör Öğretmen</div>
                                 <div>İmza</div>
                             </div>
                             <div class="gs-sig-box">
-                                <div class="gs-sig-title">Koordinatör<br>Müdür Yardımcısı</div>
-                                <div class="dynamic-fill" style="margin-bottom:5px;">${asstPrincipalName}</div>
+                                <div class="dynamic-fill" style="margin-bottom:auto; min-height:30px;">${asstPrincipalName}</div>
+                                <div class="gs-sig-title">Koordinatör Müdür Yardımcısı</div>
                                 <div>İmza</div>
                             </div>
                             <div class="gs-sig-box">
+                                <div class="dynamic-fill" style="margin-bottom:auto; min-height:30px;">${principalName}</div>
                                 <div class="gs-sig-title">Okul Müdürü</div>
-                                <div class="dynamic-fill" style="margin-bottom:5px;">${principalName}</div>
                                 <div>İmza</div>
                             </div>
                         </div>
@@ -3537,6 +3538,7 @@
                 </div>
             `;
         }
+
 
         function handleGenerateGradeSheet() {
             const periodSelect = document.getElementById('gradeSheetPeriod');
