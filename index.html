@@ -1938,129 +1938,166 @@
 
 
 
-/* --- DÖNEM NOT FİŞİ (EXCEL GÖRÜNÜMÜ) --- */
+/* --- DÖNEM NOT FİŞİ (MODERN MATBU TASARIM) --- */
         @page grade-sheet {
             size: A4 landscape;
-            margin: 5mm; /* Kenar boşlukları minimize edildi */
+            margin: 10mm; /* Baskı güvenliği için ideal kenar boşluğu */
         }
 
         .grade-sheet-page {
             page: grade-sheet;
-            width: 280mm; /* A4 Yatay genişlik */
+            width: 277mm; /* A4 Yatay kullanılabilir alan */
             height: 190mm;
             background: white;
-            color: black;
-            font-family: 'Calibri', Arial, sans-serif;
-            font-size: 11pt;
+            color: #000;
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* Modern Font */
+            font-size: 10pt;
             position: relative;
-            page-break-after: always; /* Her öğrenci yeni sayfa */
+            page-break-after: always;
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
-            padding: 10px;
+            border: 2px solid #000; /* Dış ana çerçeve */
+            padding: 15px;
         }
 
-        /* Dinamik Veri Stili: Kalın ve İtalik */
-        .dynamic-data {
-            font-weight: bold !important;
-            font-style: italic !important;
-            font-family: 'Calibri', Arial, sans-serif;
+        /* Başlık Alanı */
+        .gs-header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
         }
 
-        /* Tablo Yapısı */
-        .excel-table {
-            width: 100%;
-            border-collapse: collapse;
-            border: none;
-            table-layout: fixed; /* Sütun genişliklerini sabitle */
-        }
-
-        .excel-table td, .excel-table th {
-            border: 0.5pt solid windowtext; /* Excel siyahı ince çizgi */
-            padding: 2px;
-            vertical-align: middle;
-            line-height: 1.2;
-        }
-
-        /* Üst Bilgi Bölümü */
-        .info-row td {
-            border: 0.5pt solid windowtext;
-            height: 25px;
-        }
-        
-        .info-label {
-            font-weight: normal;
-            text-align: left;
-            padding-left: 5px;
-        }
-
-        /* Ana Başlıklar */
-        .main-header {
-            font-weight: bold;
+        .gs-main-title {
+            font-size: 14pt;
+            font-weight: 800;
             text-align: center;
-            background-color: white; /* Arka plan beyaz */
+            flex-grow: 1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .gs-doc-code {
+            font-size: 9pt;
+            font-weight: bold;
+        }
+
+        /* Bilgi Tablosu (Üst Kısım) */
+        .info-grid {
+            display: grid;
+            grid-template-columns: auto 1fr auto 1fr auto 1fr;
+            gap: 5px;
+            margin-bottom: 15px;
             font-size: 11pt;
         }
 
-        /* Dikey Yazılar için Özel Sınıf */
-        .vertical-text-cell {
-            height: 120px; /* Dikey yazı için yeterli yükseklik */
-            position: relative;
-            vertical-align: bottom !important;
-            text-align: center;
-            padding: 5px 0;
-            white-space: nowrap;
+        .info-item {
+            display: flex;
+            align-items: baseline;
         }
 
-        .vertical-text-content {
+        .info-label {
+            font-weight: 600;
+            white-space: nowrap;
+            margin-right: 5px;
+        }
+
+        .dynamic-data {
+            font-weight: 700 !important;
+            font-style: italic !important;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            border-bottom: 1px dotted #000; /* Elle yazılmış hissi veren modern çizgi */
+            flex-grow: 1;
+            padding-left: 5px;
+            color: #000;
+        }
+
+        /* MODERN TABLO YAPISI */
+        .modern-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+            table-layout: fixed;
+        }
+
+        .modern-table th, .modern-table td {
+            border: 1px solid #000; /* Net siyah çizgiler */
+            padding: 4px 2px;
+            vertical-align: middle;
+            text-align: center;
+            font-size: 10pt;
+            line-height: 1.2;
+        }
+
+        .modern-table th {
+            background-color: #f0f0f0; /* Başlıklar için hafif gri */
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 9pt; /* Başlıklar biraz daha küçük ama kalın */
+            letter-spacing: 0.3px;
+        }
+
+        /* Sütun Genişlik Ayarları */
+        .col-no { width: 35px; }
+        .col-name { width: 22%; }
+        .col-field { width: 14%; }
+        .col-class { width: 6%; }
+        .col-grade { width: 6%; } /* Temrin, İş vb. */
+        .col-telafi { width: 4%; } /* Telafi 2 sütun olduğu için daraltıldı */
+        .col-beceri { width: 6%; }
+        .col-ort { width: 6%; }
+        .col-not-rakam { width: 6%; }
+        .col-not-yazi { width: 10%; }
+
+        /* Dikey Yazı Stilleri */
+        .vertical-cell {
+            height: 130px; /* Yükseklik artırıldı */
+            vertical-align: bottom !important;
+            padding-bottom: 5px !important;
+            position: relative;
+        }
+
+        .vertical-text {
             writing-mode: vertical-rl;
             transform: rotate(180deg);
             white-space: nowrap;
             display: inline-block;
-            width: 20px;
-            font-weight: bold;
-            font-size: 10pt;
+            font-weight: 700;
+            font-size: 8.5pt;
         }
-
-        /* Sütun Genişlikleri (Excel'deki orantıya göre) */
-        .col-no { width: 35px; }
-        .col-name { width: 220px; }
-        .col-field { width: 130px; }
-        .col-class { width: 60px; }
-        .col-grade { width: 80px; } /* Temrin, İş, Proje, Deney */
-        .col-vertical { width: 80px; } /* Telafi, Beceri, Ort */
-        .col-result-num { width: 80px; }
-        .col-result-text { width: 120px; }
+        
+        /* Satır Yükseklikleri */
+        .student-row { height: 35px; }
+        .empty-row { height: 35px; }
 
         /* İmza Bölümü */
-        .signature-section-excel {
-            margin-top: auto; /* Sayfanın en altına it */
-            width: 100%;
+        .signature-section {
             display: flex;
             justify-content: space-between;
-            padding-top: 20px;
-            text-align: center;
-            font-size: 10pt;
-            font-weight: bold;
+            margin-top: auto;
+            border-top: 2px solid #000;
+            padding-top: 10px;
         }
 
         .sig-box {
+            text-align: center;
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
-        }
-        
-        .sig-role {
-            font-weight: normal;
-            font-size: 9pt;
         }
 
-        .footer-note {
-            font-size: 9pt;
-            margin-top: 20px;
-            font-weight: normal;
+        .sig-name { font-weight: bold; font-size: 10pt; margin-bottom: 2px; min-height: 15px; }
+        .sig-title { font-size: 9pt; margin-bottom: 25px; line-height: 1.1; }
+        .sig-line { border-top: 1px solid #000; width: 80%; }
+
+        .footer-notes {
+            font-size: 8pt;
+            margin-top: 10px;
+            font-style: italic;
         }
 
      </style>
@@ -3298,22 +3335,50 @@
 
 
         function generateGradeSheetForm(student, business, period, year) {
-            // Ayarlar ve Sabitler
+            // Ayarlar
             const settings = appData.settings;
             const schoolName = settings.schoolName || 'UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ';
-            // Yıl zorla 2025-2026 yapıldı (istek üzerine), ancak fonksiyona gelen 'year' parametresi formdan geliyorsa onu ezebiliriz.
-            // İsteğe binaen sabit:
             const fixedYear = "2025 - 2026"; 
             const periodText = period === "1" ? "1. Dönem" : "2. Dönem";
-            
-            // Öğrenci sınıf bilgisi
             const fullClass = `${student.class || ''}/${student.branch || ''}`;
 
             return `
             <div class="grade-sheet-page">
-                <div style="text-align: right; font-size: 10pt; margin-bottom: 2px;">IME-DNOT</div>
-                
-                <table class="excel-table">
+                <div class="gs-header-section">
+                    <div style="width: 50px;"></div> <div class="gs-main-title">İŞLETMELERDE MESLEKİ EĞİTİM GÖREN ÖĞRENCİLERE AİT DÖNEM NOT FİŞİ</div>
+                    <div class="gs-doc-code">IME-DNOT</div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <div class="info-grid" style="grid-template-columns: auto 1fr;">
+                        <div class="info-label">Okul/Kurumun Adı :</div>
+                        <div class="dynamic-data">${schoolName}</div>
+                    </div>
+                    
+                    <div class="info-grid" style="grid-template-columns: auto 150px auto 1fr auto 1fr;">
+                        <div class="info-label">Öğretim Yılı :</div>
+                        <div class="dynamic-data" style="text-align: center;">${fixedYear}</div>
+                        
+                        <div class="info-label" style="margin-left: 20px;">Dönemi :</div>
+                        <div class="dynamic-data" style="text-align: center;">${periodText}</div>
+                        
+                        <div class="info-label" style="margin-left: 20px;">Dersin Adı :</div>
+                        <div class="dynamic-data">İŞLETMELERDE MESLEKİ EĞİTİM</div>
+                    </div>
+
+                    <div class="info-grid" style="grid-template-columns: auto 1fr auto 150px auto 100px;">
+                        <div class="info-label">İşletmenin Adı :</div>
+                        <div class="dynamic-data">${business.name}</div>
+                        
+                        <div class="info-label" style="margin-left: 20px;">Telefonu :</div>
+                        <div class="dynamic-data">${business.phone || ''}</div>
+                        
+                        <div class="info-label" style="margin-left: 20px;">e-posta :</div>
+                        <div class="dynamic-data"></div>
+                    </div>
+                </div>
+
+                <table class="modern-table">
                     <colgroup>
                         <col class="col-no">
                         <col class="col-name">
@@ -3323,126 +3388,105 @@
                         <col class="col-grade">
                         <col class="col-grade">
                         <col class="col-grade">
-                        <col class="col-vertical">
-                        <col class="col-vertical">
-                        <col class="col-vertical">
-                        <col class="col-result-num">
-                        <col class="col-result-text">
+                        <col class="col-telafi">
+                        <col class="col-telafi">
+                        <col class="col-beceri">
+                        <col class="col-ort">
+                        <col class="col-not-rakam">
+                        <col class="col-not-yazi">
                     </colgroup>
 
-                    <tr>
-                        <td colspan="13" class="main-header" style="height: 30px; font-size:12pt;">
-                            İŞLETMELERDE MESLEKİ EĞİTİM GÖREN ÖĞRENCİLERE AİT DÖNEM NOT FİŞİ
-                        </td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th colspan="4" style="text-align: center; border-bottom: 2px solid #000;">ÖĞRENCİNİN</th>
+                            <th colspan="4" style="border-bottom: 2px solid #000;">İŞLETMEDE VERİLEN PUANLAR</th>
+                            <th colspan="3" style="border-bottom: 2px solid #000;">OKULDA VER. PUANLAR</th>
+                            <th colspan="3" style="border-bottom: 2px solid #000;">DÖNEM BAŞARISI</th>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" class="vertical-cell"><span class="vertical-text">Numarası</span></th>
+                            
+                            <th rowspan="2">Adı Soyadı</th>
+                            <th rowspan="2">Meslek<br>Alan/Dalı</th>
+                            <th rowspan="2">Sınıfı</th>
+                            
+                            <th rowspan="2">Temrin</th>
+                            <th rowspan="2">İş<br>Hizmet</th>
+                            <th rowspan="2">Proje</th>
+                            <th rowspan="2">Deney</th>
+                            
+                            <th colspan="2" rowspan="2" class="vertical-cell">
+                                <span class="vertical-text">Telafi Eğitimi<br>Puanı (*)</span>
+                            </th>
+                            
+                            <th rowspan="2" class="vertical-cell">
+                                <span class="vertical-text">Beceri Yrş.<br>Puanı</span>
+                            </th>
+                            
+                            <th rowspan="2" class="vertical-cell">
+                                <span class="vertical-text">Ortalama</span>
+                            </th>
+                            
+                            <th colspan="2" style="height: 30px;">Dönem Notu</th>
+                        </tr>
+                        <tr>
+                            <th style="height: 40px;">Rakamla</th>
+                            <th>Yazıyla</th>
+                        </tr>
+                    </thead>
 
-                    <tr class="info-row">
-                        <td colspan="2" class="info-label">Okul/Kurumun Adı :</td>
-                        <td colspan="11" class="dynamic-data" style="text-align:left; padding-left:10px;">${schoolName}</td>
-                    </tr>
-                    <tr class="info-row">
-                        <td colspan="2" class="info-label">Öğretim Yılı :</td>
-                        <td colspan="2" class="dynamic-data" style="text-align:center;">${fixedYear}</td>
-                        <td class="info-label" style="text-align:right; padding-right:5px;">Dönemi :</td>
-                        <td colspan="3" class="dynamic-data" style="text-align:center;">${periodText}</td>
-                        <td class="info-label" style="text-align:right; padding-right:5px;">Dersin Adı :</td>
-                        <td colspan="4" class="dynamic-data" style="text-align:left; padding-left:10px;">İŞLETMELERDE MESLEKİ EĞİTİM</td>
-                    </tr>
-                    <tr class="info-row">
-                        <td colspan="2" class="info-label" style="height: 50px;">İşletmenin Adı :</td>
-                        <td colspan="3" class="dynamic-data" style="text-align:left; padding-left:10px;">${business.name}</td>
-                        <td class="info-label" style="text-align:right;">Telefonu :</td>
-                        <td colspan="2" class="dynamic-data">${business.phone || ''}</td>
-                        <td class="info-label" style="text-align:center;">e-posta</td>
-                        <td colspan="4"></td>
-                    </tr>
-                    
-                    <tr><td colspan="13" style="height: 20px; border: 0.5pt solid black;"></td></tr>
+                    <tbody>
+                        <tr class="student-row">
+                            <td class="dynamic-data" style="text-align: center; border-bottom: 1px solid #000;">${student.no || ''}</td>
+                            <td class="dynamic-data" style="text-align: left; border-bottom: 1px solid #000;">${student.name}</td>
+                            <td class="dynamic-data" style="text-align: center; border-bottom: 1px solid #000;">${student.field || ''}</td>
+                            <td class="dynamic-data" style="text-align: center; border-bottom: 1px solid #000;">${fullClass}</td>
+                            
+                            <td></td> <td></td> <td></td> <td></td>
+                            <td></td> <td></td> <td></td>
+                            
+                            <td></td> <td></td> <td></td>
+                        </tr>
 
-                    <tr style="font-weight: bold; text-align: center;">
-                        <td colspan="4" style="height: 25px;">Öğrencinin</td>
-                        <td colspan="4">İşletmede verilen puanlar</td>
-                        <td colspan="2">Okulda ver. puanlar</td>
-                        <td colspan="3">Dönem Başarısı</td>
-                    </tr>
-
-                    <tr style="font-weight: bold; text-align: center;">
-                        <td rowspan="2" class="vertical-text-cell">
-                            <span class="vertical-text-content">Numarası</span>
-                        </td>
-                        <td rowspan="2">Adı Soyadı</td>
-                        <td rowspan="2">Meslek<br>Alan/Dalı</td>
-                        <td rowspan="2">Sınıfı</td>
-                        
-                        <td rowspan="2">Temrin</td>
-                        <td rowspan="2">İş Hizmet</td>
-                        <td rowspan="2">Proje</td>
-                        <td rowspan="2">Deney</td>
-                        
-                        <td rowspan="2" class="vertical-text-cell">
-                            <span class="vertical-text-content">Telafi Eğitimi Puanı (*)</span>
-                        </td>
-                        <td rowspan="2" class="vertical-text-cell">
-                            <span class="vertical-text-content">Beceri Yrş. Puanı</span>
-                        </td>
-                        <td rowspan="2" class="vertical-text-cell">
-                            <span class="vertical-text-content">Ortalama</span>
-                        </td>
-                        
-                        <td colspan="2" style="height: 30px;">Dönem Notu</td>
-                    </tr>
-                    <tr style="font-weight: bold; text-align: center;">
-                        <td style="height: 60px;">Rakamla</td>
-                        <td>Yazıyla</td>
-                    </tr>
-
-                    <tr style="height: 30px; text-align: center;">
-                        <td class="dynamic-data">${student.no || ''}</td>
-                        <td class="dynamic-data" style="text-align: left; padding-left: 5px;">${student.name}</td>
-                        <td class="dynamic-data">${student.field || ''}</td>
-                        <td class="dynamic-data">${fullClass}</td>
-                        
-                        <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> </tr>
-
-                    ${Array(7).fill('').map(() => `
-                    <tr style="height: 30px;">
-                        <td></td><td></td><td></td><td></td>
-                        <td></td><td></td><td></td><td></td>
-                        <td></td><td></td><td></td>
-                        <td></td><td></td>
-                    </tr>`).join('')}
-
+                        ${Array(7).fill('').map(() => `
+                        <tr class="empty-row">
+                            <td></td> <td></td> <td></td> <td></td>
+                            <td></td> <td></td> <td></td> <td></td>
+                            <td></td> <td></td> <td></td>
+                            <td></td> <td></td> <td></td>
+                        </tr>`).join('')}
+                    </tbody>
                 </table>
 
-                <div class="signature-section-excel">
+                <div class="signature-section">
                     <div class="sig-box">
-                        <div class="dynamic-data" style="min-height: 20px;"></div>
-                        <div class="sig-role">Usta Öğretici / Eğitici Personel</div>
-                        <div style="margin-top: 30px;">İmza</div>
+                        <div class="sig-name"></div>
+                        <div class="sig-title">Usta Öğretici /<br>Eğitici Personel</div>
+                        <div>İmza</div>
                     </div>
                     <div class="sig-box">
-                        <div class="dynamic-data">${business.official || ''}</div>
-                        <div class="sig-role">İşletme Yetkilisi</div>
-                        <div style="margin-top: 30px;">İmza</div>
+                        <div class="sig-name dynamic-data" style="border:none;">${business.official || ''}</div>
+                        <div class="sig-title">İşletme Yetkilisi</div>
+                        <div>İmza</div>
                     </div>
                     <div class="sig-box">
-                        <div class="dynamic-data">${settings.coordinatorName || ''}</div>
-                        <div class="sig-role">Koordinatör Öğretmen</div>
-                        <div style="margin-top: 30px;">İmza</div>
+                        <div class="sig-name dynamic-data" style="border:none;">${settings.coordinatorName || ''}</div>
+                        <div class="sig-title">Koordinatör<br>Öğretmen</div>
+                        <div>İmza</div>
                     </div>
                     <div class="sig-box">
-                        <div class="dynamic-data">${settings.asstPrincipalName || ''}</div>
-                        <div class="sig-role">Koordinatör Müdür Yardımcısı</div>
-                        <div style="margin-top: 30px;">İmza</div>
+                        <div class="sig-name dynamic-data" style="border:none;">${settings.asstPrincipalName || ''}</div>
+                        <div class="sig-title">Koordinatör<br>Müdür Yardımcısı</div>
+                        <div>İmza</div>
                     </div>
                     <div class="sig-box">
-                        <div class="dynamic-data">${settings.principalName || ''}</div>
-                        <div class="sig-role">Okul Müdürü</div>
-                        <div style="margin-top: 30px;">İmza</div>
+                        <div class="sig-name dynamic-data" style="border:none;">${settings.principalName || ''}</div>
+                        <div class="sig-title">Okul Müdürü</div>
+                        <div>İmza</div>
                     </div>
                 </div>
 
-                <div class="footer-note">
+                <div class="footer-notes">
                     <strong>AÇIKLAMA:</strong><br>
                     1- Bu çizelge; Orta Öğretim Kurumları Yönetmeliği 144/g maddesine göre İşletme yetkilisi tarafından doldurulacak ve dönem sona ermeden beş gün önce kapalı zarf içinde okul / kurum müdürlüğüne teslim edilecektir.<br>
                     2- * İşaretli bölümler okul / kurum müdürlüğünce doldurulacak ve puan ortalaması alınarak dönem notu belirlenecektir.
