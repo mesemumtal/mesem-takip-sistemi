@@ -1938,27 +1938,29 @@
 
 
 
-/* --- DÖNEM NOT FİŞİ (OPTİMİZE EDİLMİŞ NİHAİ VERSİYON) --- */
+/* --- DÖNEM NOT FİŞİ (DÜZELTİLMİŞ NİHAİ VERSİYON - ALT SIKIŞIK, ÜST GENİŞ) --- */
         @page grade-sheet {
             size: A4 landscape;
-            margin: 20mm; /* Kağıdın her kenarından 2 cm boşluk */
+            /* ÜST BOŞLUK 35mm (3.5cm) YAPILDI. Alt boşluk 10mm'ye çekildi. 
+               Böylece içerik aşağı kaydırıldı. */
+            margin: 35mm 20mm 10mm 20mm;
         }
 
         .grade-sheet-page {
             page: grade-sheet;
-            width: 256mm; /* Genişlik sabit (A4 Yatay - Kenar boşlukları) */
-            height: auto; /* ÖNEMLİ: Yükseklik içeriğe göre otomatik */
-            min-height: 140mm; /* Çok kısa kalmasın diye minimum yükseklik */
+            width: 256mm;
+            height: auto; /* İçerik kadar yükseklik (Çerçeve alttan yukarı toplanır) */
+            min-height: 130mm;
             background: white;
             color: #000;
             font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
             font-size: 9pt;
             position: relative;
-            page-break-after: always; /* Her öğrenci yeni sayfa */
+            page-break-after: always;
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
-            border: 2px solid #000; /* Çerçeve */
+            border: 2px solid #000;
             padding: 10px;
             overflow: hidden;
         }
@@ -2025,8 +2027,8 @@
             border-collapse: collapse;
             table-layout: fixed;
             border-bottom: 2px solid #000;
-            /* Tablo ile İmza arasındaki mesafe */
-            margin-bottom: 30px; 
+            /* Tablo ile İmza arasındaki boşluk 30px'ten 15px'e düşürüldü */
+            margin-bottom: 15px; 
         }
 
         .modern-table th, .modern-table td {
@@ -2086,8 +2088,7 @@
             display: flex;
             justify-content: space-between;
             padding-top: 0;
-            /* İmza bölümünün yüksekliği içeriği kadar olsun */
-            margin-bottom: 0; 
+            margin-bottom: 5px; /* İmza ile açıklama arası çok az boşluk bırakıldı */
         }
 
         .sig-box {
@@ -2111,7 +2112,7 @@
             font-size: 7.5pt; 
             font-weight: 600; 
             line-height: 1.1;
-            margin-bottom: 20px; /* İmza atılacak boşluk */
+            margin-bottom: 20px;
         }
 
         .sig-place { 
@@ -2120,12 +2121,12 @@
 
         /* Açıklama Bölümü */
         .footer-notes {
-            /* auto kaldırdık, sabit boşluk verdik */
-            margin-top: 20px; 
+            /* Önceden 20px idi, şimdi 5px'e düşürüldü. İmza ile birleşti. */
+            margin-top: 5px; 
             font-size: 8.5pt;
             font-style: italic;
             line-height: 1.1;
-            padding-bottom: 5px;
+            padding-bottom: 0;
         }
 
      </style>
@@ -3371,7 +3372,6 @@
             
             const ustaOgreticiName = business.official || '';
             
-            // 4 Boş satır ideal
             const emptyRowsCount = 4;
 
             return `
