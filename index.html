@@ -1938,20 +1938,23 @@
 
 
 
-/* --- DÖNEM NOT FİŞİ (NİHAİ DÜZELTME - İMZA AYARI) --- */
+/* --- DÖNEM NOT FİŞİ (DÜZELTİLMİŞ NİHAİ VERSİYON - ALT SIKIŞIK, ÜST GENİŞ) --- */
         @page grade-sheet {
             size: A4 landscape;
-            margin: 5mm;
+            /* ÜST BOŞLUK 35mm (3.5cm) YAPILDI. Alt boşluk 10mm'ye çekildi. 
+               Böylece içerik aşağı kaydırıldı. */
+            margin: 35mm 20mm 10mm 20mm;
         }
 
         .grade-sheet-page {
             page: grade-sheet;
-            width: 285mm;
-            height: 195mm;
+            width: 256mm;
+            height: auto; /* İçerik kadar yükseklik (Çerçeve alttan yukarı toplanır) */
+            min-height: 130mm;
             background: white;
             color: #000;
             font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-            font-size: 9.5pt;
+            font-size: 9pt;
             position: relative;
             page-break-after: always;
             display: flex;
@@ -1959,6 +1962,7 @@
             box-sizing: border-box;
             border: 2px solid #000;
             padding: 10px;
+            overflow: hidden;
         }
 
         /* Başlık Alanı */
@@ -1966,23 +1970,24 @@
             border-bottom: 2px solid #000;
             margin-bottom: 5px;
             position: relative;
-            height: 35px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .gs-main-title {
-            font-size: 13pt;
+            font-size: 12pt;
             font-weight: 800;
             text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .gs-doc-code {
             position: absolute;
             right: 0;
-            top: 0;
-            font-size: 8pt;
+            top: 2px;
+            font-size: 7pt;
             font-weight: bold;
         }
 
@@ -1990,12 +1995,12 @@
         .info-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 25px; /* Ana tablo ile arası */
+            margin-bottom: 15px;
         }
 
         .info-table td {
             border: none;
-            padding: 2px;
+            padding: 1px 2px;
             vertical-align: bottom;
             white-space: nowrap;
         }
@@ -2004,14 +2009,16 @@
             font-weight: 700;
             width: 1%;
             padding-right: 5px;
+            font-size: 9pt;
         }
 
         .value-cell {
             border-bottom: 1px dotted #000 !important;
             font-weight: 700;
             font-style: italic;
-            padding-left: 15px !important;
+            padding-left: 10px !important;
             text-align: left !important;
+            font-size: 9pt;
         }
 
         /* Ana Tablo */
@@ -2019,10 +2026,9 @@
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
-            /* ÖNEMLİ: Tablo altı kalın çizgi burada */
-            border-bottom: 3px solid #000; 
-            /* ÖNEMLİ: İmza bölümünü aşağı iten boşluk */
-            margin-bottom: 50px; 
+            border-bottom: 2px solid #000;
+            /* Tablo ile İmza arasındaki boşluk 30px'ten 15px'e düşürüldü */
+            margin-bottom: 15px; 
         }
 
         .modern-table th, .modern-table td {
@@ -2031,37 +2037,37 @@
             vertical-align: middle;
             text-align: center;
             line-height: 1.1;
-            font-size: 9pt;
+            font-size: 8.5pt;
         }
 
         .modern-table th {
             background-color: #f0f0f0;
             font-weight: 700;
-            padding: 3px 0;
+            padding: 2px 0;
             font-size: 8pt;
         }
 
         .student-data-cell {
             text-align: left !important;
-            padding-left: 10px !important;
+            padding-left: 5px !important;
             font-weight: 700 !important;
             font-style: italic !important;
         }
 
         /* Sütun Genişlikleri */
-        .col-no { width: 35px; }
-        .col-name { width: 22%; }
-        .col-field { width: 14%; }
-        .col-class { width: 6%; }
+        .col-no { width: 30px; }
+        .col-name { width: 19%; }
+        .col-field { width: 17%; }
+        .col-class { width: 9%; }
         .col-grade { width: 6%; } 
         .col-telafi { width: 4.5%; } 
         .col-beceri { width: 6%; }
         .col-ort { width: 6%; }
         .col-not-rakam { width: 6%; }
-        .col-not-yazi { width: 10%; }
+        .col-not-yazi { width: 8.5%; }
 
         .vertical-cell {
-            height: 90px;
+            height: 85px;
             vertical-align: bottom !important;
             padding-bottom: 3px !important;
         }
@@ -2072,17 +2078,17 @@
             white-space: nowrap;
             display: inline-block;
             font-weight: 700;
-            font-size: 8pt;
+            font-size: 7.5pt;
         }
 
-        .data-row { height: 28px; }
+        .data-row { height: 32px; }
 
         /* İmza Bölümü */
         .signature-section {
             display: flex;
             justify-content: space-between;
-            /* margin-top sildik, tablonun margin-bottom'ı itiyor */
             padding-top: 0;
+            margin-bottom: 5px; /* İmza ile açıklama arası çok az boşluk bırakıldı */
         }
 
         .sig-box {
@@ -2090,36 +2096,37 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Yukarı yasla */
-            gap: 2px; /* Elemanlar arası boşluğu kıstık */
+            justify-content: flex-start;
+            gap: 0;
         }
 
-        /* İsim ve Ünvan ayarları */
         .sig-name { 
-            font-size: 9pt; 
+            font-size: 8.5pt; 
             font-weight: 700; 
             font-style: italic; 
-            min-height: 18px; /* İsim yoksa bile yer tutsun */
-            margin-bottom: 0;
+            min-height: 15px; 
+            margin-bottom: 2px;
         }
 
         .sig-title { 
-            font-size: 8pt; 
+            font-size: 7.5pt; 
             font-weight: 600; 
             line-height: 1.1;
-            margin-bottom: 25px; /* İmza boşluğu burası */
+            margin-bottom: 20px;
         }
 
         .sig-place { 
-            font-size: 8.5pt;
+            font-size: 8pt;
         }
 
         /* Açıklama Bölümü */
         .footer-notes {
-            margin-top: auto; /* En alta sabitle */
-            font-size: 9pt;
+            /* Önceden 20px idi, şimdi 5px'e düşürüldü. İmza ile birleşti. */
+            margin-top: 3.5px; 
+            font-size: 8.5pt;
             font-style: italic;
-            line-height: 1.2;
+            line-height: 1.1;
+            padding-bottom: 0;
         }
 
      </style>
@@ -3356,7 +3363,7 @@
         }
 
 
-        function generateGradeSheetForm(student, business, period, year) {
+       function generateGradeSheetForm(student, business, period, year) {
             const settings = appData.settings;
             const schoolName = settings.schoolName || 'UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ';
             const fixedYear = "2025 - 2026"; 
@@ -3365,7 +3372,6 @@
             
             const ustaOgreticiName = business.official || '';
             
-            // Boş satır sayısı 4'e düşürüldü (sayfaya sığması ve imzanın dışarı çıkması için)
             const emptyRowsCount = 4;
 
             return `
@@ -3386,11 +3392,11 @@
                         <td class="label-cell">:</td>
                         <td class="value-cell" style="width: 15%;">${fixedYear}</td>
                         
-                        <td class="label-cell" style="padding-left:20px;">Dönemi</td>
+                        <td class="label-cell" style="padding-left:15px;">Dönemi</td>
                         <td class="label-cell">:</td>
                         <td class="value-cell" style="width: 15%;">${periodText}</td>
                         
-                        <td class="label-cell" style="padding-left:20px;">Dersin Adı</td>
+                        <td class="label-cell" style="padding-left:15px;">Dersin Adı</td>
                         <td class="label-cell">:</td>
                         <td class="value-cell">İŞLETMELERDE MESLEKİ EĞİTİM</td>
                     </tr>
@@ -3399,7 +3405,7 @@
                         <td class="label-cell">:</td>
                         <td colspan="4" class="value-cell">${business.name}</td>
                         
-                        <td class="label-cell" style="padding-left:20px;">Telefonu / E-posta</td>
+                        <td class="label-cell" style="padding-left:15px;">Telefonu / E-posta</td>
                         <td class="label-cell">:</td>
                         <td class="value-cell">${business.phone || ''}</td>
                     </tr>
@@ -3438,19 +3444,19 @@
                             <th rowspan="2" class="vertical-cell"><span class="vertical-text">Beceri Yrş.<br>Puanı</span></th>
                             <th rowspan="2" class="vertical-cell"><span class="vertical-text">Ortalama</span></th>
                             
-                            <th colspan="2" style="height: 20px;">Dönem Notu</th>
+                            <th colspan="2" style="height: 15px;">Dönem Notu</th>
                         </tr>
                         <tr>
-                            <th style="height: 30px;">Rakamla</th>
+                            <th style="height: 25px;">Rakamla</th>
                             <th>Yazıyla</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="data-row">
-                            <td class="student-data-cell" style="border: 1px solid #000 !important; border-bottom: 1px solid #000 !important;">${student.no || ''}</td>
+                            <td class="student-data-cell" style="border: 1px solid #000 !important; border-bottom: 1px solid #000 !important; text-align: center !important;">${student.no || ''}</td>
                             <td class="student-data-cell" style="border: 1px solid #000 !important; border-bottom: 1px solid #000 !important;">${student.name}</td>
-                            <td class="student-data-cell" style="border: 1px solid #000 !important; border-bottom: 1px solid #000 !important;">${student.field || ''}</td>
-                            <td class="student-data-cell" style="border: 1px solid #000 !important; border-bottom: 1px solid #000 !important;">${fullClass}</td>
+                            <td class="student-data-cell" style="border: 1px solid #000 !important; border-bottom: 1px solid #000 !important; text-align: center !important;">${student.field || ''}</td>
+                            <td class="student-data-cell" style="border: 1px solid #000 !important; border-bottom: 1px solid #000 !important; text-align: center !important;">${fullClass}</td>
                             <td></td><td></td><td></td><td></td>
                             <td></td><td></td><td></td>
                             <td></td><td></td><td></td>
