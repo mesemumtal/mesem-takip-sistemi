@@ -2086,6 +2086,88 @@
     font-size: 8pt;
 }
 
+/* --- YAZDIRMA VE TABLO STİLLERİ --- */
+@media print {
+    @page {
+        size: A4 landscape; /* Sayfayı YATAY yapar */
+        margin: 10mm;       /* Kenar boşlukları */
+    }
+    
+    body {
+        -webkit-print-color-adjust: exact;
+        background-color: white !important;
+        color: black !important;
+    }
+
+    /* Arayüz elemanlarını gizle */
+    .no-print, #settingsContainer, #loginSection, .fab-container {
+        display: none !important;
+    }
+    
+    /* Yazdırılacak alanın görünürlüğünü aç */
+    #printContainer {
+        display: block !important;
+        width: 100%;
+        height: 100%;
+        font-family: "Times New Roman", Times, serif; /* Resmi evrak fontu */
+        font-size: 11pt;
+    }
+}
+
+/* Tablo Genel Yapısı */
+.excel-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    table-layout: fixed; /* Sütun genişliklerini sabitlemek için */
+}
+
+.excel-table th, .excel-table td {
+    border: 1px solid #000;
+    padding: 4px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 10pt;
+    word-wrap: break-word;
+}
+
+/* Başlık Alanları (Header) */
+.form-header {
+    width: 100%;
+    margin-bottom: 10px;
+    border: none;
+}
+.form-header td {
+    border: none;
+    text-align: left;
+    padding: 2px;
+}
+.title-center {
+    text-align: center !important;
+    font-weight: bold;
+    font-size: 12pt;
+}
+
+/* İmza Bölümü */
+.signature-section {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    page-break-inside: avoid;
+}
+.sign-box {
+    text-align: center;
+    width: 18%;
+    font-size: 9pt;
+}
+.sign-line {
+    margin-top: 30px;
+    border-top: 1px dotted #000;
+}
+
+
+
      </style>
 
 </head>
@@ -3111,27 +3193,125 @@
         }
 
         function generateListPrint() {
-            let listHTML = `<div class="print-page-container print-page-list"><div class="list-container"><h2 style="margin-bottom: 8px;">${appData.settings.schoolName || 'OKUL ADI'}<br>İŞLETME VE ÖĞRENCİ LİSTESİ</h2>`;
-            const currentDateTime = new Date().toLocaleString('tr-TR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
-            listHTML += `<div style="text-align: right; margin: 3px 0 8px 0; font-size: 8pt; color: #666;">Yazdırma: ${currentDateTime}</div>`;
-            listHTML += `<div style="display: flex; margin: 0 0 8px 0; padding: 5px 0;"><div style="width: 50%; text-align: left;"><strong>Koordinatör Öğretmen:</strong> ${appData.settings.coordinatorName || '................................'}</div><div style="width: 50%; text-align: left;"><strong>Koordinatör Müdür Yardımcısı:</strong> ${appData.settings.asstPrincipalName || '................................'}</div></div>`;
-            appData.businesses.forEach(business => {
-                listHTML += `<div class="business-section"><div class="business-header">${business.name} - ${business.address || 'Adres belirtilmedi'} - Tel: ${business.phone || 'Belirtilmedi'} - Yetkili: ${business.official || 'Belirtilmedi'}</div><table class="student-list-table"><thead><tr><th style="width: 8%;">No</th><th style="width: 8%;">Sınıf</th><th style="width: 30%;">Adı Soyadı</th><th style="width: 25%;">Alan/Dalı</th><th style="width: 15%;">Telefon</th><th style="width: 14%;">Okul Günü</th></tr></thead><tbody>`;
-                if (business.students && business.students.length > 0) {
-                    const activeStudents = business.students.filter(student => !student.endDate);
-                    if (activeStudents.length > 0) {
-                        activeStudents.forEach(student => {
-                            const schoolDays = ['', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma'];
-                            const schoolDay = schoolDays[student.schoolDay] || '';
-                            const studentClass = student.class ? `${student.class}. Sınıf` : '';
-                            listHTML += `<tr><td>${student.no || ''}</td><td>${studentClass}</td><td>${student.name}</td><td>${student.field || ''}</td><td>${student.phone || ''}</td><td>${schoolDay}</td></tr>`;
-                        });
-                    } else { listHTML += `<tr><td colspan="6" style="text-align: center; font-style: italic;">Bu işletmeye kayıtlı aktif öğrenci bulunmamaktadır.</td></tr>`; }
-                } else { listHTML += `<tr><td colspan="6" style="text-align: center; font-style: italic;">Bu işletmeye kayıtlı öğrenci bulunmamaktadır.</td></tr>`; }
-                listHTML += `</tbody></table></div>`;
-            });
-            listHTML += `</div></div>`;
-            return listHTML;
+            // Verileri mevcut yapıdan veya DOM'dan çekiyoruz (Sizin kodunuza göre uyarlayın)
+            // Örnek: const studentList = appData.students || []; 
+            // Not: Aşağıdaki döngüde kendi veri kaynağınızı kullanmalısınız.
+            
+            // Okul ve Dönem Bilgilerini Inputlardan Alalım
+            const okulAdi = document.getElementById('schoolName')?.value || "UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ";
+            const yil = document.getElementById('year')?.value || "2025 - 2026";
+            const donem = "2. Dönem"; // Otomatik veya inputtan alınabilir
+            const isletmeAdi = "......................................................................"; // Dinamikse burayı değiştirin
+
+            let html = `
+            <div id="printArea">
+                <div style="text-align: right; font-size: 9pt; margin-bottom: 5px;">IME-DNOT</div>
+                
+                <div style="text-align: center; font-weight: bold; font-size: 14pt; margin-bottom: 15px;">
+                    İŞLETMELERDE MESLEKİ EĞİTİM GÖREN ÖĞRENCİLERE AİT DÖNEM NOT FİŞİ
+                </div>
+
+                <table class="form-header">
+                    <tr>
+                        <td style="width: 15%; font-weight: bold;">Okul/Kurumun Adı</td>
+                        <td style="width: 1%;">:</td>
+                        <td style="width: 44%;">${okulAdi}</td>
+                        <td style="width: 40%;"></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Öğretim Yılı</td>
+                        <td>:</td>
+                        <td>${yil} &nbsp;&nbsp;&nbsp; <b>Dönemi:</b> ${donem}</td>
+                        <td style="text-align: right;"><b>Dersin Adı:</b> İŞLETMELERDE MESLEKİ EĞİTİM</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">İşletmenin Adı</td>
+                        <td>:</td>
+                        <td colspan="2">${isletmeAdi}</td>
+                    </tr>
+                </table>
+
+                <table class="excel-table">
+                    <thead>
+                        <tr style="background-color: #f0f0f0;">
+                            <th colspan="4">Öğrencinin</th>
+                            <th colspan="4">İşletmede Verilen Puanlar</th>
+                            <th colspan="2">Okulda Ver. Puanlar</th>
+                            <th colspan="1">Dönem Başarısı</th>
+                            <th colspan="2">Dönem Notu</th>
+                        </tr>
+                        <tr style="background-color: #f0f0f0;">
+                            <th style="width: 5%;">Numarası</th>
+                            <th style="width: 15%;">Adı Soyadı</th>
+                            <th style="width: 12%;">Meslek Alan/Dalı</th>
+                            <th style="width: 5%;">Sınıfı</th>
+                            
+                            <th style="width: 6%;">Temrin</th>
+                            <th style="width: 6%;">İş Hizmet</th>
+                            <th style="width: 6%;">Proje</th>
+                            <th style="width: 6%;">Deney</th>
+                            
+                            <th style="width: 7%;">Telafi Eğitimi<br>Puanı (*)</th>
+                            <th style="width: 7%;">Beceri Yrş.<br>Puanı</th>
+                            
+                            <th style="width: 6%;">Ortalama</th>
+                            
+                            <th style="width: 6%;">Rakamla</th>
+                            <th style="width: 10%;">Yazıyla</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            // --- ÖĞRENCİ LİSTESİ DÖNGÜSÜ ---
+            // Not: Burayı kendi veri yapınıza (appData veya DOM) göre düzenlemelisiniz.
+            // Şimdilik örnek boş satırlar ekliyorum.
+            
+            // Eğer veriniz varsa: students.forEach(student => { ... })
+            // Eğer boş form basılacaksa döngü sayısı belirlenir.
+            
+            for (let i = 0; i < 15; i++) { // Sayfaya sığacak kadar satır (örn: 15-20)
+                html += `
+                    <tr style="height: 30px;">
+                        <td>&nbsp;</td> <td style="text-align: left;">&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td style="background-color: #f9f9f9;">&nbsp;</td> <td style="font-weight: bold;">&nbsp;</td> <td>&nbsp;</td> </tr>
+                `;
+            }
+
+            html += `
+                    </tbody>
+                </table>
+
+                <div class="signature-section">
+                    <div class="sign-box">
+                        <b>Usta Öğretici /<br>Eğitici Personel</b>
+                        <div class="sign-line">İmza</div>
+                    </div>
+                    <div class="sign-box">
+                        <b>İşletme Yetkilisi</b><br><br>
+                        <div class="sign-line">İmza</div>
+                    </div>
+                    <div class="sign-box">
+                        <b>Koordinatör<br>Öğretmen</b>
+                        <div class="sign-line">İmza</div>
+                    </div>
+                    <div class="sign-box">
+                        <b>Koordinatör<br>Müdür Yardımcısı</b>
+                        <div class="sign-line">İmza</div>
+                    </div>
+                    <div class="sign-box">
+                        <b>Okul Müdürü</b><br><br>
+                        <div class="sign-line">İmza</div>
+                    </div>
+                </div>
+
+                <div style="font-size: 8pt; margin-top: 15px;">
+                    <b>AÇIKLAMA:</b> 1- Bu çizelge; Orta Öğretim Kurumları Yönetmeliğine göre düzenlenmiştir.<br>
+                    (*) Telafi eğitimi puanı; sadece telafi eğitimine katılan öğrenciler için geçerlidir.
+                </div>
+            </div>
+            `;
+
+            return html;
         }
 
         function generateAttendanceSheet(businessId, month, year) {
