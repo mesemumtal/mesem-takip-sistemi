@@ -1938,7 +1938,7 @@
 
 
 
-//* --- DÖNEM NOT FİŞİ (NİHAİ DÜZENLEME v2) --- */
+/* --- DÖNEM NOT FİŞİ (DÜZELTİLMİŞ NİHAİ VERSİYON) --- */
         @page grade-sheet {
             size: A4 landscape;
             margin: 5mm;
@@ -1990,7 +1990,7 @@
         .info-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 5px;
+            margin-bottom: 30px; /* BURASI DEĞİŞTİ: Üst tablo ile ana tablo arasına boşluk */
         }
 
         .info-table td {
@@ -2019,7 +2019,7 @@
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
-            margin-bottom: 0; /* Alt boşluk sıfırlandı, manuel eklenecek */
+            margin-bottom: 0; 
         }
 
         .modern-table th, .modern-table td {
@@ -2074,24 +2074,19 @@
 
         .data-row { height: 28px; }
 
-        /* Ayırıcı Çizgi */
+        /* Tablo Altı Çizgi */
         .table-separator-line {
             border-top: 2px solid #000;
             width: 100%;
             margin: 0;
         }
 
-        /* Boşluk Satırı (Tablodaki satır yüksekliği kadar) */
-        .spacer-row-div {
-            height: 35px; /* Yaklaşık bir satır boşluk */
-            width: 100%;
-        }
-
         /* İmza Bölümü */
         .signature-section {
             display: flex;
             justify-content: space-between;
-            margin-top: 0; /* Boşluk spacer-row-div ile verilecek */
+            margin-top: 60px;     /* BURASI DEĞİŞTİ: Tablo çizgisinden 60px aşağıya itildi */
+            margin-bottom: 20px;  /* Alt kısımdan da biraz boşluk */
             padding-top: 5px;
         }
 
@@ -2100,17 +2095,17 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Yukarı yasla */
+            justify-content: flex-end;
         }
 
-        .sig-title { font-size: 8pt; font-weight: bold; margin-bottom: 25px; line-height: 1.1; }
+        .sig-title { font-size: 8pt; font-weight: bold; margin-bottom: 35px; line-height: 1.1; }
         .sig-name { font-size: 9pt; font-weight: bold; font-style: italic; margin-bottom: 2px; height: 15px; }
         .sig-place { font-size: 8pt; }
 
-        /* Açıklama Bölümü - En Alta Sabit ve Punto Büyütüldü */
+        /* Açıklama Bölümü */
         .footer-notes {
             margin-top: auto; /* Sayfanın en altına iter */
-            font-size: 9pt;   /* 7.5pt'den 9pt'ye çıkarıldı */
+            font-size: 9pt;
             font-style: italic;
             line-height: 1.2;
         }
@@ -3357,10 +3352,7 @@
             const periodText = period === "1" ? "1. Dönem" : "2. Dönem";
             const fullClass = `${student.class || ''}/${student.branch || ''}`;
             
-            // Usta Öğretici ismi = İşletme Yetkilisi ismi
             const ustaOgreticiName = business.official || '';
-
-            // Boş satır sayısı 5
             const emptyRowsCount = 5;
 
             return `
@@ -3462,8 +3454,6 @@
 
                 <div class="table-separator-line"></div>
                 
-                <div class="spacer-row-div"></div>
-
                 <div class="signature-section">
                     <div class="sig-box">
                         <div class="sig-name">${ustaOgreticiName}</div>
