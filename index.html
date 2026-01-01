@@ -2114,6 +2114,15 @@
             font-weight: 600; 
             line-height: 1.1;
             margin-bottom: 15px; /* İmza boşluğu burası */
+            /* 1. Kutuya sabit yükseklik veriyoruz (2 satır sığacak kadar) */
+            height: 30px; 
+            
+            /* 2. İçindeki yazıyı kutunun içine düzgün yerleştiriyoruz */
+            display: flex;
+            align-items: flex-start; /* Yazıyı üstten hizalar (alt satıra taşsa bile imza yeri değişmez) */
+            justify-content: center; /* Yatayda ortalar */
+            
+            /* ---------------------------------------- */
         }
 
         .sig-place { 
