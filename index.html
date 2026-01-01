@@ -1938,7 +1938,7 @@
 
 
 
-/* --- DÖNEM NOT FİŞİ (NİHAİ DÜZENLEME) --- */
+//* --- DÖNEM NOT FİŞİ (NİHAİ DÜZENLEME v2) --- */
         @page grade-sheet {
             size: A4 landscape;
             margin: 5mm;
@@ -1986,7 +1986,7 @@
             font-weight: bold;
         }
 
-        /* Üst Bilgi Tablosu - Sola Hizalı ve Boşluklu */
+        /* Üst Bilgi Tablosu */
         .info-table {
             width: 100%;
             border-collapse: collapse;
@@ -2010,8 +2010,8 @@
             border-bottom: 1px dotted #000 !important;
             font-weight: 700;
             font-style: italic;
-            padding-left: 15px !important; /* Sola boşluk bırakıldı */
-            text-align: left !important;   /* Sola hizalandı */
+            padding-left: 15px !important;
+            text-align: left !important;
         }
 
         /* Ana Tablo */
@@ -2019,7 +2019,7 @@
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
-            margin-bottom: 5px; /* İmza ile arasındaki boşluk azaltıldı */
+            margin-bottom: 0; /* Alt boşluk sıfırlandı, manuel eklenecek */
         }
 
         .modern-table th, .modern-table td {
@@ -2038,10 +2038,9 @@
             font-size: 8pt;
         }
 
-        /* Öğrenci Verisi Hücre Stili (Sol boşluklu) */
         .student-data-cell {
             text-align: left !important;
-            padding-left: 10px !important; /* İçerik soldan boşluklu */
+            padding-left: 10px !important;
             font-weight: 700 !important;
             font-style: italic !important;
         }
@@ -2075,13 +2074,24 @@
 
         .data-row { height: 28px; }
 
-        /* İmza Bölümü - Konumlandırma */
+        /* Ayırıcı Çizgi */
+        .table-separator-line {
+            border-top: 2px solid #000;
+            width: 100%;
+            margin: 0;
+        }
+
+        /* Boşluk Satırı (Tablodaki satır yüksekliği kadar) */
+        .spacer-row-div {
+            height: 35px; /* Yaklaşık bir satır boşluk */
+            width: 100%;
+        }
+
+        /* İmza Bölümü */
         .signature-section {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;     /* Tabloya daha yakın (2 satır boşluk azaltıldı) */
-            margin-bottom: 40px;  /* Açıklama ile arasında yaklaşık 2 satır boşluk */
-            border-top: 1px solid #000; /* Görsel ayırıcı (isteğe bağlı) */
+            margin-top: 0; /* Boşluk spacer-row-div ile verilecek */
             padding-top: 5px;
         }
 
@@ -2090,17 +2100,17 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
+            justify-content: flex-start; /* Yukarı yasla */
         }
 
         .sig-title { font-size: 8pt; font-weight: bold; margin-bottom: 25px; line-height: 1.1; }
         .sig-name { font-size: 9pt; font-weight: bold; font-style: italic; margin-bottom: 2px; height: 15px; }
         .sig-place { font-size: 8pt; }
 
-        /* Açıklama Bölümü - En Alta Sabitleme */
+        /* Açıklama Bölümü - En Alta Sabit ve Punto Büyütüldü */
         .footer-notes {
             margin-top: auto; /* Sayfanın en altına iter */
-            font-size: 7.5pt;
+            font-size: 9pt;   /* 7.5pt'den 9pt'ye çıkarıldı */
             font-style: italic;
             line-height: 1.2;
         }
@@ -3350,6 +3360,7 @@
             // Usta Öğretici ismi = İşletme Yetkilisi ismi
             const ustaOgreticiName = business.official || '';
 
+            // Boş satır sayısı 5
             const emptyRowsCount = 5;
 
             return `
@@ -3448,6 +3459,10 @@
                         </tr>`).join('')}
                     </tbody>
                 </table>
+
+                <div class="table-separator-line"></div>
+                
+                <div class="spacer-row-div"></div>
 
                 <div class="signature-section">
                     <div class="sig-box">
