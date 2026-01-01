@@ -1981,7 +1981,7 @@
         /* 3. SAĞ ÜSTTEKİ KOD YAZISI (Çerçevenin Dışında) */
         .gs-doc-code {
             position: absolute;
-            top: 10px;       /* Sayfanın en tepesine yapışık */
+            top: 8px;       /* Sayfanın en tepesine yapışık */
             right: 0;     /* Sayfanın en sağına yapışık */
             font-size: 8pt;
             font-weight: bold;
@@ -1992,7 +1992,7 @@
         /* --- DİĞER STANDART AYARLAR (AYNEN KORUNDU) --- */
         .gs-header-section {
             border-bottom: 2px solid #000;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             position: relative;
             height: 35px;
             display: flex;
@@ -2011,7 +2011,7 @@
         .label-cell { font-weight: 700; width: 1%; padding-right: 5px; }
         .value-cell { border-bottom: 1px dotted #000 !important; font-weight: 700; font-style: italic; padding-left: 15px !important; text-align: left !important; }
 
-        .modern-table { width: 100%; border-collapse: collapse; table-layout: fixed; border-bottom: 2px solid #000; margin-bottom: 65px; }
+        .modern-table { width: 100%; border-collapse: collapse; table-layout: fixed; border-bottom: none; margin-bottom: 10px; }
         .modern-table th, .modern-table td { border: 1px solid #000; padding: 0; vertical-align: middle; text-align: center; line-height: 1.1; font-size: 9pt; }
         .modern-table th { background-color: #f0f0f0; font-weight: 700; padding: 3px 0; font-size: 8pt; }
         .student-data-cell { text-align: left !important; padding-left: 10px !important; font-weight: 700 !important; font-style: italic !important; }
@@ -2031,7 +2031,16 @@
         .vertical-text { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; display: inline-block; font-weight: 700; font-size: 8pt; }
         .data-row { height: 28px; }
 
-        .signature-section { display: flex; justify-content: space-between; padding-top: 0; }
+        .signature-section { display: flex; justify-content: space-between; /* 1. ÇİZGİNİN KENDİSİ */
+        border-top: 2px solid #000; 
+        
+        /* 2. TABLO İLE ÇİZGİ ARASINDAKİ BOŞLUK */
+        /* Bu değeri artırırsanız çizgi tablodan uzaklaşır (aşağı iner) */
+        margin-top: 5px; 
+        
+        /* 3. ÇİZGİ İLE İSİMLER ARASINDAKİ BOŞLUK */
+        /* Bu değeri artırırsanız isimler çizgiden uzaklaşır (aşağı iner) */
+        padding-top: 40px; }
         .sig-box { text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; gap: 2px; }
         .sig-name { font-size: 9pt; font-weight: 700; font-style: italic; min-height: 18px; margin-bottom: 0; }
         .sig-title { font-size: 8pt; font-weight: 600; line-height: 1.1; margin-bottom: 15px; height: 30px; display: flex; align-items: flex-start; justify-content: center; }
