@@ -1970,7 +1970,7 @@
         /* 2. YENİ İÇ KUTU (Siyah Çerçeve Buraya Taşındı) */
         .gs-border-container {
             border: 2px solid #000; /* Çerçeve artık burada */
-            padding: 10px;          /* İç boşluk burada */
+            padding: 5px;          /* İç boşluk burada */
             padding-bottom: 15px;   /* Alt boşluk */
             width: 100%;
             box-sizing: border-box;
@@ -1991,19 +1991,25 @@
 
         /* --- DİĞER STANDART AYARLAR (AYNEN KORUNDU) --- */
         .gs-header-section {
-            border-bottom: 2px solid #000;
-            margin-bottom: 10px;
+            /* Eski siyah çizgiyi ve Flex ayarlarını siliyoruz */
+            display: block; 
+            height: auto;
+            
+            /* YENİ MODERN GÖRÜNÜM AYARLARI */
+            text-align: center;                /* Yazıyı ortala */
+            border-bottom: 2px solid #f4c542;  /* İŞTE O ALTIN SARISI ÇİZGİ */
+            padding-bottom: 4px;               /* Yazı ile sarı çizgi arasındaki ince boşluk */
+            margin-bottom: 15px;               /* Sarı çizgi ile alttaki tablo arasındaki boşluk */
             position: relative;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .gs-main-title {
-            font-size: 13pt;
-            font-weight: 600;
+            /* YENİ FONT AYARLARI */
+            font-size: 11pt;      /* 13pt yerine 11pt (Daha modern ve kibar durur) */
+            font-weight: 700;     /* Tam kalınlık (Bold) */
             text-transform: uppercase;
+            color: #000;          /* Yazı rengi siyah kalır */
+            line-height: 1.2;     /* Satır aralığını sıkılaştır */
         }
 
         .info-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
