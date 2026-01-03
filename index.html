@@ -2315,7 +2315,8 @@
                     
                     <div class="form-group">
                         <label for="gradeSheetYear">Öğretim Yılı</label>
-                        <input type="text" id="gradeSheetYear" class="form-input" value="2025-2026">
+                        <select id="gradeSheetYear" class="form-select">
+                            </select>
                     </div>
                     
                     <div class="form-group">
@@ -2409,6 +2410,22 @@
         let currentUser = null;
         let appData = {};
         let currentAbsence = { studentId: null, businessId: null };
+
+        // --- DÖNEM NOT FİŞİ YIL SEÇİMİNİ DOLDUR ---
+        const gradeSheetYearSelect = document.getElementById('gradeSheetYear');
+        if (gradeSheetYearSelect) {
+            let startYear = 2025;
+            let endYear = 2035;
+            let optionsHTML = '';
+            for (let y = startYear; y <= endYear; y++) {
+                let nextY = y + 1;
+                let range = `${y}-${nextY}`; // Örn: 2025-2026
+                // 2025-2026 varsayılan seçili olsun
+                let selected = (range === "2025-2026") ? 'selected' : '';
+                optionsHTML += `<option value="${range}" ${selected}>${range}</option>`;
+            }
+            gradeSheetYearSelect.innerHTML = optionsHTML;
+        }
 
         // DOM elementleri
         const dom = {
@@ -3303,7 +3320,9 @@
         function generateGradeSheetForm(student, business, period, year) {
             const settings = appData.settings;
             const schoolName = settings.schoolName || 'UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ';
-            const fixedYear = "2025 - 2026"; 
+            
+            // DİKKAT: fixedYear satırını sildik, artık parametre olarak gelen 'year' kullanılıyor.
+            
             const periodText = period === "1" ? "1. Dönem" : "2. Dönem";
             const fullClass = `${student.class || ''}/${student.branch || ''}`;
             const ustaOgreticiName = business.official || '';
@@ -3328,7 +3347,8 @@
                         <tr>
                             <td class="label-cell">Öğretim Yılı</td>
                             <td class="label-cell">:</td>
-                            <td class="value-cell" style="width: 15%;">${fixedYear}</td>
+                            
+                            <td class="value-cell" style="width: 15%;">${year}</td>
                             
                             <td class="label-cell" style="padding-left:20px;">Dönemi</td>
                             <td class="label-cell">:</td>
@@ -3355,12 +3375,10 @@
                             <col class="col-name">
                             <col class="col-field">
                             <col class="col-class">
-                            
                             <col class="col-grade-sub"><col class="col-grade-sub"><col class="col-grade-sub">
                             <col class="col-grade-sub"><col class="col-grade-sub"><col class="col-grade-sub">
                             <col class="col-grade-sub"><col class="col-grade-sub"><col class="col-grade-sub">
                             <col class="col-grade-sub"><col class="col-grade-sub"><col class="col-grade-sub">
-                            
                             <col class="col-telafi"><col class="col-telafi">
                             <col class="col-beceri">
                             <col class="col-ort">
@@ -3394,7 +3412,6 @@
                                 <th colspan="3"></th>
                                 <th colspan="3"></th>
                                 <th colspan="3"></th>
-                                
                                 <th>Rakamla</th>
                                 <th>Yazıyla</th>
                             </tr>
@@ -3413,9 +3430,7 @@
                                 
                                 <td></td><td></td>
                                 <td></td>
-                                
-                                <td></td>
-                                <td></td><td></td>
+                                <td></td><td></td><td></td>
                             </tr>
                             ${Array(emptyRowsCount).fill('').map(() => `
                             <tr class="data-row">
@@ -3462,14 +3477,11 @@
                         </div>
                     </div>
 
-                    /* --- YENİ HALİ (Düzgün Hizalama İçin) --- */
                     <div class="footer-notes">
                         <strong>AÇIKLAMA:</strong>
-                        
                         <div style="padding-left: 14px; text-indent: -14px; margin-top: 2px;">
                             1- Bu çizelge; Orta Öğretim Kurumları Yönetmeliği 144/g maddesine göre İşletme yetkilisi tarafından doldurulacak ve dönem sona ermeden beş gün önce kapalı zarf içinde okul / kurum müdürlüğüne teslim edilecektir.
                         </div>
-                        
                         <div style="padding-left: 14px; text-indent: -14px; margin-top: 2px;">
                             2- (*) İşaretli bölümler okul / kurum müdürlüğünce doldurulacak ve puan ortalaması alınarak dönem notu belirlenecektir.
                         </div>
