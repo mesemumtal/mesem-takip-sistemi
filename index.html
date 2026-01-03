@@ -3502,12 +3502,16 @@
             const settings = appData.settings || {};
             const schoolName = settings.schoolName || 'UŞAK MESLEKİ VE TEKNİK ANADOLU LİSESİ';
             
-            // Seçili yılı alalım, yoksa boş bırakalım
+            // 1. YIL BİLGİSİNİ AL
             const yearSelect = document.getElementById('gradeSheetYear');
             const selectedYear = yearSelect ? yearSelect.value : "20.... - 20....";
+
+            // 2. DÖNEM BİLGİSİNİ AL (Düzeltilen Kısım)
+            const periodSelect = document.getElementById('gradeSheetPeriod');
+            const selectedPeriod = periodSelect ? (periodSelect.value === "1" ? "1. Dönem" : "2. Dönem") : ".......";
             
-            // Sayfaya sığacak kadar boş satır (10 adet idealdir)
-            const emptyRowsCount = 10;
+            // 3. SATIR SAYISI (Taşmayı önlemek için 5'e düşürüldü, dolu form ile aynı yapı)
+            const emptyRowsCount = 5; 
 
             return `
             <div class="grade-sheet-page">
@@ -3532,7 +3536,7 @@
                             
                             <td class="label-cell" style="padding-left:20px;">Dönemi</td>
                             <td class="label-cell">:</td>
-                            <td class="value-cell" style="width: 15%;">....................</td>
+                            <td class="value-cell" style="width: 15%;">${selectedPeriod}</td>
                             
                             <td class="label-cell" style="padding-left:20px;">Dersin Adı</td>
                             <td class="label-cell">:</td>
@@ -3629,7 +3633,7 @@
                         </div>
                         <div class="sig-box">
                             <div class="sig-name"></div>
-                            <div class="sig-title">Koordinatör<br>Müdür Yardımcısı</div>
+                            <div class="sig-title">Müdür Yardımcısı</div>
                             <div class="sig-place">İmza</div>
                         </div>
                         <div class="sig-box">
