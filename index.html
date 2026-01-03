@@ -3506,11 +3506,16 @@
             const yearSelect = document.getElementById('gradeSheetYear');
             const selectedYear = yearSelect ? yearSelect.value : "20.... - 20....";
 
-            // 2. DÖNEM BİLGİSİNİ AL (Düzeltilen Kısım)
+            // 2. DÖNEM BİLGİSİNİ AL
             const periodSelect = document.getElementById('gradeSheetPeriod');
             const selectedPeriod = periodSelect ? (periodSelect.value === "1" ? "1. Dönem" : "2. Dönem") : ".......";
             
-            // 3. SATIR SAYISI (Taşmayı önlemek için 5'e düşürüldü, dolu form ile aynı yapı)
+            // 3. YETKİLİ İSİMLERİNİ AYARLARDAN AL
+            const coordinatorName = settings.coordinatorName || '';
+            const asstPrincipalName = settings.asstPrincipalName || '';
+            const principalName = settings.principalName || '';
+            
+            // 4. SATIR SAYISI
             const emptyRowsCount = 5; 
 
             return `
@@ -3626,18 +3631,19 @@
                             <div class="sig-title">İşletme Yetkilisi</div>
                             <div class="sig-place">İmza</div>
                         </div>
+                        
                         <div class="sig-box">
-                            <div class="sig-name"></div>
+                            <div class="sig-name">${coordinatorName}</div>
                             <div class="sig-title">Koordinatör Öğretmen</div>
                             <div class="sig-place">İmza</div>
                         </div>
                         <div class="sig-box">
-                            <div class="sig-name"></div>
+                            <div class="sig-name">${asstPrincipalName}</div>
                             <div class="sig-title">Müdür Yardımcısı</div>
                             <div class="sig-place">İmza</div>
                         </div>
                         <div class="sig-box">
-                            <div class="sig-name"></div>
+                            <div class="sig-name">${principalName}</div>
                             <div class="sig-title">Okul Müdürü</div>
                             <div class="sig-place">İmza</div>
                         </div>
